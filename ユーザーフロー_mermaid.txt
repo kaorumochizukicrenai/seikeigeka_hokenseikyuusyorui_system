@@ -1,0 +1,1060 @@
+flowchart TD
+  %% style definitions
+  classDef basic fill:#ffffff,stroke:#1f77b4,color:#4b0082
+  classDef branch fill:#fff3cd,stroke:#ff9900,color:#4b0082
+  classDef jump fill:#e6f7ff,stroke:#17a2b8,color:#4b0082
+  classDef sceneMove fill:#f0f0f0,stroke:#7f7f7f,color:#4b0082
+  classDef start fill:#e8f5e9,stroke:#2ca02c,color:#4b0082
+
+  %% start scene
+  subgraph scene_app_open[アプリを開いたとき]
+    app_start[開始]:::start
+    app_p1_branch["1. 操作によって分岐"]:::branch
+    app_p1_option1["1-a. 端末にログイン情報が残っている場合は段落2-1に移動する。"]:::jump
+    app_p1_option2["1-b. 端末にログイン情報が残っていない場合は段落3-1に移動する。"]:::jump
+    app_p2_1["2-1. ローディング画面を表示する。"]:::basic
+    app_p2_2["2-2. ローディング画面を閉じる。"]:::basic
+    app_p2_3["2-3. ホーム画面に移動する。"]:::sceneMove
+    app_p2_4["2-4. シーン「ホーム画面の各アイコンを押したとき（呼び出し元：システムを開いたとき、ログインボタンを押したとき）」の1.〜3.と同様。"]:::sceneMove
+    app_p3_1["3-1. ログイン画面に移動する。"]:::basic
+    app_p3_2["3-2. ログインID・パスワードを入力する欄が表示される。"]:::basic
+    app_p3_3_branch["3-3. 操作によって分岐"]:::branch
+    app_p3_3_option1["3-3-a. 「ログイン」ボタンを押したとき、シーン「ログインボタンを押したとき」に移動する。"]:::sceneMove
+    app_p3_3_option2["3-3-b. 「利用規約」ボタンを押したとき、シーン「利用規約ボタンを押したとき（呼び出し元：ログイン画面）」に移動する。"]:::sceneMove
+  end
+  style scene_app_open fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: login button
+  subgraph scene_login_button[ログインボタンを押したとき]
+    login_p1_branch["1. 操作によって分岐"]:::branch
+    login_p1_option1["1-a. 入力されたログイン情報が間違っている場合は段落2-1に移動する。"]:::jump
+    login_p1_option2["1-b. 入力されたログイン情報があっている場合は段落3-1に移動する。"]:::jump
+    login_p2_1["2-1. ログイン情報が間違っている旨が表示される。"]:::basic
+    login_p2_2_branch["2-2. 操作によって分岐"]:::branch
+    login_p2_2_option1["2-2-a. ログイン情報をユーザーが修正し、「ログイン」ボタンを押した場合はこのシーンの最初に移動する。"]:::jump
+    login_p2_2_option2["2-2-b. 「利用規約」ボタンを押した場合はシーン「利用規約ボタンを押したとき（呼び出し元：ログイン画面）」に移動する。"]:::sceneMove
+    login_p3_1["3-1. ローディング画面を表示する。"]:::basic
+    login_p3_2["3-2. ローディング画面を閉じる。"]:::basic
+    login_p3_3["3-3. ホーム画面に移動する。"]:::sceneMove
+    login_p3_4["3-4. シーン「ホーム画面の各アイコンを押したとき（呼び出し元：システムを開いたとき、ログインボタンを押したとき）」の1.〜3.と同様。"]:::sceneMove
+  end
+  style scene_login_button fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: home icons
+  subgraph scene_home_icons[ホーム画面の各アイコンを押したとき（呼び出し元：システムを開いたとき、ログインボタンを押したとき）]
+    home_p1["1. ホーム画面に「カルテ新規入力」「カルテ検索」「患者マスタ」「アカウント管理」の4つのアイコンのみが表示される。"]:::basic
+    home_p2["2. ヘッダーにシステムロゴとハンバーガーメニューが表示される。"]:::basic
+    home_p3_branch["3. 操作によって分岐"]:::branch
+    home_p3_option1["3-a. ハンバーガーメニューを押したとき、シーン「ハンバーガーメニューを押したとき」に移動する。"]:::sceneMove
+    home_p3_option2["3-b. ヘッダーのシステムロゴを押したとき、このシーンの段落1に移動する。"]:::jump
+    home_p3_option3["3-c. 「カルテ新規入力」アイコンを押したとき、シーン「カルテ新規入力アイコンを押したとき」に移動する。"]:::sceneMove
+    home_p3_option4["3-d. 「カルテ検索」アイコンを押したとき、シーン「カルテ検索アイコンを押したとき」に移動する。"]:::sceneMove
+    home_p3_option5["3-e. 「患者マスタ」アイコンを押したとき、シーン「患者マスタアイコンを押したとき」に移動する。"]:::sceneMove
+    home_p3_option6["3-f. 「アカウント管理」アイコンを押したとき、シーン「アカウント管理アイコンを押したとき」に移動する。"]:::sceneMove
+    home_p3_option7["3-g. ユーザー権限が入力者または閲覧者の場合、「アカウント管理」アイコンは非表示となり、押下不能である。"]:::basic
+  end
+  style scene_home_icons fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: hamburger menu
+  subgraph scene_hamburger[ハンバーガーメニューを押したとき]
+    ham_p1["1. 画面全体を覆うハンバーガーメニューが表示され、メニュー外の操作ができなくなる。"]:::basic
+    ham_p2["2. メニューに「カルテ新規入力」「カルテ検索」「患者マスタ」「アカウント管理」「ログイン情報変更」「使用履歴」「利用規約」「ログアウト」が表示される。"]:::basic
+    ham_p3_branch["3. 操作によって分岐"]:::branch
+    ham_p3_option1["3-a. 「カルテ新規入力」を押したとき、シーン「カルテ新規入力アイコンを押したとき」に移動する。"]:::sceneMove
+    ham_p3_option2["3-b. 「カルテ検索」を押したとき、シーン「カルテ検索アイコンを押したとき」に移動する。"]:::sceneMove
+    ham_p3_option3["3-c. 「患者マスタ」を押したとき、シーン「患者マスタアイコンを押したとき」に移動する。"]:::sceneMove
+    ham_p3_option4["3-d. 「アカウント管理」を押したとき、シーン「アカウント管理アイコンを押したとき」に移動する。"]:::sceneMove
+    ham_p3_option5["3-e. ユーザー権限が入力者または閲覧者の場合、「アカウント管理」は非表示となり、押下不能である。"]:::basic
+    ham_p3_option6["3-f. 「ログイン情報変更」を押したとき、シーン「ログイン情報変更ボタンを押したとき」に移動する。"]:::sceneMove
+    ham_p3_option7["3-g. 「使用履歴」を押したとき、シーン「使用履歴ボタンを押したとき」に移動する。"]:::sceneMove
+    ham_p3_option8["3-h. 「利用規約」を押したとき、シーン「利用規約ボタンを押したとき（呼び出し元：ハンバーガーメニュー）」に移動する。"]:::sceneMove
+    ham_p3_option9["3-i. 「ログアウト」を押したとき、シーン「ログアウトボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_hamburger fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: terms from login
+  subgraph scene_terms_login[利用規約ボタンを押したとき（呼び出し元：ログイン画面）]
+    terms_login_p1["1. 利用規約画面に移動する。"]:::basic
+    terms_login_p2["2. 利用規約の本文が表示される。"]:::basic
+    terms_login_p3["3. 「戻る」ボタンを押したとき、シーン「ログイン画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_terms_login fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: back to login screen
+  subgraph scene_back_to_login[ログイン画面に戻るボタンを押したとき]
+    back_login_p1["1. ログイン画面に移動する。"]:::basic
+    back_login_p2["2. ログインID・パスワードを入力する欄が表示される。"]:::basic
+    back_login_p3_branch["3. 操作によって分岐"]:::branch
+    back_login_p3_option1["3-a. 「ログイン」ボタンを押したとき、シーン「ログインボタンを押したとき」に移動する。"]:::sceneMove
+    back_login_p3_option2["3-b. 「利用規約」ボタンを押したとき、シーン「利用規約ボタンを押したとき（呼び出し元：ログイン画面）」に移動する。"]:::sceneMove
+  end
+  style scene_back_to_login fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: terms from hamburger
+  subgraph scene_terms_hamburger[利用規約ボタンを押したとき（呼び出し元：ハンバーガーメニュー）]
+    terms_ham_p1["1. 利用規約画面に移動する。"]:::basic
+    terms_ham_p2["2. 利用規約の本文が表示される。"]:::basic
+    terms_ham_p3["3. 「戻る」ボタンを押したとき、シーン「ハンバーガーメニューに戻るボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_terms_hamburger fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: back to hamburger menu
+  subgraph scene_back_to_hamburger[ハンバーガーメニューに戻るボタンを押したとき]
+    back_ham_p1["1. ハンバーガーメニューが表示された状態に戻る。"]:::basic
+    back_ham_p2["2. シーン「ハンバーガーメニューを押したとき」の2.〜3.と同様。"]:::sceneMove
+  end
+  style scene_back_to_hamburger fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: logout
+  subgraph scene_logout[ログアウトボタンを押したとき]
+    logout_p1["1. ログアウト確認ダイアログを表示する。"]:::basic
+    logout_p2_branch["2. 操作によって分岐"]:::branch
+    logout_p2_option1["2-a. 「はい」を押したとき、段落3-1に移動する。"]:::jump
+    logout_p2_option2["2-b. 「いいえ」を押したとき、段落4-1に移動する。"]:::jump
+    logout_p3_1["3-1. ローディング画面を表示する。"]:::basic
+    logout_p3_2["3-2. ローディング画面を閉じる。"]:::basic
+    logout_p3_3["3-3. ログイン画面に移動する。"]:::basic
+    logout_p3_4["3-4. シーン「ログイン画面に戻るボタンを押したとき」の2.〜3.と同様。"]:::sceneMove
+    logout_p4_1["4-1. ログアウト確認ダイアログを閉じる。"]:::basic
+    logout_p4_2["4-2. シーン「ハンバーガーメニューを押したとき」の2.〜3.と同様。"]:::sceneMove
+  end
+  style scene_logout fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: login info change
+  subgraph scene_login_change[ログイン情報変更ボタンを押したとき]
+    login_change_p1["1. ログイン情報変更画面に移動する。"]:::basic
+    login_change_p2["2. 現在のパスワード・新しいパスワード・新しいパスワード（確認）を入力する欄が表示される。"]:::basic
+    login_change_p3_branch["3. 操作によって分岐"]:::branch
+    login_change_p3_option1["3-a. 「変更する」ボタンを押したとき、シーン「ログイン情報変更の変更するボタンを押したとき」に移動する。"]:::sceneMove
+    login_change_p3_option2["3-b. 「戻る」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_login_change fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: back to home
+  subgraph scene_back_to_home[ホーム画面に戻るボタンを押したとき]
+    back_home_p1["1. ホーム画面に移動する。"]:::basic
+    back_home_p2["2. シーン「ホーム画面の各アイコンを押したとき（呼び出し元：システムを開いたとき、ログインボタンを押したとき）」の1.〜3.と同様。"]:::sceneMove
+  end
+  style scene_back_to_home fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: login info change confirm
+  subgraph scene_login_change_confirm[ログイン情報変更の変更するボタンを押したとき]
+    login_change_confirm_p1_branch["1. 操作によって分岐"]:::branch
+    login_change_confirm_p1_option1["1-a. 入力内容に未入力や形式エラーがある場合は段落2-1に移動する。"]:::jump
+    login_change_confirm_p1_option2["1-b. 入力内容に問題がない場合は段落3-1に移動する。"]:::jump
+    login_change_confirm_p2_1["2-1. 入力エラーを表示する。"]:::basic
+    login_change_confirm_p2_2_branch["2-2. 操作によって分岐"]:::branch
+    login_change_confirm_p2_2_option1["2-2-a. 入力内容を修正し「変更する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    login_change_confirm_p2_2_option2["2-2-b. 「戻る」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+    login_change_confirm_p3_1["3-1. 変更確認ダイアログを表示する。"]:::basic
+    login_change_confirm_p3_2_branch["3-2. 操作によって分岐"]:::branch
+    login_change_confirm_p3_2_option1["3-2-a. 「はい」を押したとき、段落4-1に移動する。"]:::jump
+    login_change_confirm_p3_2_option2["3-2-b. 「いいえ」を押したとき、段落5-1に移動する。"]:::jump
+    login_change_confirm_p4_1["4-1. ローディング画面を表示する。"]:::basic
+    login_change_confirm_p4_2["4-2. ローディング画面を閉じる。"]:::basic
+    login_change_confirm_p4_3["4-3. 変更完了のメッセージが表示される。"]:::basic
+    login_change_confirm_p4_4["4-4. 「OK」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+    login_change_confirm_p5_1["5-1. 変更確認ダイアログを閉じる。"]:::basic
+    login_change_confirm_p5_2["5-2. シーン「ログイン情報変更ボタンを押したとき」の2.〜3.と同様。"]:::sceneMove
+  end
+  style scene_login_change_confirm fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart new
+  subgraph scene_chart_new[カルテ新規入力アイコンを押したとき]
+    chart_new_p1["1. カルテ新規入力画面に移動する。"]:::basic
+    chart_new_p2["2. 患者マスタの選択方法として「既存患者を選択」「新規患者を登録」を切り替えるタブが表示される。"]:::basic
+    chart_new_p3_branch["3. 操作によって分岐"]:::branch
+    chart_new_p3_option1["3-a. 「既存患者を選択」タブを押したとき、シーン「カルテ新規入力：既存患者タブを押したとき」に移動する。"]:::sceneMove
+    chart_new_p3_option2["3-b. 「新規患者を登録」タブを押したとき、シーン「カルテ新規入力：新規患者タブを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_chart_new fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart new existing patient
+  subgraph scene_chart_new_existing[カルテ新規入力：既存患者タブを押したとき]
+    chart_new_existing_p1["1. 患者マスタ検索欄（患者ID、氏名、生年月日、電話番号）と検索ボタンが表示される。"]:::basic
+    chart_new_existing_p2["2. 検索結果テーブルに患者ID、氏名、生年月日、性別、電話番号が表示される。並び替え機能、削除済み表示切替、検索結果のうち30件のみ表示、続きを表示ボタンが表示される。"]:::basic
+    chart_new_existing_p3["3. 患者を選択したとき、患者情報がカルテ入力欄に自動入力される。"]:::basic
+    chart_new_existing_p4["4. カルテ入力欄に、受診日、診療科、保険会社、保険項目、診療内容、請求金額など、保険請求書類に必要な入力欄が表示される。"]:::basic
+    chart_new_existing_p5_branch["5. 操作によって分岐"]:::branch
+    chart_new_existing_p5_option1["5-a. 「登録する」ボタンを押したとき、シーン「カルテ登録ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_new_existing_p5_option2["5-b. 「戻る」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_chart_new_existing fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart new new patient
+  subgraph scene_chart_new_new[カルテ新規入力：新規患者タブを押したとき]
+    chart_new_new_p1["1. 新規患者登録欄に患者ID、生年月日、苗字、名前、性別、住所、電話番号などの入力欄が表示される。"]:::basic
+    chart_new_new_p2["2. カルテ入力欄に、受診日、診療科、保険会社、保険項目、診療内容、請求金額など、保険請求書類に必要な入力欄が表示される。"]:::basic
+    chart_new_new_p3_branch["3. 操作によって分岐"]:::branch
+    chart_new_new_p3_option1["3-a. 「登録する」ボタンを押したとき、シーン「カルテ登録ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_new_new_p3_option2["3-b. 「戻る」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_chart_new_new fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart register
+  subgraph scene_chart_register[カルテ登録ボタンを押したとき]
+    chart_register_p1_branch["1. 操作によって分岐"]:::branch
+    chart_register_p1_option1["1-a. 入力内容に未入力や形式エラーがある場合は段落2-1に移動する。"]:::jump
+    chart_register_p1_option2["1-b. 新規患者タブの場合で、患者IDが同グループ内で重複している場合は段落3-1に移動する。"]:::jump
+    chart_register_p1_option3["1-c. 生年月日が完全一致かつ氏名の2文字以上が部分一致する既存患者がいる場合は段落4-1に移動する。"]:::jump
+    chart_register_p1_option4["1-d. 入力内容に問題がない場合は段落5-1に移動する。"]:::jump
+    chart_register_p2_1["2-1. 入力エラーを表示する。"]:::basic
+    chart_register_p2_2_branch["2-2. 操作によって分岐"]:::branch
+    chart_register_p2_2_option1["2-2-a. 入力内容を修正し「登録する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    chart_register_p2_2_option2["2-2-b. 「戻る」ボタンを押したとき、シーン「カルテ新規入力アイコンを押したとき」に移動する。"]:::sceneMove
+    chart_register_p3_1["3-1. 患者IDが重複している旨のエラーが表示される。"]:::basic
+    chart_register_p3_2_branch["3-2. 操作によって分岐"]:::branch
+    chart_register_p3_2_option1["3-2-a. 入力内容を修正し「登録する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    chart_register_p3_2_option2["3-2-b. 「戻る」ボタンを押したとき、シーン「カルテ新規入力アイコンを押したとき」に移動する。"]:::sceneMove
+    chart_register_p4_1["4-1. 類似患者が存在する旨の警告ダイアログを表示する。"]:::basic
+    chart_register_p4_2["4-2. ダイアログ内に類似候補の患者ID・氏名・生年月日が一覧表示される。"]:::basic
+    chart_register_p4_3_branch["4-3. 操作によって分岐"]:::branch
+    chart_register_p4_3_option1["4-3-a. 「このまま登録する」を押したとき段落5-1に移動する。"]:::jump
+    chart_register_p4_3_option2["4-3-b. 「戻る」を押したとき段落6-1に移動する。"]:::jump
+    chart_register_p5_1["5-1. 登録確認ダイアログを表示する。"]:::basic
+    chart_register_p5_2_branch["5-2. 操作によって分岐"]:::branch
+    chart_register_p5_2_option1["5-2-a. 「はい」を押したとき段落7-1に移動する。"]:::jump
+    chart_register_p5_2_option2["5-2-b. 「いいえ」を押したとき段落6-1に移動する。"]:::jump
+    chart_register_p6_1["6-1. ダイアログを閉じる。"]:::basic
+    chart_register_p6_2["6-2. シーン「カルテ新規入力：新規患者タブを押したとき」の1.〜3.またはシーン「カルテ新規入力：既存患者タブを押したとき」の1.〜5.と同様。"]:::sceneMove
+    chart_register_p7_1["7-1. ローディング画面を表示する。"]:::basic
+    chart_register_p7_2["7-2. ローディング画面を閉じる。"]:::basic
+    chart_register_p7_3["7-3. 登録完了のメッセージが表示される。"]:::basic
+    chart_register_p7_4["7-4. 「OK」ボタンを押したとき、シーン「カルテ新規入力アイコンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_chart_register fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart search
+  subgraph scene_chart_search[カルテ検索アイコンを押したとき]
+    chart_search_p1["1. カルテ検索画面に移動する。"]:::basic
+    chart_search_p2["2. 検索欄に患者ID、氏名、受診日、保険会社、保険項目、カルテ作成者、削除済み表示切替が表示される。"]:::basic
+    chart_search_p3_branch["3. 操作によって分岐"]:::branch
+    chart_search_p3_option1["3-a. 「検索」ボタンを押したとき、段落4-1に移動する。"]:::jump
+    chart_search_p3_option2["3-b. 「戻る」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+    chart_search_p4_1["4-1. カルテ検索結果テーブルに、カルテID、患者ID、氏名、受診日、保険会社、保険項目、作成者、削除状態が表示される。"]:::basic
+    chart_search_p4_2["4-2. 並び替え機能、検索結果のうち30件のみ表示、続きを表示ボタンが表示される。"]:::basic
+    chart_search_p4_3["4-3. 各行に「詳細」「編集」「削除」「復活」「保険請求書類を選択」ボタンが表示される。ユーザー権限が閲覧者の場合「編集」「削除」「復活」ボタンは非表示となり、押下不能である。ユーザー権限が入力者の場合「削除」「復活」ボタンは非表示となり、押下不能である。削除済みの行にのみ「復活」ボタンが表示される。"]:::basic
+    chart_search_p4_4_branch["4-4. 操作によって分岐"]:::branch
+    chart_search_p4_4_option1["4-4-a. 「詳細」ボタンを押したとき、シーン「カルテ詳細ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_search_p4_4_option2["4-4-b. 「編集」ボタンを押したとき、シーン「カルテ編集ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_search_p4_4_option3["4-4-c. 「削除」ボタンを押したとき、シーン「カルテ削除ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_search_p4_4_option4["4-4-d. 「復活」ボタンを押したとき、シーン「カルテ復活ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_search_p4_4_option5["4-4-e. 「保険請求書類を選択」ボタンを押したとき、シーン「保険請求書類を選択ボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_chart_search fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart detail
+  subgraph scene_chart_detail[カルテ詳細ボタンを押したとき]
+    chart_detail_p1["1. カルテ詳細画面に移動する。"]:::basic
+    chart_detail_p2["2. カルテの入力内容と紐づく患者マスタ情報が表示される。"]:::basic
+    chart_detail_p3["3. 「戻る」ボタンを押したとき、シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_chart_detail fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart edit
+  subgraph scene_chart_edit[カルテ編集ボタンを押したとき]
+    chart_edit_p1["1. カルテ編集画面に移動する。"]:::basic
+    chart_edit_p2["2. 既存のカルテ内容が入力欄に表示され、患者マスタの選択方法として「既存患者を選択」「新規患者を登録」を切り替えるタブが表示される。"]:::basic
+    chart_edit_p3_branch["3. 操作によって分岐"]:::branch
+    chart_edit_p3_option1["3-a. 「既存患者を選択」タブを押したとき、シーン「カルテ編集：既存患者タブを押したとき」に移動する。"]:::sceneMove
+    chart_edit_p3_option2["3-b. 「新規患者を登録」タブを押したとき、シーン「カルテ編集：新規患者タブを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_chart_edit fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart edit existing patient
+  subgraph scene_chart_edit_existing[カルテ編集：既存患者タブを押したとき]
+    chart_edit_existing_p1["1. シーン「カルテ新規入力：既存患者タブを押したとき」の1.〜4.と同様。"]:::sceneMove
+    chart_edit_existing_p2_branch["2. 操作によって分岐"]:::branch
+    chart_edit_existing_p2_option1["2-a. 「更新する」ボタンを押したとき、シーン「カルテ更新ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_edit_existing_p2_option2["2-b. 「戻る」ボタンを押したとき、シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_chart_edit_existing fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart edit new patient
+  subgraph scene_chart_edit_new[カルテ編集：新規患者タブを押したとき]
+    chart_edit_new_p1["1. シーン「カルテ新規入力：新規患者タブを押したとき」の1.〜2.と同様。"]:::sceneMove
+    chart_edit_new_p2_branch["2. 操作によって分岐"]:::branch
+    chart_edit_new_p2_option1["2-a. 「更新する」ボタンを押したとき、シーン「カルテ更新ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_edit_new_p2_option2["2-b. 「戻る」ボタンを押したとき、シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_chart_edit_new fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart update
+  subgraph scene_chart_update[カルテ更新ボタンを押したとき]
+    chart_update_p1_branch["1. 操作によって分岐"]:::branch
+    chart_update_p1_option1["1-a. 入力内容に未入力や形式エラーがある場合は段落2-1に移動する。"]:::jump
+    chart_update_p1_option2["1-b. 新規患者タブの場合で、患者IDが同グループ内で重複している場合は段落3-1に移動する。"]:::jump
+    chart_update_p1_option3["1-c. 生年月日が完全一致かつ氏名の2文字以上が部分一致する既存患者がいる場合は段落4-1に移動する。"]:::jump
+    chart_update_p1_option4["1-d. 入力内容に問題がない場合は段落5-1に移動する。"]:::jump
+    chart_update_p2_1["2-1. 入力エラーを表示する。"]:::basic
+    chart_update_p2_2_branch["2-2. 操作によって分岐"]:::branch
+    chart_update_p2_2_option1["2-2-a. 入力内容を修正し「更新する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    chart_update_p2_2_option2["2-2-b. 「戻る」ボタンを押したとき、シーン「カルテ編集ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_update_p3_1["3-1. 患者IDが重複している旨のエラーが表示される。"]:::basic
+    chart_update_p3_2_branch["3-2. 操作によって分岐"]:::branch
+    chart_update_p3_2_option1["3-2-a. 入力内容を修正し「更新する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    chart_update_p3_2_option2["3-2-b. 「戻る」ボタンを押したとき、シーン「カルテ編集ボタンを押したとき」に移動する。"]:::sceneMove
+    chart_update_p4_1["4-1. 類似患者が存在する旨の警告ダイアログを表示する。"]:::basic
+    chart_update_p4_2["4-2. ダイアログ内に類似候補の患者ID・氏名・生年月日が一覧表示される。"]:::basic
+    chart_update_p4_3_branch["4-3. 操作によって分岐"]:::branch
+    chart_update_p4_3_option1["4-3-a. 「このまま更新する」を押したとき段落5-1に移動する。"]:::jump
+    chart_update_p4_3_option2["4-3-b. 「戻る」を押したとき段落6-1に移動する。"]:::jump
+    chart_update_p5_1["5-1. 更新確認ダイアログを表示する。"]:::basic
+    chart_update_p5_2_branch["5-2. 操作によって分岐"]:::branch
+    chart_update_p5_2_option1["5-2-a. 「はい」を押したとき段落7-1に移動する。"]:::jump
+    chart_update_p5_2_option2["5-2-b. 「いいえ」を押したとき段落6-1に移動する。"]:::jump
+    chart_update_p6_1["6-1. ダイアログを閉じる。"]:::basic
+    chart_update_p6_2["6-2. シーン「カルテ編集：新規患者タブを押したとき」の1.〜2.またはシーン「カルテ編集：既存患者タブを押したとき」の1.〜2.と同様。"]:::sceneMove
+    chart_update_p7_1["7-1. ローディング画面を表示する。"]:::basic
+    chart_update_p7_2["7-2. ローディング画面を閉じる。"]:::basic
+    chart_update_p7_3["7-3. 更新完了のメッセージが表示される。"]:::basic
+    chart_update_p7_4["7-4. 「OK」ボタンを押したとき、シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_chart_update fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart delete
+  subgraph scene_chart_delete[カルテ削除ボタンを押したとき]
+    chart_delete_p1["1. 削除確認ダイアログを表示する。"]:::basic
+    chart_delete_p2_branch["2. 操作によって分岐"]:::branch
+    chart_delete_p2_option1["2-a. 「はい」を押したとき段落3-1に移動する。"]:::jump
+    chart_delete_p2_option2["2-b. 「いいえ」を押したとき段落4-1に移動する。"]:::jump
+    chart_delete_p3_1["3-1. ローディング画面を表示する。"]:::basic
+    chart_delete_p3_2["3-2. ローディング画面を閉じる。"]:::basic
+    chart_delete_p3_3["3-3. 削除完了のメッセージが表示される。"]:::basic
+    chart_delete_p3_4["3-4. 「OK」ボタンを押したとき、シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+    chart_delete_p4_1["4-1. 削除確認ダイアログを閉じる。"]:::basic
+    chart_delete_p4_2["4-2. シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_chart_delete fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: chart restore
+  subgraph scene_chart_restore[カルテ復活ボタンを押したとき]
+    chart_restore_p1["1. 復活確認ダイアログを表示する。"]:::basic
+    chart_restore_p2_branch["2. 操作によって分岐"]:::branch
+    chart_restore_p2_option1["2-a. 「はい」を押したとき段落3-1に移動する。"]:::jump
+    chart_restore_p2_option2["2-b. 「いいえ」を押したとき段落4-1に移動する。"]:::jump
+    chart_restore_p3_1["3-1. ローディング画面を表示する。"]:::basic
+    chart_restore_p3_2["3-2. ローディング画面を閉じる。"]:::basic
+    chart_restore_p3_3["3-3. 復活完了のメッセージが表示される。"]:::basic
+    chart_restore_p3_4["3-4. 「OK」ボタンを押したとき、シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+    chart_restore_p4_1["4-1. 復活確認ダイアログを閉じる。"]:::basic
+    chart_restore_p4_2["4-2. シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_chart_restore fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: document select
+  subgraph scene_document_select[保険請求書類を選択ボタンを押したとき]
+    document_select_p1["1. 保険請求書類選択画面に移動する。"]:::basic
+    document_select_p2["2. 選択対象のカルテ情報が表示される。"]:::basic
+    document_select_p3["3. 保険会社、書類名、書類バージョンの検索欄と検索ボタンが表示される。"]:::basic
+    document_select_p4["4. 書類一覧テーブルに会社名、書類名、バージョン、更新日が表示される。並び替え機能、検索結果のうち30件のみ表示、続きを表示ボタンが表示される。"]:::basic
+    document_select_p5_branch["5. 操作によって分岐"]:::branch
+    document_select_p5_option1["5-a. 「ダウンロード」ボタンを押したとき、シーン「書類ダウンロードボタンを押したとき」に移動する。"]:::sceneMove
+    document_select_p5_option2["5-b. 「戻る」ボタンを押したとき、シーン「カルテ検索アイコンを押したとき」の4-1.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_document_select fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: document download
+  subgraph scene_document_download[書類ダウンロードボタンを押したとき]
+    document_download_p1["1. 印刷前注意ダイアログを表示し、「Chrome推奨、それ以外は印刷位置がずれる可能性がある」旨を表示する。"]:::basic
+    document_download_p2_branch["2. 操作によって分岐"]:::branch
+    document_download_p2_option1["2-a. 「OK」を押したとき段落3-1に移動する。"]:::jump
+    document_download_p2_option2["2-b. 「戻る」を押したとき段落4-1に移動する。"]:::jump
+    document_download_p3_1["3-1. 書類プレビュー画面に移動する。"]:::basic
+    document_download_p3_2["3-2. 画面上に印刷対象の書類が表示される。"]:::basic
+    document_download_p3_3_branch["3-3. 操作によって分岐"]:::branch
+    document_download_p3_3_option1["3-3-a. 「印刷」ボタンを押したとき、シーン「印刷ボタンを押したとき」に移動する。"]:::sceneMove
+    document_download_p3_3_option2["3-3-b. 「戻る」ボタンを押したとき、シーン「保険請求書類を選択ボタンを押したとき」の1.〜5.と同様。"]:::sceneMove
+    document_download_p4_1["4-1. 印刷前注意ダイアログを閉じる。"]:::basic
+    document_download_p4_2["4-2. シーン「保険請求書類を選択ボタンを押したとき」の1.〜5.と同様。"]:::sceneMove
+  end
+  style scene_document_download fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: print
+  subgraph scene_print[印刷ボタンを押したとき]
+    print_p1["1. ブラウザの印刷ダイアログが表示される。"]:::basic
+    print_p2_branch["2. 操作によって分岐"]:::branch
+    print_p2_option1["2-a. 「印刷」または「PDFとして保存」を実行したとき、このシーンの段落3-1に移動する。"]:::jump
+    print_p2_option2["2-b. 「キャンセル」を押したとき段落4-1に移動する。"]:::jump
+    print_p3_1["3-1. ブラウザの印刷ダイアログを閉じる。"]:::basic
+    print_p3_2["3-2. シーン「書類ダウンロードボタンを押したとき」の3-1.〜3-3.と同様。"]:::sceneMove
+    print_p4_1["4-1. ブラウザの印刷ダイアログを閉じる。"]:::basic
+    print_p4_2["4-2. シーン「書類ダウンロードボタンを押したとき」の3-1.〜3-3.と同様。"]:::sceneMove
+  end
+  style scene_print fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: patient master
+  subgraph scene_patient_master[患者マスタアイコンを押したとき]
+    patient_master_p1["1. 患者マスタ画面に移動する。"]:::basic
+    patient_master_p2["2. 検索欄に患者ID、氏名、生年月日、電話番号、削除済み表示切替が表示される。"]:::basic
+    patient_master_p3_branch["3. 操作によって分岐"]:::branch
+    patient_master_p3_option1["3-a. 「検索」ボタンを押したとき、段落4-1に移動する。"]:::jump
+    patient_master_p3_option2["3-b. 「新規登録」ボタンを押したとき、シーン「患者マスタ新規登録ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_p3_option3["3-c. 「戻る」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_p4_1["4-1. 検索結果テーブルに患者ID、氏名、生年月日、性別、電話番号、削除状態が表示される。"]:::basic
+    patient_master_p4_2["4-2. 並び替え機能、検索結果のうち30件のみ表示、続きを表示ボタンが表示される。"]:::basic
+    patient_master_p4_3["4-3. 各行に「詳細」「編集」「削除」「復活」ボタンが表示される。ユーザー権限が閲覧者の場合「編集」「削除」「復活」ボタンは非表示となり、押下不能である。ユーザー権限が入力者の場合「削除」「復活」ボタンは非表示となり、押下不能である。削除済みの行にのみ「復活」ボタンが表示される。"]:::basic
+    patient_master_p4_4_branch["4-4. 操作によって分岐"]:::branch
+    patient_master_p4_4_option1["4-4-a. 「詳細」ボタンを押したとき、シーン「患者マスタ詳細ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_p4_4_option2["4-4-b. 「編集」ボタンを押したとき、シーン「患者マスタ編集ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_p4_4_option3["4-4-c. 「削除」ボタンを押したとき、シーン「患者マスタ削除ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_p4_4_option4["4-4-d. 「復活」ボタンを押したとき、シーン「患者マスタ復活ボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_patient_master fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: patient master new
+  subgraph scene_patient_master_new[患者マスタ新規登録ボタンを押したとき]
+    patient_master_new_p1["1. 患者マスタ新規登録画面に移動する。"]:::basic
+    patient_master_new_p2["2. 患者ID、生年月日、苗字、名前、性別、住所、電話番号などの入力欄が表示される。"]:::basic
+    patient_master_new_p3_branch["3. 操作によって分岐"]:::branch
+    patient_master_new_p3_option1["3-a. 「登録する」ボタンを押したとき、シーン「患者マスタ登録ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_new_p3_option2["3-b. 「戻る」ボタンを押したとき、シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_patient_master_new fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: patient master register
+  subgraph scene_patient_master_register[患者マスタ登録ボタンを押したとき]
+    patient_master_register_p1_branch["1. 操作によって分岐"]:::branch
+    patient_master_register_p1_option1["1-a. 入力内容に未入力や形式エラーがある場合は段落2-1に移動する。"]:::jump
+    patient_master_register_p1_option2["1-b. 患者IDが同グループ内で重複している場合は段落3-1に移動する。"]:::jump
+    patient_master_register_p1_option3["1-c. 生年月日が完全一致かつ氏名の2文字以上が部分一致する既存患者がいる場合は段落4-1に移動する。"]:::jump
+    patient_master_register_p1_option4["1-d. 入力内容に問題がない場合は段落5-1に移動する。"]:::jump
+    patient_master_register_p2_1["2-1. 入力エラーを表示する。"]:::basic
+    patient_master_register_p2_2_branch["2-2. 操作によって分岐"]:::branch
+    patient_master_register_p2_2_option1["2-2-a. 入力内容を修正し「登録する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    patient_master_register_p2_2_option2["2-2-b. 「戻る」ボタンを押したとき、シーン「患者マスタ新規登録ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_register_p3_1["3-1. 患者IDが重複している旨のエラーが表示される。"]:::basic
+    patient_master_register_p3_2_branch["3-2. 操作によって分岐"]:::branch
+    patient_master_register_p3_2_option1["3-2-a. 入力内容を修正し「登録する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    patient_master_register_p3_2_option2["3-2-b. 「戻る」ボタンを押したとき、シーン「患者マスタ新規登録ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_register_p4_1["4-1. 類似患者が存在する旨の警告ダイアログを表示する。"]:::basic
+    patient_master_register_p4_2["4-2. ダイアログ内に類似候補の患者ID・氏名・生年月日が一覧表示される。"]:::basic
+    patient_master_register_p4_3_branch["4-3. 操作によって分岐"]:::branch
+    patient_master_register_p4_3_option1["4-3-a. 「このまま登録する」を押したとき段落5-1に移動する。"]:::jump
+    patient_master_register_p4_3_option2["4-3-b. 「戻る」を押したとき段落6-1に移動する。"]:::jump
+    patient_master_register_p5_1["5-1. 登録確認ダイアログを表示する。"]:::basic
+    patient_master_register_p5_2_branch["5-2. 操作によって分岐"]:::branch
+    patient_master_register_p5_2_option1["5-2-a. 「はい」を押したとき段落7-1に移動する。"]:::jump
+    patient_master_register_p5_2_option2["5-2-b. 「いいえ」を押したとき段落6-1に移動する。"]:::jump
+    patient_master_register_p6_1["6-1. ダイアログを閉じる。"]:::basic
+    patient_master_register_p6_2["6-2. シーン「患者マスタ新規登録ボタンを押したとき」の1.〜3.と同様。"]:::sceneMove
+    patient_master_register_p7_1["7-1. ローディング画面を表示する。"]:::basic
+    patient_master_register_p7_2["7-2. ローディング画面を閉じる。"]:::basic
+    patient_master_register_p7_3["7-3. 登録完了のメッセージが表示される。"]:::basic
+    patient_master_register_p7_4["7-4. 「OK」ボタンを押したとき、シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_patient_master_register fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: patient master detail
+  subgraph scene_patient_master_detail[患者マスタ詳細ボタンを押したとき]
+    patient_master_detail_p1["1. 患者マスタ詳細画面に移動する。"]:::basic
+    patient_master_detail_p2["2. 患者マスタの内容が表示される。"]:::basic
+    patient_master_detail_p3["3. 「戻る」ボタンを押したとき、シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_patient_master_detail fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: patient master edit
+  subgraph scene_patient_master_edit[患者マスタ編集ボタンを押したとき]
+    patient_master_edit_p1["1. 患者マスタ編集画面に移動する。"]:::basic
+    patient_master_edit_p2["2. 既存の患者情報が入力欄に表示される。"]:::basic
+    patient_master_edit_p3_branch["3. 操作によって分岐"]:::branch
+    patient_master_edit_p3_option1["3-a. 「更新する」ボタンを押したとき、シーン「患者マスタ更新ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_edit_p3_option2["3-b. 「戻る」ボタンを押したとき、シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_patient_master_edit fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: patient master update
+  subgraph scene_patient_master_update[患者マスタ更新ボタンを押したとき]
+    patient_master_update_p1_branch["1. 操作によって分岐"]:::branch
+    patient_master_update_p1_option1["1-a. 入力内容に未入力や形式エラーがある場合は段落2-1に移動する。"]:::jump
+    patient_master_update_p1_option2["1-b. 患者IDが同グループ内で重複している場合は段落3-1に移動する。"]:::jump
+    patient_master_update_p1_option3["1-c. 生年月日が完全一致かつ氏名の2文字以上が部分一致する既存患者がいる場合は段落4-1に移動する。"]:::jump
+    patient_master_update_p1_option4["1-d. 入力内容に問題がない場合は段落5-1に移動する。"]:::jump
+    patient_master_update_p2_1["2-1. 入力エラーを表示する。"]:::basic
+    patient_master_update_p2_2_branch["2-2. 操作によって分岐"]:::branch
+    patient_master_update_p2_2_option1["2-2-a. 入力内容を修正し「更新する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    patient_master_update_p2_2_option2["2-2-b. 「戻る」ボタンを押したとき、シーン「患者マスタ編集ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_update_p3_1["3-1. 患者IDが重複している旨のエラーが表示される。"]:::basic
+    patient_master_update_p3_2_branch["3-2. 操作によって分岐"]:::branch
+    patient_master_update_p3_2_option1["3-2-a. 入力内容を修正し「更新する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    patient_master_update_p3_2_option2["3-2-b. 「戻る」ボタンを押したとき、シーン「患者マスタ編集ボタンを押したとき」に移動する。"]:::sceneMove
+    patient_master_update_p4_1["4-1. 類似患者が存在する旨の警告ダイアログを表示する。"]:::basic
+    patient_master_update_p4_2["4-2. ダイアログ内に類似候補の患者ID・氏名・生年月日が一覧表示される。"]:::basic
+    patient_master_update_p4_3_branch["4-3. 操作によって分岐"]:::branch
+    patient_master_update_p4_3_option1["4-3-a. 「このまま更新する」を押したとき段落5-1に移動する。"]:::jump
+    patient_master_update_p4_3_option2["4-3-b. 「戻る」を押したとき段落6-1に移動する。"]:::jump
+    patient_master_update_p5_1["5-1. 更新確認ダイアログを表示する。"]:::basic
+    patient_master_update_p5_2_branch["5-2. 操作によって分岐"]:::branch
+    patient_master_update_p5_2_option1["5-2-a. 「はい」を押したとき段落7-1に移動する。"]:::jump
+    patient_master_update_p5_2_option2["5-2-b. 「いいえ」を押したとき段落6-1に移動する。"]:::jump
+    patient_master_update_p6_1["6-1. ダイアログを閉じる。"]:::basic
+    patient_master_update_p6_2["6-2. シーン「患者マスタ編集ボタンを押したとき」の1.〜3.と同様。"]:::sceneMove
+    patient_master_update_p7_1["7-1. ローディング画面を表示する。"]:::basic
+    patient_master_update_p7_2["7-2. ローディング画面を閉じる。"]:::basic
+    patient_master_update_p7_3["7-3. 更新完了のメッセージが表示される。"]:::basic
+    patient_master_update_p7_4["7-4. 「OK」ボタンを押したとき、シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_patient_master_update fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: patient master delete
+  subgraph scene_patient_master_delete[患者マスタ削除ボタンを押したとき]
+    patient_master_delete_p1["1. 削除確認ダイアログを表示する。"]:::basic
+    patient_master_delete_p2_branch["2. 操作によって分岐"]:::branch
+    patient_master_delete_p2_option1["2-a. 「はい」を押したとき段落3-1に移動する。"]:::jump
+    patient_master_delete_p2_option2["2-b. 「いいえ」を押したとき段落4-1に移動する。"]:::jump
+    patient_master_delete_p3_1["3-1. ローディング画面を表示する。"]:::basic
+    patient_master_delete_p3_2["3-2. ローディング画面を閉じる。"]:::basic
+    patient_master_delete_p3_3["3-3. 削除完了のメッセージが表示される。"]:::basic
+    patient_master_delete_p3_4["3-4. 「OK」ボタンを押したとき、シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+    patient_master_delete_p4_1["4-1. 削除確認ダイアログを閉じる。"]:::basic
+    patient_master_delete_p4_2["4-2. シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_patient_master_delete fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: patient master restore
+  subgraph scene_patient_master_restore[患者マスタ復活ボタンを押したとき]
+    patient_master_restore_p1["1. 復活確認ダイアログを表示する。"]:::basic
+    patient_master_restore_p2_branch["2. 操作によって分岐"]:::branch
+    patient_master_restore_p2_option1["2-a. 「はい」を押したとき段落3-1に移動する。"]:::jump
+    patient_master_restore_p2_option2["2-b. 「いいえ」を押したとき段落4-1に移動する。"]:::jump
+    patient_master_restore_p3_1["3-1. ローディング画面を表示する。"]:::basic
+    patient_master_restore_p3_2["3-2. ローディング画面を閉じる。"]:::basic
+    patient_master_restore_p3_3["3-3. 復活完了のメッセージが表示される。"]:::basic
+    patient_master_restore_p3_4["3-4. 「OK」ボタンを押したとき、シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+    patient_master_restore_p4_1["4-1. 復活確認ダイアログを閉じる。"]:::basic
+    patient_master_restore_p4_2["4-2. シーン「患者マスタアイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_patient_master_restore fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: account management
+  subgraph scene_account_manage[アカウント管理アイコンを押したとき]
+    account_manage_p1["1. アカウント管理画面に移動する。"]:::basic
+    account_manage_p2["2. 検索欄にログインID、氏名、権限、削除済み表示切替が表示される。"]:::basic
+    account_manage_p3_branch["3. 操作によって分岐"]:::branch
+    account_manage_p3_option1["3-a. 「検索」ボタンを押したとき、段落4-1に移動する。"]:::jump
+    account_manage_p3_option2["3-b. 「新規作成」ボタンを押したとき、シーン「アカウント新規作成ボタンを押したとき」に移動する。"]:::sceneMove
+    account_manage_p3_option3["3-c. 「戻る」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+    account_manage_p4_1["4-1. 検索結果テーブルにログインID、氏名、権限、作成日、削除状態が表示される。"]:::basic
+    account_manage_p4_2["4-2. 並び替え機能、検索結果のうち30件のみ表示、続きを表示ボタンが表示される。"]:::basic
+    account_manage_p4_3["4-3. 各行に「詳細」「編集」「削除」「復活」ボタンが表示される。ユーザー権限が管理者でない場合、アカウント管理画面自体が表示されない。削除済みの行にのみ「復活」ボタンが表示される。"]:::basic
+    account_manage_p4_4_branch["4-4. 操作によって分岐"]:::branch
+    account_manage_p4_4_option1["4-4-a. 「詳細」ボタンを押したとき、シーン「アカウント詳細ボタンを押したとき」に移動する。"]:::sceneMove
+    account_manage_p4_4_option2["4-4-b. 「編集」ボタンを押したとき、シーン「アカウント編集ボタンを押したとき」に移動する。"]:::sceneMove
+    account_manage_p4_4_option3["4-4-c. 「削除」ボタンを押したとき、シーン「アカウント削除ボタンを押したとき」に移動する。"]:::sceneMove
+    account_manage_p4_4_option4["4-4-d. 「復活」ボタンを押したとき、シーン「アカウント復活ボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_account_manage fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: account new
+  subgraph scene_account_new[アカウント新規作成ボタンを押したとき]
+    account_new_p1["1. アカウント新規作成画面に移動する。"]:::basic
+    account_new_p2["2. 氏名、パスワード、権限（管理者・入力者・閲覧者）を入力する欄が表示され、ログインIDは自動採番として表示される。"]:::basic
+    account_new_p3_branch["3. 操作によって分岐"]:::branch
+    account_new_p3_option1["3-a. 「登録する」ボタンを押したとき、シーン「アカウント登録ボタンを押したとき」に移動する。"]:::sceneMove
+    account_new_p3_option2["3-b. 「戻る」ボタンを押したとき、シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_account_new fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: account register
+  subgraph scene_account_register[アカウント登録ボタンを押したとき]
+    account_register_p1_branch["1. 操作によって分岐"]:::branch
+    account_register_p1_option1["1-a. 入力内容に未入力や形式エラーがある場合は段落2-1に移動する。"]:::jump
+    account_register_p1_option2["1-b. 入力内容に問題がない場合は段落3-1に移動する。"]:::jump
+    account_register_p2_1["2-1. 入力エラーを表示する。"]:::basic
+    account_register_p2_2_branch["2-2. 操作によって分岐"]:::branch
+    account_register_p2_2_option1["2-2-a. 入力内容を修正し「登録する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    account_register_p2_2_option2["2-2-b. 「戻る」ボタンを押したとき、シーン「アカウント新規作成ボタンを押したとき」に移動する。"]:::sceneMove
+    account_register_p3_1["3-1. 登録確認ダイアログを表示する。"]:::basic
+    account_register_p3_2_branch["3-2. 操作によって分岐"]:::branch
+    account_register_p3_2_option1["3-2-a. 「はい」を押したとき段落4-1に移動する。"]:::jump
+    account_register_p3_2_option2["3-2-b. 「いいえ」を押したとき段落5-1に移動する。"]:::jump
+    account_register_p4_1["4-1. ローディング画面を表示する。"]:::basic
+    account_register_p4_2["4-2. ローディング画面を閉じる。"]:::basic
+    account_register_p4_3["4-3. 登録完了のメッセージが表示される。"]:::basic
+    account_register_p4_4["4-4. 「OK」ボタンを押したとき、シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+    account_register_p5_1["5-1. 登録確認ダイアログを閉じる。"]:::basic
+    account_register_p5_2["5-2. シーン「アカウント新規作成ボタンを押したとき」の1.〜3.と同様。"]:::sceneMove
+  end
+  style scene_account_register fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: account detail
+  subgraph scene_account_detail[アカウント詳細ボタンを押したとき]
+    account_detail_p1["1. アカウント詳細画面に移動する。"]:::basic
+    account_detail_p2["2. 氏名、ログインID、権限、作成日、削除状態が表示される。"]:::basic
+    account_detail_p3["3. 「戻る」ボタンを押したとき、シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_account_detail fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: account edit
+  subgraph scene_account_edit[アカウント編集ボタンを押したとき]
+    account_edit_p1["1. アカウント編集画面に移動する。"]:::basic
+    account_edit_p2["2. 氏名、パスワード、権限の入力欄が表示される。"]:::basic
+    account_edit_p3_branch["3. 操作によって分岐"]:::branch
+    account_edit_p3_option1["3-a. 「更新する」ボタンを押したとき、シーン「アカウント更新ボタンを押したとき」に移動する。"]:::sceneMove
+    account_edit_p3_option2["3-b. 「戻る」ボタンを押したとき、シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_account_edit fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: account update
+  subgraph scene_account_update[アカウント更新ボタンを押したとき]
+    account_update_p1_branch["1. 操作によって分岐"]:::branch
+    account_update_p1_option1["1-a. 入力内容に未入力や形式エラーがある場合は段落2-1に移動する。"]:::jump
+    account_update_p1_option2["1-b. 入力内容に問題がない場合は段落3-1に移動する。"]:::jump
+    account_update_p2_1["2-1. 入力エラーを表示する。"]:::basic
+    account_update_p2_2_branch["2-2. 操作によって分岐"]:::branch
+    account_update_p2_2_option1["2-2-a. 入力内容を修正し「更新する」ボタンを押したとき、このシーンの最初に移動する。"]:::jump
+    account_update_p2_2_option2["2-2-b. 「戻る」ボタンを押したとき、シーン「アカウント編集ボタンを押したとき」に移動する。"]:::sceneMove
+    account_update_p3_1["3-1. 更新確認ダイアログを表示する。"]:::basic
+    account_update_p3_2_branch["3-2. 操作によって分岐"]:::branch
+    account_update_p3_2_option1["3-2-a. 「はい」を押したとき段落4-1に移動する。"]:::jump
+    account_update_p3_2_option2["3-2-b. 「いいえ」を押したとき段落5-1に移動する。"]:::jump
+    account_update_p4_1["4-1. ローディング画面を表示する。"]:::basic
+    account_update_p4_2["4-2. ローディング画面を閉じる。"]:::basic
+    account_update_p4_3["4-3. 更新完了のメッセージが表示される。"]:::basic
+    account_update_p4_4["4-4. 「OK」ボタンを押したとき、シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+    account_update_p5_1["5-1. 更新確認ダイアログを閉じる。"]:::basic
+    account_update_p5_2["5-2. シーン「アカウント編集ボタンを押したとき」の1.〜3.と同様。"]:::sceneMove
+  end
+  style scene_account_update fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: account delete
+  subgraph scene_account_delete[アカウント削除ボタンを押したとき]
+    account_delete_p1["1. 削除確認ダイアログを表示する。"]:::basic
+    account_delete_p2_branch["2. 操作によって分岐"]:::branch
+    account_delete_p2_option1["2-a. 「はい」を押したとき段落3-1に移動する。"]:::jump
+    account_delete_p2_option2["2-b. 「いいえ」を押したとき段落4-1に移動する。"]:::jump
+    account_delete_p3_1["3-1. ローディング画面を表示する。"]:::basic
+    account_delete_p3_2["3-2. ローディング画面を閉じる。"]:::basic
+    account_delete_p3_3["3-3. 削除完了のメッセージが表示される。"]:::basic
+    account_delete_p3_4["3-4. 「OK」ボタンを押したとき、シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+    account_delete_p4_1["4-1. 削除確認ダイアログを閉じる。"]:::basic
+    account_delete_p4_2["4-2. シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_account_delete fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: account restore
+  subgraph scene_account_restore[アカウント復活ボタンを押したとき]
+    account_restore_p1["1. 復活確認ダイアログを表示する。"]:::basic
+    account_restore_p2_branch["2. 操作によって分岐"]:::branch
+    account_restore_p2_option1["2-a. 「はい」を押したとき段落3-1に移動する。"]:::jump
+    account_restore_p2_option2["2-b. 「いいえ」を押したとき段落4-1に移動する。"]:::jump
+    account_restore_p3_1["3-1. ローディング画面を表示する。"]:::basic
+    account_restore_p3_2["3-2. ローディング画面を閉じる。"]:::basic
+    account_restore_p3_3["3-3. 復活完了のメッセージが表示される。"]:::basic
+    account_restore_p3_4["3-4. 「OK」ボタンを押したとき、シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+    account_restore_p4_1["4-1. 復活確認ダイアログを閉じる。"]:::basic
+    account_restore_p4_2["4-2. シーン「アカウント管理アイコンを押したとき」の2.〜4-4.と同様。"]:::sceneMove
+  end
+  style scene_account_restore fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: usage history
+  subgraph scene_usage_history[使用履歴ボタンを押したとき]
+    usage_history_p1["1. 使用履歴画面に移動する。"]:::basic
+    usage_history_p2["2. 検索欄に操作種別、対象種別、実行者、期間、削除済み表示切替が表示される。"]:::basic
+    usage_history_p3_branch["3. 操作によって分岐"]:::branch
+    usage_history_p3_option1["3-a. 「検索」ボタンを押したとき、段落4-1に移動する。"]:::jump
+    usage_history_p3_option2["3-b. 「戻る」ボタンを押したとき、シーン「ホーム画面に戻るボタンを押したとき」に移動する。"]:::sceneMove
+    usage_history_p4_1["4-1. 使用履歴テーブルに操作日時、実行者、操作種別、対象種別、対象IDが表示される。"]:::basic
+    usage_history_p4_2["4-2. 並び替え機能、検索結果のうち30件のみ表示、続きを表示ボタンが表示される。"]:::basic
+    usage_history_p4_3["4-3. 「詳細」ボタンを押したとき、シーン「使用履歴詳細ボタンを押したとき」に移動する。"]:::sceneMove
+  end
+  style scene_usage_history fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% scene: usage history detail
+  subgraph scene_usage_history_detail[使用履歴詳細ボタンを押したとき]
+    usage_history_detail_p1["1. 使用履歴詳細画面に移動する。"]:::basic
+    usage_history_detail_p2["2. 操作日時、実行者、操作内容、対象情報の詳細が表示される。"]:::basic
+    usage_history_detail_p3["3. 「戻る」ボタンを押したとき、シーン「使用履歴ボタンを押したとき」の2.〜4-3.と同様。"]:::sceneMove
+  end
+  style scene_usage_history_detail fill:#e8ffe8,stroke:#2ca02c,color:#2ca02c
+
+  %% edges within scenes
+  app_start --> app_p1_branch
+  app_p1_branch --> app_p1_option1
+  app_p1_branch --> app_p1_option2
+  app_p1_option1 --> app_p2_1
+  app_p1_option2 --> app_p3_1
+  app_p2_1 --> app_p2_2 --> app_p2_3 --> app_p2_4
+  app_p3_1 --> app_p3_2 --> app_p3_3_branch
+  app_p3_3_branch --> app_p3_3_option1
+  app_p3_3_branch --> app_p3_3_option2
+
+  login_p1_branch --> login_p1_option1
+  login_p1_branch --> login_p1_option2
+  login_p1_option1 --> login_p2_1 --> login_p2_2_branch
+  login_p1_option2 --> login_p3_1 --> login_p3_2 --> login_p3_3 --> login_p3_4
+  login_p2_2_branch --> login_p2_2_option1
+  login_p2_2_branch --> login_p2_2_option2
+  login_p2_2_option1 --> login_p1_branch
+
+  home_p1 --> home_p2 --> home_p3_branch
+  home_p3_branch --> home_p3_option1
+  home_p3_branch --> home_p3_option2
+  home_p3_branch --> home_p3_option3
+  home_p3_branch --> home_p3_option4
+  home_p3_branch --> home_p3_option5
+  home_p3_branch --> home_p3_option6
+  home_p3_branch --> home_p3_option7
+  home_p3_option2 --> home_p1
+
+  ham_p1 --> ham_p2 --> ham_p3_branch
+  ham_p3_branch --> ham_p3_option1
+  ham_p3_branch --> ham_p3_option2
+  ham_p3_branch --> ham_p3_option3
+  ham_p3_branch --> ham_p3_option4
+  ham_p3_branch --> ham_p3_option5
+  ham_p3_branch --> ham_p3_option6
+  ham_p3_branch --> ham_p3_option7
+  ham_p3_branch --> ham_p3_option8
+  ham_p3_branch --> ham_p3_option9
+
+  terms_login_p1 --> terms_login_p2 --> terms_login_p3
+  back_login_p1 --> back_login_p2 --> back_login_p3_branch
+  back_login_p3_branch --> back_login_p3_option1
+  back_login_p3_branch --> back_login_p3_option2
+
+  terms_ham_p1 --> terms_ham_p2 --> terms_ham_p3
+  back_ham_p1 --> back_ham_p2
+
+  logout_p1 --> logout_p2_branch
+  logout_p2_branch --> logout_p2_option1
+  logout_p2_branch --> logout_p2_option2
+  logout_p2_option1 --> logout_p3_1 --> logout_p3_2 --> logout_p3_3 --> logout_p3_4
+  logout_p2_option2 --> logout_p4_1 --> logout_p4_2
+
+  login_change_p1 --> login_change_p2 --> login_change_p3_branch
+  login_change_p3_branch --> login_change_p3_option1
+  login_change_p3_branch --> login_change_p3_option2
+
+  back_home_p1 --> back_home_p2
+
+  login_change_confirm_p1_branch --> login_change_confirm_p1_option1
+  login_change_confirm_p1_branch --> login_change_confirm_p1_option2
+  login_change_confirm_p1_option1 --> login_change_confirm_p2_1 --> login_change_confirm_p2_2_branch
+  login_change_confirm_p1_option2 --> login_change_confirm_p3_1 --> login_change_confirm_p3_2_branch
+  login_change_confirm_p2_2_branch --> login_change_confirm_p2_2_option1
+  login_change_confirm_p2_2_branch --> login_change_confirm_p2_2_option2
+  login_change_confirm_p2_2_option1 --> login_change_confirm_p1_branch
+  login_change_confirm_p3_2_branch --> login_change_confirm_p3_2_option1
+  login_change_confirm_p3_2_branch --> login_change_confirm_p3_2_option2
+  login_change_confirm_p3_2_option1 --> login_change_confirm_p4_1 --> login_change_confirm_p4_2 --> login_change_confirm_p4_3 --> login_change_confirm_p4_4
+  login_change_confirm_p3_2_option2 --> login_change_confirm_p5_1 --> login_change_confirm_p5_2
+
+  chart_new_p1 --> chart_new_p2 --> chart_new_p3_branch
+  chart_new_p3_branch --> chart_new_p3_option1
+  chart_new_p3_branch --> chart_new_p3_option2
+
+  chart_new_existing_p1 --> chart_new_existing_p2 --> chart_new_existing_p3 --> chart_new_existing_p4 --> chart_new_existing_p5_branch
+  chart_new_existing_p5_branch --> chart_new_existing_p5_option1
+  chart_new_existing_p5_branch --> chart_new_existing_p5_option2
+
+  chart_new_new_p1 --> chart_new_new_p2 --> chart_new_new_p3_branch
+  chart_new_new_p3_branch --> chart_new_new_p3_option1
+  chart_new_new_p3_branch --> chart_new_new_p3_option2
+
+  chart_register_p1_branch --> chart_register_p1_option1
+  chart_register_p1_branch --> chart_register_p1_option2
+  chart_register_p1_branch --> chart_register_p1_option3
+  chart_register_p1_branch --> chart_register_p1_option4
+  chart_register_p1_option1 --> chart_register_p2_1 --> chart_register_p2_2_branch
+  chart_register_p1_option2 --> chart_register_p3_1 --> chart_register_p3_2_branch
+  chart_register_p1_option3 --> chart_register_p4_1 --> chart_register_p4_2 --> chart_register_p4_3_branch
+  chart_register_p1_option4 --> chart_register_p5_1 --> chart_register_p5_2_branch
+  chart_register_p2_2_branch --> chart_register_p2_2_option1
+  chart_register_p2_2_branch --> chart_register_p2_2_option2
+  chart_register_p2_2_option1 --> chart_register_p1_branch
+  chart_register_p3_2_branch --> chart_register_p3_2_option1
+  chart_register_p3_2_branch --> chart_register_p3_2_option2
+  chart_register_p3_2_option1 --> chart_register_p1_branch
+  chart_register_p4_3_branch --> chart_register_p4_3_option1
+  chart_register_p4_3_branch --> chart_register_p4_3_option2
+  chart_register_p4_3_option1 --> chart_register_p5_1
+  chart_register_p4_3_option2 --> chart_register_p6_1 --> chart_register_p6_2
+  chart_register_p5_2_branch --> chart_register_p5_2_option1
+  chart_register_p5_2_branch --> chart_register_p5_2_option2
+  chart_register_p5_2_option1 --> chart_register_p7_1 --> chart_register_p7_2 --> chart_register_p7_3 --> chart_register_p7_4
+  chart_register_p5_2_option2 --> chart_register_p6_1
+
+  chart_search_p1 --> chart_search_p2 --> chart_search_p3_branch
+  chart_search_p3_branch --> chart_search_p3_option1
+  chart_search_p3_branch --> chart_search_p3_option2
+  chart_search_p3_option1 --> chart_search_p4_1 --> chart_search_p4_2 --> chart_search_p4_3 --> chart_search_p4_4_branch
+  chart_search_p4_4_branch --> chart_search_p4_4_option1
+  chart_search_p4_4_branch --> chart_search_p4_4_option2
+  chart_search_p4_4_branch --> chart_search_p4_4_option3
+  chart_search_p4_4_branch --> chart_search_p4_4_option4
+  chart_search_p4_4_branch --> chart_search_p4_4_option5
+
+  chart_detail_p1 --> chart_detail_p2 --> chart_detail_p3
+
+  chart_edit_p1 --> chart_edit_p2 --> chart_edit_p3_branch
+  chart_edit_p3_branch --> chart_edit_p3_option1
+  chart_edit_p3_branch --> chart_edit_p3_option2
+
+  chart_edit_existing_p1 --> chart_edit_existing_p2_branch
+  chart_edit_existing_p2_branch --> chart_edit_existing_p2_option1
+  chart_edit_existing_p2_branch --> chart_edit_existing_p2_option2
+
+  chart_edit_new_p1 --> chart_edit_new_p2_branch
+  chart_edit_new_p2_branch --> chart_edit_new_p2_option1
+  chart_edit_new_p2_branch --> chart_edit_new_p2_option2
+
+  chart_update_p1_branch --> chart_update_p1_option1
+  chart_update_p1_branch --> chart_update_p1_option2
+  chart_update_p1_branch --> chart_update_p1_option3
+  chart_update_p1_branch --> chart_update_p1_option4
+  chart_update_p1_option1 --> chart_update_p2_1 --> chart_update_p2_2_branch
+  chart_update_p1_option2 --> chart_update_p3_1 --> chart_update_p3_2_branch
+  chart_update_p1_option3 --> chart_update_p4_1 --> chart_update_p4_2 --> chart_update_p4_3_branch
+  chart_update_p1_option4 --> chart_update_p5_1 --> chart_update_p5_2_branch
+  chart_update_p2_2_branch --> chart_update_p2_2_option1
+  chart_update_p2_2_branch --> chart_update_p2_2_option2
+  chart_update_p2_2_option1 --> chart_update_p1_branch
+  chart_update_p3_2_branch --> chart_update_p3_2_option1
+  chart_update_p3_2_branch --> chart_update_p3_2_option2
+  chart_update_p3_2_option1 --> chart_update_p1_branch
+  chart_update_p4_3_branch --> chart_update_p4_3_option1
+  chart_update_p4_3_branch --> chart_update_p4_3_option2
+  chart_update_p4_3_option1 --> chart_update_p5_1
+  chart_update_p4_3_option2 --> chart_update_p6_1 --> chart_update_p6_2
+  chart_update_p5_2_branch --> chart_update_p5_2_option1
+  chart_update_p5_2_branch --> chart_update_p5_2_option2
+  chart_update_p5_2_option1 --> chart_update_p7_1 --> chart_update_p7_2 --> chart_update_p7_3 --> chart_update_p7_4
+  chart_update_p5_2_option2 --> chart_update_p6_1
+
+  chart_delete_p1 --> chart_delete_p2_branch
+  chart_delete_p2_branch --> chart_delete_p2_option1
+  chart_delete_p2_branch --> chart_delete_p2_option2
+  chart_delete_p2_option1 --> chart_delete_p3_1 --> chart_delete_p3_2 --> chart_delete_p3_3 --> chart_delete_p3_4
+  chart_delete_p2_option2 --> chart_delete_p4_1 --> chart_delete_p4_2
+
+  chart_restore_p1 --> chart_restore_p2_branch
+  chart_restore_p2_branch --> chart_restore_p2_option1
+  chart_restore_p2_branch --> chart_restore_p2_option2
+  chart_restore_p2_option1 --> chart_restore_p3_1 --> chart_restore_p3_2 --> chart_restore_p3_3 --> chart_restore_p3_4
+  chart_restore_p2_option2 --> chart_restore_p4_1 --> chart_restore_p4_2
+
+  document_select_p1 --> document_select_p2 --> document_select_p3 --> document_select_p4 --> document_select_p5_branch
+  document_select_p5_branch --> document_select_p5_option1
+  document_select_p5_branch --> document_select_p5_option2
+
+  document_download_p1 --> document_download_p2_branch
+  document_download_p2_branch --> document_download_p2_option1
+  document_download_p2_branch --> document_download_p2_option2
+  document_download_p2_option1 --> document_download_p3_1 --> document_download_p3_2 --> document_download_p3_3_branch
+  document_download_p3_3_branch --> document_download_p3_3_option1
+  document_download_p3_3_branch --> document_download_p3_3_option2
+  document_download_p2_option2 --> document_download_p4_1 --> document_download_p4_2
+
+  print_p1 --> print_p2_branch
+  print_p2_branch --> print_p2_option1
+  print_p2_branch --> print_p2_option2
+  print_p2_option1 --> print_p3_1 --> print_p3_2
+  print_p2_option2 --> print_p4_1 --> print_p4_2
+
+  patient_master_p1 --> patient_master_p2 --> patient_master_p3_branch
+  patient_master_p3_branch --> patient_master_p3_option1
+  patient_master_p3_branch --> patient_master_p3_option2
+  patient_master_p3_branch --> patient_master_p3_option3
+  patient_master_p3_option1 --> patient_master_p4_1 --> patient_master_p4_2 --> patient_master_p4_3 --> patient_master_p4_4_branch
+  patient_master_p4_4_branch --> patient_master_p4_4_option1
+  patient_master_p4_4_branch --> patient_master_p4_4_option2
+  patient_master_p4_4_branch --> patient_master_p4_4_option3
+  patient_master_p4_4_branch --> patient_master_p4_4_option4
+
+  patient_master_new_p1 --> patient_master_new_p2 --> patient_master_new_p3_branch
+  patient_master_new_p3_branch --> patient_master_new_p3_option1
+  patient_master_new_p3_branch --> patient_master_new_p3_option2
+
+  patient_master_register_p1_branch --> patient_master_register_p1_option1
+  patient_master_register_p1_branch --> patient_master_register_p1_option2
+  patient_master_register_p1_branch --> patient_master_register_p1_option3
+  patient_master_register_p1_branch --> patient_master_register_p1_option4
+  patient_master_register_p1_option1 --> patient_master_register_p2_1 --> patient_master_register_p2_2_branch
+  patient_master_register_p1_option2 --> patient_master_register_p3_1 --> patient_master_register_p3_2_branch
+  patient_master_register_p1_option3 --> patient_master_register_p4_1 --> patient_master_register_p4_2 --> patient_master_register_p4_3_branch
+  patient_master_register_p1_option4 --> patient_master_register_p5_1 --> patient_master_register_p5_2_branch
+  patient_master_register_p2_2_branch --> patient_master_register_p2_2_option1
+  patient_master_register_p2_2_branch --> patient_master_register_p2_2_option2
+  patient_master_register_p2_2_option1 --> patient_master_register_p1_branch
+  patient_master_register_p3_2_branch --> patient_master_register_p3_2_option1
+  patient_master_register_p3_2_branch --> patient_master_register_p3_2_option2
+  patient_master_register_p3_2_option1 --> patient_master_register_p1_branch
+  patient_master_register_p4_3_branch --> patient_master_register_p4_3_option1
+  patient_master_register_p4_3_branch --> patient_master_register_p4_3_option2
+  patient_master_register_p4_3_option1 --> patient_master_register_p5_1
+  patient_master_register_p4_3_option2 --> patient_master_register_p6_1 --> patient_master_register_p6_2
+  patient_master_register_p5_2_branch --> patient_master_register_p5_2_option1
+  patient_master_register_p5_2_branch --> patient_master_register_p5_2_option2
+  patient_master_register_p5_2_option1 --> patient_master_register_p7_1 --> patient_master_register_p7_2 --> patient_master_register_p7_3 --> patient_master_register_p7_4
+  patient_master_register_p5_2_option2 --> patient_master_register_p6_1
+
+  patient_master_detail_p1 --> patient_master_detail_p2 --> patient_master_detail_p3
+
+  patient_master_edit_p1 --> patient_master_edit_p2 --> patient_master_edit_p3_branch
+  patient_master_edit_p3_branch --> patient_master_edit_p3_option1
+  patient_master_edit_p3_branch --> patient_master_edit_p3_option2
+
+  patient_master_update_p1_branch --> patient_master_update_p1_option1
+  patient_master_update_p1_branch --> patient_master_update_p1_option2
+  patient_master_update_p1_branch --> patient_master_update_p1_option3
+  patient_master_update_p1_branch --> patient_master_update_p1_option4
+  patient_master_update_p1_option1 --> patient_master_update_p2_1 --> patient_master_update_p2_2_branch
+  patient_master_update_p1_option2 --> patient_master_update_p3_1 --> patient_master_update_p3_2_branch
+  patient_master_update_p1_option3 --> patient_master_update_p4_1 --> patient_master_update_p4_2 --> patient_master_update_p4_3_branch
+  patient_master_update_p1_option4 --> patient_master_update_p5_1 --> patient_master_update_p5_2_branch
+  patient_master_update_p2_2_branch --> patient_master_update_p2_2_option1
+  patient_master_update_p2_2_branch --> patient_master_update_p2_2_option2
+  patient_master_update_p2_2_option1 --> patient_master_update_p1_branch
+  patient_master_update_p3_2_branch --> patient_master_update_p3_2_option1
+  patient_master_update_p3_2_branch --> patient_master_update_p3_2_option2
+  patient_master_update_p3_2_option1 --> patient_master_update_p1_branch
+  patient_master_update_p4_3_branch --> patient_master_update_p4_3_option1
+  patient_master_update_p4_3_branch --> patient_master_update_p4_3_option2
+  patient_master_update_p4_3_option1 --> patient_master_update_p5_1
+  patient_master_update_p4_3_option2 --> patient_master_update_p6_1 --> patient_master_update_p6_2
+  patient_master_update_p5_2_branch --> patient_master_update_p5_2_option1
+  patient_master_update_p5_2_branch --> patient_master_update_p5_2_option2
+  patient_master_update_p5_2_option1 --> patient_master_update_p7_1 --> patient_master_update_p7_2 --> patient_master_update_p7_3 --> patient_master_update_p7_4
+  patient_master_update_p5_2_option2 --> patient_master_update_p6_1
+
+  patient_master_delete_p1 --> patient_master_delete_p2_branch
+  patient_master_delete_p2_branch --> patient_master_delete_p2_option1
+  patient_master_delete_p2_branch --> patient_master_delete_p2_option2
+  patient_master_delete_p2_option1 --> patient_master_delete_p3_1 --> patient_master_delete_p3_2 --> patient_master_delete_p3_3 --> patient_master_delete_p3_4
+  patient_master_delete_p2_option2 --> patient_master_delete_p4_1 --> patient_master_delete_p4_2
+
+  patient_master_restore_p1 --> patient_master_restore_p2_branch
+  patient_master_restore_p2_branch --> patient_master_restore_p2_option1
+  patient_master_restore_p2_branch --> patient_master_restore_p2_option2
+  patient_master_restore_p2_option1 --> patient_master_restore_p3_1 --> patient_master_restore_p3_2 --> patient_master_restore_p3_3 --> patient_master_restore_p3_4
+  patient_master_restore_p2_option2 --> patient_master_restore_p4_1 --> patient_master_restore_p4_2
+
+  account_manage_p1 --> account_manage_p2 --> account_manage_p3_branch
+  account_manage_p3_branch --> account_manage_p3_option1
+  account_manage_p3_branch --> account_manage_p3_option2
+  account_manage_p3_branch --> account_manage_p3_option3
+  account_manage_p3_option1 --> account_manage_p4_1 --> account_manage_p4_2 --> account_manage_p4_3 --> account_manage_p4_4_branch
+  account_manage_p4_4_branch --> account_manage_p4_4_option1
+  account_manage_p4_4_branch --> account_manage_p4_4_option2
+  account_manage_p4_4_branch --> account_manage_p4_4_option3
+  account_manage_p4_4_branch --> account_manage_p4_4_option4
+
+  account_new_p1 --> account_new_p2 --> account_new_p3_branch
+  account_new_p3_branch --> account_new_p3_option1
+  account_new_p3_branch --> account_new_p3_option2
+
+  account_register_p1_branch --> account_register_p1_option1
+  account_register_p1_branch --> account_register_p1_option2
+  account_register_p1_option1 --> account_register_p2_1 --> account_register_p2_2_branch
+  account_register_p1_option2 --> account_register_p3_1 --> account_register_p3_2_branch
+  account_register_p2_2_branch --> account_register_p2_2_option1
+  account_register_p2_2_branch --> account_register_p2_2_option2
+  account_register_p2_2_option1 --> account_register_p1_branch
+  account_register_p3_2_branch --> account_register_p3_2_option1
+  account_register_p3_2_branch --> account_register_p3_2_option2
+  account_register_p3_2_option1 --> account_register_p4_1 --> account_register_p4_2 --> account_register_p4_3 --> account_register_p4_4
+  account_register_p3_2_option2 --> account_register_p5_1 --> account_register_p5_2
+
+  account_detail_p1 --> account_detail_p2 --> account_detail_p3
+
+  account_edit_p1 --> account_edit_p2 --> account_edit_p3_branch
+  account_edit_p3_branch --> account_edit_p3_option1
+  account_edit_p3_branch --> account_edit_p3_option2
+
+  account_update_p1_branch --> account_update_p1_option1
+  account_update_p1_branch --> account_update_p1_option2
+  account_update_p1_option1 --> account_update_p2_1 --> account_update_p2_2_branch
+  account_update_p1_option2 --> account_update_p3_1 --> account_update_p3_2_branch
+  account_update_p2_2_branch --> account_update_p2_2_option1
+  account_update_p2_2_branch --> account_update_p2_2_option2
+  account_update_p2_2_option1 --> account_update_p1_branch
+  account_update_p3_2_branch --> account_update_p3_2_option1
+  account_update_p3_2_branch --> account_update_p3_2_option2
+  account_update_p3_2_option1 --> account_update_p4_1 --> account_update_p4_2 --> account_update_p4_3 --> account_update_p4_4
+  account_update_p3_2_option2 --> account_update_p5_1 --> account_update_p5_2
+
+  account_delete_p1 --> account_delete_p2_branch
+  account_delete_p2_branch --> account_delete_p2_option1
+  account_delete_p2_branch --> account_delete_p2_option2
+  account_delete_p2_option1 --> account_delete_p3_1 --> account_delete_p3_2 --> account_delete_p3_3 --> account_delete_p3_4
+  account_delete_p2_option2 --> account_delete_p4_1 --> account_delete_p4_2
+
+  account_restore_p1 --> account_restore_p2_branch
+  account_restore_p2_branch --> account_restore_p2_option1
+  account_restore_p2_branch --> account_restore_p2_option2
+  account_restore_p2_option1 --> account_restore_p3_1 --> account_restore_p3_2 --> account_restore_p3_3 --> account_restore_p3_4
+  account_restore_p2_option2 --> account_restore_p4_1 --> account_restore_p4_2
+
+  usage_history_p1 --> usage_history_p2 --> usage_history_p3_branch
+  usage_history_p3_branch --> usage_history_p3_option1
+  usage_history_p3_branch --> usage_history_p3_option2
+  usage_history_p3_option1 --> usage_history_p4_1 --> usage_history_p4_2 --> usage_history_p4_3
+
+  usage_history_detail_p1 --> usage_history_detail_p2 --> usage_history_detail_p3
+
+  %% cross-scene edges for first-time moves
+  app_p2_4 --> home_p1
+  app_p3_3_option1 --> login_p1_branch
+  app_p3_3_option2 --> terms_login_p1
+  login_p2_2_option2 --> terms_login_p1
+  login_p3_4 --> home_p1
+  home_p3_option1 --> ham_p1
+  home_p3_option3 --> chart_new_p1
+  home_p3_option4 --> chart_search_p1
+  home_p3_option5 --> patient_master_p1
+  home_p3_option6 --> account_manage_p1
+  ham_p3_option6 --> login_change_p1
+  ham_p3_option7 --> usage_history_p1
+  ham_p3_option8 --> terms_ham_p1
+  ham_p3_option9 --> logout_p1
+  terms_login_p3 --> back_login_p1
+  terms_ham_p3 --> back_ham_p1
+  logout_p3_4 --> back_login_p2
+  login_change_p3_option1 --> login_change_confirm_p1_branch
+  login_change_p3_option2 --> back_home_p1
+  chart_new_p3_option1 --> chart_new_existing_p1
+  chart_new_p3_option2 --> chart_new_new_p1
+  chart_new_existing_p5_option1 --> chart_register_p1_branch
+  chart_new_existing_p5_option2 --> back_home_p1
+  chart_new_new_p3_option1 --> chart_register_p1_branch
+  chart_new_new_p3_option2 --> back_home_p1
+  chart_register_p2_2_option2 --> chart_new_p1
+  chart_register_p3_2_option2 --> chart_new_p1
+  chart_register_p7_4 --> chart_new_p1
+  chart_search_p3_option2 --> back_home_p1
+  chart_search_p4_4_option1 --> chart_detail_p1
+  chart_search_p4_4_option2 --> chart_edit_p1
+  chart_search_p4_4_option3 --> chart_delete_p1
+  chart_search_p4_4_option4 --> chart_restore_p1
+  chart_search_p4_4_option5 --> document_select_p1
+  chart_edit_p3_option1 --> chart_edit_existing_p1
+  chart_edit_p3_option2 --> chart_edit_new_p1
+  chart_edit_existing_p2_option1 --> chart_update_p1_branch
+  chart_edit_new_p2_option1 --> chart_update_p1_branch
+  chart_delete_p3_4 --> chart_search_p4_1
+  chart_delete_p4_2 --> chart_search_p4_1
+  chart_restore_p3_4 --> chart_search_p4_1
+  chart_restore_p4_2 --> chart_search_p4_1
+  document_select_p5_option1 --> document_download_p1
+  document_download_p3_3_option1 --> print_p1
+  patient_master_p3_option2 --> patient_master_new_p1
+  patient_master_p3_option3 --> back_home_p1
+  patient_master_p4_4_option1 --> patient_master_detail_p1
+  patient_master_p4_4_option2 --> patient_master_edit_p1
+  patient_master_p4_4_option3 --> patient_master_delete_p1
+  patient_master_p4_4_option4 --> patient_master_restore_p1
+  patient_master_new_p3_option1 --> patient_master_register_p1_branch
+  patient_master_edit_p3_option1 --> patient_master_update_p1_branch
+  account_manage_p3_option2 --> account_new_p1
+  account_manage_p3_option3 --> back_home_p1
+  account_manage_p4_4_option1 --> account_detail_p1
+  account_manage_p4_4_option2 --> account_edit_p1
+  account_manage_p4_4_option3 --> account_delete_p1
+  account_manage_p4_4_option4 --> account_restore_p1
+  account_new_p3_option1 --> account_register_p1_branch
+  account_edit_p3_option1 --> account_update_p1_branch
+  usage_history_p3_option2 --> back_home_p1
+  usage_history_p4_3 --> usage_history_detail_p1
+
+  linkStyle default stroke:#d62728,color:#d62728
