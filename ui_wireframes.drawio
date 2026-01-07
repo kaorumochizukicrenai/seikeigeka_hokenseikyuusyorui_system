@@ -1,0 +1,219 @@
+<mxfile host="app.diagrams.net" modified="2025-02-14T00:00:00.000Z" agent="GPT-5.2-Codex" version="20.8.16" type="device">
+  <diagram id="wireframes" name="Wireframes">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" value="ログイン画面&lt;br&gt;・ログインID/パスワード&lt;br&gt;・ログイン/利用規約" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="利用規約画面&lt;br&gt;・本文&lt;br&gt;・戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="320" y="20" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="ローディング" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="580" y="20" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="ホーム画面&lt;br&gt;・4アイコン&lt;br&gt;・ヘッダー/メニュー" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="220" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="ハンバーガーメニュー&lt;br&gt;・メニュー一覧&lt;br&gt;・閉じる" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="320" y="220" width="280" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="ログイン情報変更&lt;br&gt;・現PW/新PW/確認&lt;br&gt;・変更する/戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="620" y="220" width="280" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="カルテ新規入力&lt;br&gt;・既存/新規タブ&lt;br&gt;・患者検索/登録欄&lt;br&gt;・カルテ入力欄&lt;br&gt;・登録/戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="420" width="320" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="カルテ検索&lt;br&gt;・検索条件&lt;br&gt;・結果テーブル&lt;br&gt;・詳細/編集/削除/復活&lt;br&gt;・書類選択" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="360" y="420" width="320" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="カルテ詳細&lt;br&gt;・カルテ内容&lt;br&gt;・患者情報&lt;br&gt;・戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="700" y="420" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="カルテ編集&lt;br&gt;・既存/新規タブ&lt;br&gt;・カルテ入力欄&lt;br&gt;・更新/戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="980" y="420" width="260" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="保険請求書類選択&lt;br&gt;・カルテ情報&lt;br&gt;・検索条件&lt;br&gt;・書類一覧&lt;br&gt;・DL/戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1260" y="420" width="300" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="書類プレビュー&lt;br&gt;・書類表示&lt;br&gt;・印刷/戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1580" y="420" width="240" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="患者マスタ&lt;br&gt;・検索条件&lt;br&gt;・結果テーブル&lt;br&gt;・詳細/編集/削除/復活&lt;br&gt;・新規登録" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="680" width="320" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="患者マスタ新規登録/編集&lt;br&gt;・患者情報入力&lt;br&gt;・登録/更新/戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="360" y="680" width="300" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="患者マスタ詳細&lt;br&gt;・患者情報&lt;br&gt;・戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="680" y="680" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="アカウント管理&lt;br&gt;・検索条件&lt;br&gt;・結果テーブル&lt;br&gt;・詳細/編集/削除/復活&lt;br&gt;・新規作成" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="940" y="680" width="320" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="アカウント新規/編集&lt;br&gt;・氏名/パスワード/権限&lt;br&gt;・登録/更新/戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1280" y="680" width="300" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="アカウント詳細&lt;br&gt;・氏名/ID/権限&lt;br&gt;・戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1600" y="680" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="20" value="使用履歴&lt;br&gt;・検索条件&lt;br&gt;・結果テーブル&lt;br&gt;・詳細/戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="940" width="320" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="使用履歴詳細&lt;br&gt;・操作内容詳細&lt;br&gt;・戻る" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="360" y="940" width="240" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="ダイアログ群&lt;br&gt;・確認(削除/復活/登録/更新/ログアウト)&lt;br&gt;・エラー/警告&lt;br&gt;・完了メッセージ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="620" y="940" width="320" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="印刷ダイアログ(ブラウザ)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="960" y="940" width="240" height="120" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="transitions" name="Transitions">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2400" pageHeight="1800" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t1" value="アプリ起動" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="t2" value="ログイン画面" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="180" y="20" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t3" value="利用規約" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t4" value="ローディング" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="600" y="20" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t5" value="ホーム" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="800" y="20" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t6" value="ハンバーガー" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="20" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t7" value="ログイン情報変更" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="20" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t8" value="カルテ新規入力" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="160" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t9" value="カルテ検索" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="240" y="160" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t10" value="カルテ詳細" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="440" y="160" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t11" value="カルテ編集" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="620" y="160" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t12" value="書類選択" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="800" y="160" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t13" value="書類プレビュー" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="980" y="160" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t14" value="印刷ダイアログ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="160" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t15" value="患者マスタ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="300" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t16" value="患者マスタ詳細/編集/新規" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="220" y="300" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t17" value="アカウント管理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="480" y="300" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t18" value="アカウント詳細/編集/新規" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="700" y="300" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t19" value="使用履歴" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="960" y="300" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t20" value="使用履歴詳細" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="300" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="t21" value="ダイアログ群" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1340" y="300" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="保存済みなら" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t1" target="t4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="未保存なら" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t1" target="t2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="ログイン" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t2" target="t4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="利用規約" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t2" target="t3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="戻る" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t3" target="t2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="完了" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t4" target="t5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="メニュー" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t5" target="t6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="ログイン情報変更" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t6" target="t7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="ホーム戻り" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t7" target="t5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="カルテ新規" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t5" target="t8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="カルテ検索" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t5" target="t9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="患者マスタ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t5" target="t15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" value="アカウント管理" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t5" target="t17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" value="使用履歴" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t6" target="t19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" value="詳細" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t9" target="t10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="編集" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t9" target="t11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e17" value="書類選択" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t9" target="t12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e18" value="ダウンロード" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t12" target="t13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" value="印刷" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t13" target="t14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" value="戻る" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t14" target="t13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" value="詳細/編集/新規" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t15" target="t16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" value="詳細/編集/新規" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t17" target="t18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" value="詳細" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t19" target="t20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" value="各種確認/完了/エラー" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="t8" target="t21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
