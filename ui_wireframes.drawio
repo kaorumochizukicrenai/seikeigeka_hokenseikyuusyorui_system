@@ -1,0 +1,461 @@
+<?xml version="1.0" ?>
+<mxfile host="app.diagrams.net" modified="2025-01-01T00:00:00.000Z" agent="GPT-5.2-Codex" version="20.6.2">
+  <diagram name="01_ローディング">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="2" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="ローディング" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="Loading..." vertex="1" parent="1">
+          <mxGeometry x="600" y="400" width="400" height="200" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="02_ログイン_利用規約">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="5" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="760" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="ログイン" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="720" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="ログインフォーム" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="600" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="8" style="shape=mxgraph.bootstrap.textInput;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#adb5bd;" value="ログインID" vertex="1" parent="1">
+          <mxGeometry x="160" y="260" width="520" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="9" style="shape=mxgraph.bootstrap.textInput;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#adb5bd;" value="パスワード" vertex="1" parent="1">
+          <mxGeometry x="160" y="320" width="520" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="10" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="ログイン" vertex="1" parent="1">
+          <mxGeometry x="160" y="400" width="240" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="11" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="利用規約" vertex="1" parent="1">
+          <mxGeometry x="420" y="400" width="260" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="12" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="840" y="40" width="760" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="13" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="利用規約" vertex="1" parent="1">
+          <mxGeometry x="860" y="60" width="720" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="14" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="利用規約本文" vertex="1" parent="1">
+          <mxGeometry x="920" y="180" width="620" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="15" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="戻る" vertex="1" parent="1">
+          <mxGeometry x="920" y="920" width="180" height="48" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="03_ホーム_メニュー_ログアウト">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="16" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="17" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="ホーム（ロゴ + ハンバーガーメニュー）" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="18" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="メインメニュー: カルテ新規入力 / カルテ検索 / 患者マスタ / アカウント管理" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="19" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="カルテ新規入力" vertex="1" parent="1">
+          <mxGeometry x="200" y="260" width="240" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="20" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="カルテ検索" vertex="1" parent="1">
+          <mxGeometry x="480" y="260" width="240" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="21" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="患者マスタ" vertex="1" parent="1">
+          <mxGeometry x="760" y="260" width="240" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="22" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="アカウント管理" vertex="1" parent="1">
+          <mxGeometry x="1040" y="260" width="240" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="23" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="ハンバーガーメニュー" vertex="1" parent="1">
+          <mxGeometry x="200" y="650" width="520" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="24" style="shape=mxgraph.bootstrap.listGroup;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="カルテ新規入力&#10;カルテ検索&#10;患者マスタ&#10;アカウント管理&#10;ログイン情報変更&#10;使用履歴&#10;利用規約&#10;ログアウト" vertex="1" parent="1">
+          <mxGeometry x="230" y="700" width="460" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="25" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="ログアウト確認" vertex="1" parent="1">
+          <mxGeometry x="800" y="720" width="480" height="260" as="geometry"/>
+        </mxCell>
+        <mxCell id="26" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="いいえ" vertex="1" parent="1">
+          <mxGeometry x="860" y="840" width="180" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="27" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="はい" vertex="1" parent="1">
+          <mxGeometry x="1080" y="840" width="160" height="48" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="04_ログイン情報変更">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="28" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="29" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="ログイン情報変更" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="30" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="パスワード変更フォーム" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="680" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="31" style="shape=mxgraph.bootstrap.textInput;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#adb5bd;" value="現在のパスワード" vertex="1" parent="1">
+          <mxGeometry x="160" y="260" width="600" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="32" style="shape=mxgraph.bootstrap.textInput;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#adb5bd;" value="新しいパスワード" vertex="1" parent="1">
+          <mxGeometry x="160" y="320" width="600" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="33" style="shape=mxgraph.bootstrap.textInput;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#adb5bd;" value="新しいパスワード（確認）" vertex="1" parent="1">
+          <mxGeometry x="160" y="380" width="600" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="34" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="変更する" vertex="1" parent="1">
+          <mxGeometry x="160" y="460" width="220" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="35" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="戻る" vertex="1" parent="1">
+          <mxGeometry x="400" y="460" width="180" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="36" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="変更確認ダイアログ" vertex="1" parent="1">
+          <mxGeometry x="900" y="220" width="560" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="37" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="いいえ" vertex="1" parent="1">
+          <mxGeometry x="960" y="340" width="180" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="38" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="はい" vertex="1" parent="1">
+          <mxGeometry x="1160" y="340" width="180" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="39" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="入力エラー（未入力/形式）" vertex="1" parent="1">
+          <mxGeometry x="900" y="520" width="560" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="40" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="変更完了メッセージ + OK" vertex="1" parent="1">
+          <mxGeometry x="900" y="740" width="560" height="180" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="05_カルテ新規入力">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="41" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="42" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="カルテ新規入力" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="43" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="タブ: 既存患者 / 新規患者" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="640" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="44" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="カルテ入力欄" vertex="1" parent="1">
+          <mxGeometry x="120" y="560" width="640" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="45" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="既存患者検索 + 結果テーブル" vertex="1" parent="1">
+          <mxGeometry x="820" y="180" width="700" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="46" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="登録確認 / 入力エラー / ID重複 / 類似患者警告" vertex="1" parent="1">
+          <mxGeometry x="200" y="1020" width="520" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="47" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="登録完了メッセージ" vertex="1" parent="1">
+          <mxGeometry x="780" y="1020" width="520" height="140" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="06_カルテ検索">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="48" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="49" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="カルテ検索" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="50" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="検索欄 + 検索/戻る" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="51" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="検索結果テーブル + 操作ボタン（詳細/編集/削除/復活/保険請求書類を選択）" vertex="1" parent="1">
+          <mxGeometry x="120" y="420" width="1320" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="52" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="削除確認/復活確認/完了メッセージ" vertex="1" parent="1">
+          <mxGeometry x="200" y="980" width="520" height="160" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="07_カルテ詳細">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="53" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="54" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="カルテ詳細" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="55" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="カルテ内容 + 患者情報（参照のみ）" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="760" as="geometry"/>
+        </mxCell>
+        <mxCell id="56" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="戻る" vertex="1" parent="1">
+          <mxGeometry x="120" y="980" width="180" height="48" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="08_カルテ編集">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="57" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="58" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="カルテ編集" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="59" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="タブ: 既存患者 / 新規患者" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="640" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="60" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="カルテ入力欄（既存値）" vertex="1" parent="1">
+          <mxGeometry x="120" y="560" width="640" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="61" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="既存患者検索 + 結果テーブル" vertex="1" parent="1">
+          <mxGeometry x="820" y="180" width="700" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="62" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="更新確認 / 入力エラー / ID重複 / 類似患者警告" vertex="1" parent="1">
+          <mxGeometry x="200" y="1020" width="520" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="63" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="更新完了メッセージ" vertex="1" parent="1">
+          <mxGeometry x="780" y="1020" width="520" height="140" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="09_保険請求書類">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="64" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="65" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="保険請求書類選択" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="66" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="カルテ情報 + 書類検索" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="67" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="書類一覧テーブル + ダウンロード" vertex="1" parent="1">
+          <mxGeometry x="120" y="420" width="1320" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="68" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="印刷前注意ダイアログ" vertex="1" parent="1">
+          <mxGeometry x="200" y="880" width="520" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="69" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="860" y="860" width="660" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="70" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="書類プレビュー" vertex="1" parent="1">
+          <mxGeometry x="880" y="880" width="620" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="71" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="プレビュー表示 + 印刷/戻る" vertex="1" parent="1">
+          <mxGeometry x="900" y="940" width="580" height="180" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="10_患者マスタ">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="72" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="73" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="患者マスタ" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="74" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="検索欄 + 検索/新規登録/戻る" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="75" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="結果テーブル + 操作ボタン（詳細/編集/削除/復活）" vertex="1" parent="1">
+          <mxGeometry x="120" y="420" width="1320" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="76" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="削除確認/復活確認/完了メッセージ" vertex="1" parent="1">
+          <mxGeometry x="200" y="980" width="520" height="160" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="11_患者マスタ登録編集">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="77" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="78" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="患者マスタ登録・編集" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="79" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="患者情報フォーム" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="840" height="700" as="geometry"/>
+        </mxCell>
+        <mxCell id="80" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="登録/更新" vertex="1" parent="1">
+          <mxGeometry x="160" y="780" width="180" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="81" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="戻る" vertex="1" parent="1">
+          <mxGeometry x="360" y="780" width="160" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="82" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="入力エラー / ID重複 / 類似患者警告" vertex="1" parent="1">
+          <mxGeometry x="1000" y="220" width="520" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="83" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="登録/更新確認" vertex="1" parent="1">
+          <mxGeometry x="1000" y="420" width="520" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="84" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="登録/更新完了メッセージ" vertex="1" parent="1">
+          <mxGeometry x="1000" y="620" width="520" height="160" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="12_患者マスタ詳細">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="85" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="86" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="患者マスタ詳細" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="87" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="患者情報（参照のみ）" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="760" as="geometry"/>
+        </mxCell>
+        <mxCell id="88" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="戻る" vertex="1" parent="1">
+          <mxGeometry x="120" y="980" width="180" height="48" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="13_アカウント管理">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="89" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="90" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="アカウント管理" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="91" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="検索欄 + 検索/新規作成/戻る" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="92" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="結果テーブル + 操作ボタン（詳細/編集/削除/復活）" vertex="1" parent="1">
+          <mxGeometry x="120" y="420" width="1320" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="93" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="削除確認/復活確認/完了メッセージ" vertex="1" parent="1">
+          <mxGeometry x="200" y="980" width="520" height="160" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="14_アカウント登録編集">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="94" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="95" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="アカウント登録・編集" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="96" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="アカウントフォーム（氏名/ログインID/パスワード/権限）" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="840" height="700" as="geometry"/>
+        </mxCell>
+        <mxCell id="97" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#0d6efd;strokeColor=#0d6efd;fontColor=#ffffff;" value="登録/更新" vertex="1" parent="1">
+          <mxGeometry x="160" y="780" width="180" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="98" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="戻る" vertex="1" parent="1">
+          <mxGeometry x="360" y="780" width="160" height="48" as="geometry"/>
+        </mxCell>
+        <mxCell id="99" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="入力エラー" vertex="1" parent="1">
+          <mxGeometry x="1000" y="220" width="520" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="100" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="登録/更新確認" vertex="1" parent="1">
+          <mxGeometry x="1000" y="420" width="520" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="101" style="shape=mxgraph.bootstrap.modal;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c757d;" value="登録/更新完了メッセージ" vertex="1" parent="1">
+          <mxGeometry x="1000" y="620" width="520" height="160" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="15_アカウント詳細">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="102" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="103" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="アカウント詳細" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="104" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="アカウント情報（参照のみ）" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="760" as="geometry"/>
+        </mxCell>
+        <mxCell id="105" style="shape=mxgraph.bootstrap.button;whiteSpace=wrap;html=1;fillColor=#6c757d;strokeColor=#6c757d;fontColor=#ffffff;" value="戻る" vertex="1" parent="1">
+          <mxGeometry x="120" y="980" width="180" height="48" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="16_使用履歴">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="0" arrows="0" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="106" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1520" height="1120" as="geometry"/>
+        </mxCell>
+        <mxCell id="107" style="shape=mxgraph.bootstrap.navbar;whiteSpace=wrap;html=1;fillColor=#343a40;strokeColor=#343a40;fontColor=#ffffff;" value="使用履歴" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="1480" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="108" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="検索欄 + 検索/戻る" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="1320" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="109" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="履歴テーブル + 詳細ボタン" vertex="1" parent="1">
+          <mxGeometry x="120" y="420" width="1320" height="400" as="geometry"/>
+        </mxCell>
+        <mxCell id="110" style="shape=mxgraph.bootstrap.panel;rounded=0;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#6c757d;" value="使用履歴詳細（別画面）" vertex="1" parent="1">
+          <mxGeometry x="120" y="860" width="1320" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="111" style="shape=mxgraph.bootstrap.card;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ced4da;" value="操作日時/実行者/操作内容/対象情報" vertex="1" parent="1">
+          <mxGeometry x="140" y="900" width="1280" height="160" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
