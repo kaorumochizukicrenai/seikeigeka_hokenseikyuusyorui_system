@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>カルテ新規入力（新規患者）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: "Inter", "Noto Sans JP", sans-serif;
+      background: #0f172a;
+    }
+    .animated-bg::before {
+      content: "";
+      position: fixed;
+      inset: -20%;
+      background: radial-gradient(circle at 20% 20%, rgba(56,189,248,0.25), transparent 45%),
+                  radial-gradient(circle at 80% 30%, rgba(129,140,248,0.3), transparent 40%),
+                  radial-gradient(circle at 40% 80%, rgba(16,185,129,0.25), transparent 45%),
+                  linear-gradient(120deg, rgba(15,23,42,0.9), rgba(30,41,59,0.95));
+      animation: drift 18s linear infinite;
+      transform: translate3d(0,0,0);
+      z-index: -1;
+    }
+    @keyframes drift {
+      0% { transform: translate(-10%, -10%) scale(1.1); }
+      50% { transform: translate(10%, 5%) scale(1.15); }
+      100% { transform: translate(-10%, -10%) scale(1.1); }
+    }
+  </style>
+</head>
+<body class="animated-bg text-slate-900">
+  <div class="min-h-screen bg-slate-50/80">
+    
+<header class="flex items-center justify-between px-6 py-4 border-b border-slate-200/70 bg-white/70 backdrop-blur">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-xl bg-slate-900 text-white grid place-items-center font-semibold">SK</div>
+    <div>
+      <p class="text-sm text-slate-500">整形外科 保険請求</p>
+      <p class="font-semibold">Seikei Claims Suite</p>
+    </div>
+  </div>
+  <button class="p-2 rounded-lg border border-slate-200 bg-white/80" onclick="navigate('menu-admin')">
+    <i data-lucide="menu"></i>
+  </button>
+</header>
+
+    <main class="px-6 py-8 max-w-6xl mx-auto">
+      <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-slate-900">カルテ新規入力（新規患者）</h1>
+        <p class="text-sm text-slate-500">保険請求業務のユーザーフローに沿ったモックアップです。</p>
+      </div>
+      <div class="space-y-6">
+          <div class="flex gap-3">
+          <button class="px-4 py-2 rounded-xl bg-white border border-slate-200" onclick="navigate('karte-new-existing')">既存患者を選択</button>
+          <button class="px-4 py-2 rounded-xl bg-slate-900 text-white" onclick="navigate('karte-new-new')">新規患者を登録</button>
+        </div>
+          
+          <section class="bg-white/90 rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h2 class="font-semibold text-slate-800 mb-4">新規患者登録</h2>
+      <div class="grid md:grid-cols-2 gap-4"><label class="block text-sm text-slate-600">患者ID
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">生年月日
+        <input type="date" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">苗字
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">名前
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">性別
+        <select class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2"><option>男性</option><option>女性</option><option>その他</option></select>
+      </label><label class="block text-sm text-slate-600">住所
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">電話番号
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label></div>
+    </section>
+          <section class="bg-white/90 rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h2 class="font-semibold text-slate-800 mb-4">カルテ入力</h2>
+      <div class="grid md:grid-cols-2 gap-4"><label class="block text-sm text-slate-600">受診日
+        <input type="date" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">診療科
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">保険会社
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">保険項目
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">診療内容
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label><label class="block text-sm text-slate-600">請求金額
+        <input type="text" placeholder="" class="mt-1 w-full rounded-xl border border-slate-200 bg-white/70 px-3 py-2" />
+      </label></div><p class="text-sm text-rose-500 mt-3">入力エラー: 必須項目を確認してください。</p><p class="text-sm text-rose-500">患者IDが重複しています。</p>
+    </section>
+          <div><div class="flex flex-wrap gap-3"><button class="px-4 py-2 rounded-xl bg-slate-900 text-white" onclick="handleAction("登録する")">登録する</button><button class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700" onclick="handleAction("戻る")">戻る</button></div></div>
+        </div>
+    </main>
+    <div class="fixed bottom-4 right-4 text-xs">
+      <details class="bg-white/80 backdrop-blur border border-slate-200 rounded-lg px-3 py-2 shadow-sm">
+        <summary class="cursor-pointer text-slate-500">開発者用ナビ</summary>
+        <div class="mt-2 max-h-64 overflow-auto flex flex-col gap-1"><button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('loading-screen')">ローディング画面</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('login')">ログイン画面</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('terms')">利用規約</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('home-admin')">ホーム（管理者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('home-user')">ホーム（入力者/閲覧者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('menu-admin')">ハンバーガーメニュー（管理者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('menu-user')">ハンバーガーメニュー（入力者/閲覧者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('logout-confirm')">ログアウト確認</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('password-change')">ログイン情報変更</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('password-change-confirm')">ログイン情報変更（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('password-change-complete')">ログイン情報変更（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-new-existing')">カルテ新規入力（既存患者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-new-new')">カルテ新規入力（新規患者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-register-similar')">カルテ登録（類似患者警告）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-register-confirm')">カルテ登録（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-register-complete')">カルテ登録（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-search-admin')">カルテ検索（管理者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-search-input')">カルテ検索（入力者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-search-view')">カルテ検索（閲覧者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-detail')">カルテ詳細</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-edit-existing')">カルテ編集（既存患者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-edit-new')">カルテ編集（新規患者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-update-similar')">カルテ更新（類似患者警告）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-update-confirm')">カルテ更新（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-update-complete')">カルテ更新（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-delete-confirm')">カルテ削除（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-delete-complete')">カルテ削除（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-restore-confirm')">カルテ復活（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('karte-restore-complete')">カルテ復活（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('document-select')">保険請求書類選択</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('print-warning')">印刷前注意</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('document-preview')">書類プレビュー</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('browser-print-dialog')">ブラウザ印刷ダイアログ</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-master-admin')">患者マスタ（管理者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-master-input')">患者マスタ（入力者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-master-view')">患者マスタ（閲覧者）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-new')">患者マスタ新規登録</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-detail')">患者マスタ詳細</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-edit')">患者マスタ編集</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-register-similar')">患者登録（類似患者警告）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-register-confirm')">患者登録（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-register-complete')">患者登録（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-update-similar')">患者更新（類似患者警告）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-update-confirm')">患者更新（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-update-complete')">患者更新（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-delete-confirm')">患者削除（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-delete-complete')">患者削除（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-restore-confirm')">患者復活（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('patient-restore-complete')">患者復活（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-management')">アカウント管理</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-new')">アカウント新規作成</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-detail')">アカウント詳細</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-edit')">アカウント編集</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-register-confirm')">アカウント登録（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-register-complete')">アカウント登録（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-update-confirm')">アカウント更新（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-update-complete')">アカウント更新（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-delete-confirm')">アカウント削除（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-delete-complete')">アカウント削除（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-restore-confirm')">アカウント復活（確認）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('account-restore-complete')">アカウント復活（完了）</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('usage-history')">使用履歴</button>
+<button class="text-xs text-slate-500 hover:text-slate-800" onclick="navigate('usage-history-detail')">使用履歴詳細</button></div>
+      </details>
+    </div>
+  </div>
+  <script>
+    const navigate = (target) => {
+      window.location.href = '../' + target + '/index.html';
+    };
+    const homeTarget = (() => {
+      const path = window.location.pathname;
+      return (path.includes('home-user') || path.includes('-view') || path.includes('-input') || path.includes('menu-user'))
+        ? 'home-user'
+        : 'home-admin';
+    })();
+    const handleAction = (label) => {
+      const map = {
+        'ログイン': 'loading-screen',
+        '利用規約': 'terms',
+        '戻る': homeTarget,
+        'カルテ新規入力': 'karte-new-existing',
+        'カルテ検索': 'karte-search-admin',
+        '患者マスタ': 'patient-master-admin',
+        'アカウント管理': 'account-management',
+        'ログイン情報変更': 'password-change',
+        '使用履歴': 'usage-history',
+        'ログアウト': 'logout-confirm',
+        '登録する': 'karte-register-confirm',
+        '更新する': 'karte-update-confirm',
+        '詳細': 'karte-detail',
+        '編集': 'karte-edit-existing',
+        '削除': 'karte-delete-confirm',
+        '復活': 'karte-restore-confirm',
+        '保険請求書類を選択': 'document-select',
+        'ダウンロード': 'print-warning',
+        '印刷': 'browser-print-dialog',
+        'OK': homeTarget,
+        'はい': 'loading-screen',
+        'いいえ': homeTarget,
+        '新規登録': 'patient-new',
+        '新規作成': 'account-new'
+      };
+      if (map[label]) navigate(map[label]);
+    };
+    lucide.createIcons();
+  </script>
+</body>
+</html>
