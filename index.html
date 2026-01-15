@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>整形外科 保険請求支援システム UIモック</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      color-scheme: light;
+    }
+    body {
+      font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    }
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+    .app-shell {
+      position: relative;
+      z-index: 1;
+    }
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+    .overlay {
+      display: none;
+    }
+    .overlay.active {
+      display: flex;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(18px);
+    }
+    .panel {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+    }
+    .sticky-head {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #f8fafc;
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(15, 23, 42, 0.3);
+      border-radius: 4px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: rgba(148, 163, 184, 0.2);
+    }
+    .tab-button[data-active="true"] {
+      border-color: #0f172a;
+      color: #0f172a;
+      background: #e2e8f0;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <canvas id="bgCanvas" class="bg-canvas"></canvas>
+
+  <div class="app-shell min-h-screen">
+    <header id="appHeader" class="hidden fixed top-0 left-0 right-0 z-40">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="glass mt-4 flex items-center justify-between rounded-2xl border border-slate-200 px-5 py-4 shadow-lg">
+          <button class="flex items-center gap-2" data-action="go-home">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
+              <i data-lucide="clipboard"></i>
+            </div>
+            <span class="text-lg font-semibold">整形外科 保険請求支援</span>
+          </button>
+          <div class="flex items-center gap-4">
+            <div class="hidden sm:flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
+              <span>権限:</span>
+              <span id="roleLabel" class="font-semibold text-slate-900">入力者</span>
+            </div>
+            <button class="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700" data-action="open-menu">
+              <i data-lucide="menu"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-24 pb-24">
+      <section id="screen-loading" class="screen">
+        <div class="mx-auto max-w-lg px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-10 text-center">
+            <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-slate-200 bg-slate-100">
+              <svg class="h-10 w-10 animate-spin text-slate-600" viewBox="0 0 24 24" fill="none">
+                <circle class="opacity-30" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+                <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" stroke-width="3"></path>
+              </svg>
+            </div>
+            <p class="text-sm text-slate-500">ローディング中です。少々お待ちください。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-login" class="screen">
+        <div class="mx-auto max-w-md px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-10">
+            <div class="mb-8 flex items-center gap-3">
+              <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white">
+                <i data-lucide="stethoscope"></i>
+              </div>
+              <div>
+                <h1 class="text-xl font-semibold">ログイン</h1>
+                <p class="text-sm text-slate-500">ログイン情報を入力してください。</p>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">ログインID</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3" placeholder="例）A000123" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">パスワード</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3" placeholder="••••••" />
+              </div>
+              <p id="loginError" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs text-rose-600">ログイン情報が正しくありません。</p>
+            </div>
+            <div class="mt-6 flex flex-col gap-3">
+              <button class="rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white" data-action="login">ログイン</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="toggle-login-error">エラー表示切替</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-home" class="screen">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div class="mb-6 grid gap-4 md:grid-cols-2">
+            <button class="panel rounded-2xl p-6 text-left" data-action="go-chart-create">
+              <h2 class="text-lg font-semibold">カルテ新規入力</h2>
+              <p class="mt-2 text-sm text-slate-500">新しいカルテを登録します。</p>
+            </button>
+            <button class="panel rounded-2xl p-6 text-left" data-action="go-chart-search">
+              <h2 class="text-lg font-semibold">カルテ検索</h2>
+              <p class="mt-2 text-sm text-slate-500">登録済みカルテを検索します。</p>
+            </button>
+            <button class="panel rounded-2xl p-6 text-left" data-action="go-patient-search">
+              <h2 class="text-lg font-semibold">患者マスタ</h2>
+              <p class="mt-2 text-sm text-slate-500">患者情報を検索・編集します。</p>
+            </button>
+            <button class="panel rounded-2xl p-6 text-left" data-action="go-account-create">
+              <h2 class="text-lg font-semibold">アカウント作成</h2>
+              <p class="mt-2 text-sm text-slate-500">グループ内アカウントを作成します。</p>
+            </button>
+            <button class="panel rounded-2xl p-6 text-left" data-action="go-history-search">
+              <h2 class="text-lg font-semibold">使用履歴</h2>
+              <p class="mt-2 text-sm text-slate-500">操作履歴を検索します。</p>
+            </button>
+            <button class="panel rounded-2xl p-6 text-left" data-action="go-password-change">
+              <h2 class="text-lg font-semibold">ログイン情報変更</h2>
+              <p class="mt-2 text-sm text-slate-500">パスワードを変更します。</p>
+            </button>
+            <button class="panel rounded-2xl p-6 text-left" data-action="go-terms">
+              <h2 class="text-lg font-semibold">利用規約</h2>
+              <p class="mt-2 text-sm text-slate-500">利用規約を確認します。</p>
+            </button>
+            <button class="panel rounded-2xl p-6 text-left" data-action="open-logout">
+              <h2 class="text-lg font-semibold">ログアウト</h2>
+              <p class="mt-2 text-sm text-slate-500">セッションを終了します。</p>
+            </button>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div class="rounded-2xl border border-dashed border-slate-200 bg-white/70 p-4 text-sm text-slate-500">
+              権限制限のため使用できません
+            </div>
+            <button class="rounded-2xl border border-dashed border-slate-200 bg-white/70 p-4 text-left text-sm text-slate-400" disabled>
+              管理者専用メニュー（無効状態）
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-terms" class="screen">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">利用規約</h2>
+            <div class="mt-4 max-h-96 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm leading-relaxed text-slate-600 scrollbar-thin">
+              <p>本サービスは医療保険請求書類作成を支援するためのシステムです。</p>
+              <p class="mt-3">利用者は、院内で管理する患者情報・カルテ情報を正確に入力し、法令に沿った利用を行ってください。</p>
+              <p class="mt-3">システム内のデータは所属グループのみに共有されます。権限に応じた利用範囲を遵守してください。</p>
+              <p class="mt-3">利用に際しては、院内の情報セキュリティルールに従ってください。</p>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-home">戻る</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-password-change" class="screen">
+        <div class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">ログイン情報変更</h2>
+            <div class="mt-6 space-y-4">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">現在のパスワード</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="••••••" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">新しいパスワード</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="••••••" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">新しいパスワード（確認）</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="••••••" />
+              </div>
+              <p id="passwordError" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs text-rose-600">入力内容を確認してください。</p>
+            </div>
+            <div class="mt-6 flex flex-wrap justify-end gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-home">戻る</button>
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="open-password-confirm">変更する</button>
+              <button class="rounded-xl border border-dashed border-slate-200 bg-white/70 px-3 py-2 text-xs text-slate-500" data-action="toggle-password-error">エラー表示切替</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-account-create" class="screen">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <h2 class="text-lg font-semibold">アカウント作成</h2>
+              <div class="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs text-slate-500">
+                ログインID：A000245
+              </div>
+            </div>
+            <div class="mt-6 grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">名前</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="山田 花子" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">権限</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3">
+                  <option>管理者</option>
+                  <option>入力者</option>
+                  <option>閲覧者</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">パスワード</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">パスワード（確認）</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" />
+              </div>
+            </div>
+            <p id="accountCreateError" class="mt-4 hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs text-rose-600">入力内容を確認してください。</p>
+            <div class="mt-6 flex flex-wrap justify-end gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-home">戻る</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-account-search">アカウント検索</button>
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="open-account-create-confirm">アカウントを作成する</button>
+              <button class="rounded-xl border border-dashed border-slate-200 bg-white/70 px-3 py-2 text-xs text-slate-500" data-action="toggle-account-create-error">エラー表示切替</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-account-search" class="screen">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">アカウント検索</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-4">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">名前</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">ログインID</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">権限</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>指定なし</option>
+                  <option>管理者</option>
+                  <option>入力者</option>
+                  <option>閲覧者</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">削除済み表示切り替え</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>非表示</option>
+                  <option>表示</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">並び替え項目</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>作成日時</option>
+                  <option>名前</option>
+                  <option>ログインID</option>
+                  <option>権限</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="show-loading">検索する</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="show-loading">並び替え</button>
+            </div>
+            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+              <div class="sticky-head grid grid-cols-4 gap-2 px-4 py-3 text-xs font-semibold text-slate-600">
+                <span>ログインID</span>
+                <span>名前</span>
+                <span>権限</span>
+                <span class="text-right">詳細</span>
+              </div>
+              <div id="accountRows" class="divide-y divide-slate-100 text-sm"></div>
+            </div>
+            <div class="mt-4 flex flex-wrap justify-between gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-home">戻る</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="next-page" data-list="account">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-account-detail" class="screen">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">アカウント詳細</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-2">
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">ログインID</p>
+                <p class="mt-1 font-semibold">A000112</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">名前</p>
+                <p class="mt-1 font-semibold">山田 花子</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">権限</p>
+                <p class="mt-1 font-semibold">管理者</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">削除状態</p>
+                <p class="mt-1 font-semibold">有効</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">作成日時</p>
+                <p class="mt-1 font-semibold">2024/03/12 09:12</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">最終更新日時</p>
+                <p class="mt-1 font-semibold">2024/06/04 18:40</p>
+              </div>
+            </div>
+            <div class="mt-6 flex flex-wrap justify-between gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-account-search">戻る</button>
+              <div class="flex flex-wrap gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-account-edit">編集</button>
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="open-account-delete">削除</button>
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="open-account-restore">復活</button>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                  <span class="rounded-full border border-dashed border-slate-200 px-2 py-1">権限制限のため使用できません</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-account-edit" class="screen">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">アカウント編集</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-2">
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">ログインID</p>
+                <p class="mt-1 font-semibold">A000112</p>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">名前</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" value="山田 花子" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">権限</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3">
+                  <option>管理者</option>
+                  <option>入力者</option>
+                  <option>閲覧者</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">パスワード</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">パスワード（確認）</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" />
+              </div>
+            </div>
+            <p id="accountEditError" class="mt-4 hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs text-rose-600">入力内容を確認してください。</p>
+            <div class="mt-6 flex flex-wrap justify-end gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-account-detail">戻る</button>
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="open-account-update-confirm">更新する</button>
+              <button class="rounded-xl border border-dashed border-slate-200 bg-white/70 px-3 py-2 text-xs text-slate-500" data-action="toggle-account-edit-error">エラー表示切替</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-chart-create" class="screen">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <h2 class="text-lg font-semibold">カルテ新規入力</h2>
+              <div class="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs text-slate-500">カルテID：K000542</div>
+            </div>
+            <div class="mt-6 grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">患者ID（必須）</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="P000234" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">既存患者マスタ</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3">
+                  <option>患者を選択</option>
+                  <option>P000200 / 佐藤 太郎</option>
+                  <option>P000201 / 鈴木 花子</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">主訴（1行入力）</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" placeholder="例）右肩の痛み" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">症状区分（選択肢式）</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3">
+                  <option>骨折</option>
+                  <option>捻挫</option>
+                  <option>打撲</option>
+                  <option>その他</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="text-xs font-semibold text-slate-500">診察内容（改行入力）</label>
+                <textarea class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" rows="4" placeholder="診察内容を入力"></textarea>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">画像選択</label>
+                <input type="file" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">手書きカルテPDF/画像アップロード</label>
+                <input type="file" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3" />
+              </div>
+            </div>
+            <p id="chartCreateError" class="mt-4 hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs text-rose-600">入力内容を確認してください。</p>
+            <div class="mt-6 flex flex-wrap justify-end gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-home">戻る</button>
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="open-chart-create-confirm">登録する</button>
+              <button class="rounded-xl border border-dashed border-slate-200 bg-white/70 px-3 py-2 text-xs text-slate-500" data-action="toggle-chart-create-error">エラー表示切替</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-chart-search" class="screen">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">カルテ検索</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-4">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">カルテID</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">患者ID</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">患者名</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">保険会社名</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">保険項目</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">作成日時</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="2024/01/01" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">更新日時</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="2024/01/15" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">削除済み表示切り替え</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>非表示</option>
+                  <option>表示</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">並び替え項目</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>作成日時</option>
+                  <option>更新日時</option>
+                  <option>患者名</option>
+                  <option>保険会社名</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="show-loading">検索する</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="show-loading">並び替え</button>
+            </div>
+            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+              <div class="sticky-head grid grid-cols-4 gap-2 px-4 py-3 text-xs font-semibold text-slate-600">
+                <span>カルテID</span>
+                <span>患者ID</span>
+                <span>患者名</span>
+                <span class="text-right">詳細</span>
+              </div>
+              <div id="chartRows" class="divide-y divide-slate-100 text-sm"></div>
+            </div>
+            <div class="mt-4 flex flex-wrap justify-between gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-home">戻る</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="next-page" data-list="chart">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-chart-detail" class="screen">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <h2 class="text-lg font-semibold">カルテ詳細</h2>
+              <div class="flex gap-2">
+                <button class="tab-button rounded-full border border-slate-200 px-4 py-2 text-xs" data-tab="chart-info" data-active="true">カルテ情報</button>
+                <button class="tab-button rounded-full border border-slate-200 px-4 py-2 text-xs" data-tab="chart-input">入力項目</button>
+              </div>
+            </div>
+            <div id="tab-chart-info" class="tab-panel mt-6 grid gap-4 md:grid-cols-2">
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">カルテID</p>
+                <p class="mt-1 font-semibold">K000542</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">患者ID</p>
+                <p class="mt-1 font-semibold">P000234</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">患者名</p>
+                <p class="mt-1 font-semibold">高橋 美咲</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">削除状態</p>
+                <p class="mt-1 font-semibold">有効</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">作成日時</p>
+                <p class="mt-1 font-semibold">2024/04/18 10:24</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">更新日時</p>
+                <p class="mt-1 font-semibold">2024/05/02 15:08</p>
+              </div>
+            </div>
+            <div id="tab-chart-input" class="tab-panel mt-6 hidden space-y-4">
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">主訴</p>
+                <p class="mt-1 font-semibold">右肩の痛み</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">症状区分</p>
+                <p class="mt-1 font-semibold">捻挫</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">診察内容</p>
+                <p class="mt-1 font-semibold">安静および物理療法を指示。</p>
+              </div>
+            </div>
+            <div class="mt-6 flex flex-wrap justify-between gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-chart-search">戻る</button>
+              <div class="flex flex-wrap gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-chart-edit">編集</button>
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="open-chart-delete">削除</button>
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="open-chart-restore">復活</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="go-insurance-select">保険請求書類をダウンロード</button>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                  <span class="rounded-full border border-dashed border-slate-200 px-2 py-1">権限制限のため使用できません</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-chart-edit" class="screen">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <h2 class="text-lg font-semibold">カルテ編集</h2>
+              <div class="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs text-slate-500">カルテID：K000542</div>
+            </div>
+            <div class="mt-6 grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">患者ID</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" value="P000234" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">主訴（1行入力）</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" value="右肩の痛み" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">症状区分（選択肢式）</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3">
+                  <option>骨折</option>
+                  <option selected>捻挫</option>
+                  <option>打撲</option>
+                  <option>その他</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label class="text-xs font-semibold text-slate-500">診察内容（改行入力）</label>
+                <textarea class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" rows="4">安静および物理療法を指示。</textarea>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">画像選択</label>
+                <input type="file" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3" />
+              </div>
+            </div>
+            <p id="chartEditError" class="mt-4 hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs text-rose-600">入力内容を確認してください。</p>
+            <div class="mt-6 flex flex-wrap justify-end gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-chart-detail">戻る</button>
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="open-chart-update-confirm">更新する</button>
+              <button class="rounded-xl border border-dashed border-slate-200 bg-white/70 px-3 py-2 text-xs text-slate-500" data-action="toggle-chart-edit-error">エラー表示切替</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-insurance-select" class="screen">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">保険請求書類選択</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-3">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">保険会社名</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">様式名</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">保険項目</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">並び替え項目</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>保険会社名</option>
+                  <option>様式名</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="show-loading">検索する</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="show-loading">並び替え</button>
+            </div>
+            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+              <div class="sticky-head grid grid-cols-4 gap-2 px-4 py-3 text-xs font-semibold text-slate-600">
+                <span>保険会社名</span>
+                <span>様式名</span>
+                <span>保険項目</span>
+                <span class="text-right">操作</span>
+              </div>
+              <div id="insuranceRows" class="divide-y divide-slate-100 text-sm"></div>
+            </div>
+            <div class="mt-4 flex flex-wrap justify-between gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-chart-detail">戻る</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="next-page" data-list="insurance">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-patient-search" class="screen">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">患者マスタ検索</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-5">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">患者ID</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">患者名</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">生年月日</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="1990/01/01" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">性別</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>指定なし</option>
+                  <option>男性</option>
+                  <option>女性</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">削除済み表示切り替え</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>非表示</option>
+                  <option>表示</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">並び替え項目</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>患者ID</option>
+                  <option>患者名</option>
+                  <option>作成日時</option>
+                  <option>更新日時</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="show-loading">検索する</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="show-loading">並び替え</button>
+            </div>
+            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+              <div class="sticky-head grid grid-cols-3 gap-2 px-4 py-3 text-xs font-semibold text-slate-600">
+                <span>患者ID</span>
+                <span>患者名</span>
+                <span class="text-right">詳細</span>
+              </div>
+              <div id="patientRows" class="divide-y divide-slate-100 text-sm"></div>
+            </div>
+            <div class="mt-4 flex flex-wrap justify-between gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-home">戻る</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="next-page" data-list="patient">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-patient-detail" class="screen">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">患者マスタ詳細</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-2">
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">患者ID</p>
+                <p class="mt-1 font-semibold">P000234</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">患者名</p>
+                <p class="mt-1 font-semibold">高橋 美咲</p>
+              </div>
+              <div class="md:col-span-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">患者情報</p>
+                <p class="mt-1 font-semibold">1990/01/01 生まれ / 女性 / 連絡先: 090-1234-5678</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">作成日時</p>
+                <p class="mt-1 font-semibold">2023/12/01 12:20</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">更新日時</p>
+                <p class="mt-1 font-semibold">2024/03/05 09:45</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">削除状態</p>
+                <p class="mt-1 font-semibold">有効</p>
+              </div>
+            </div>
+            <div class="mt-6 flex flex-wrap justify-between gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-patient-search">戻る</button>
+              <div class="flex flex-wrap gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-patient-edit">編集</button>
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="open-patient-delete">削除</button>
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="open-patient-restore">復活</button>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                  <span class="rounded-full border border-dashed border-slate-200 px-2 py-1">権限制限のため使用できません</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-patient-edit" class="screen">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">患者マスタ編集</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-2">
+              <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                <p class="text-xs text-slate-500">患者ID</p>
+                <p class="mt-1 font-semibold">P000234</p>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">患者名</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" value="高橋 美咲" />
+              </div>
+              <div class="md:col-span-2">
+                <label class="text-xs font-semibold text-slate-500">患者情報</label>
+                <textarea class="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3" rows="3">1990/01/01 生まれ / 女性 / 連絡先: 090-1234-5678</textarea>
+              </div>
+            </div>
+            <p id="patientEditError" class="mt-4 hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-xs text-rose-600">入力内容を確認してください。</p>
+            <div class="mt-6 flex flex-wrap justify-end gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-patient-detail">戻る</button>
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="open-patient-update-confirm">更新する</button>
+              <button class="rounded-xl border border-dashed border-slate-200 bg-white/70 px-3 py-2 text-xs text-slate-500" data-action="toggle-patient-edit-error">エラー表示切替</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-history-search" class="screen">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="panel rounded-3xl p-8">
+            <h2 class="text-lg font-semibold">使用履歴検索</h2>
+            <div class="mt-6 grid gap-4 md:grid-cols-6">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">ユーザー名</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">ログインID</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">権限</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>指定なし</option>
+                  <option>管理者</option>
+                  <option>入力者</option>
+                  <option>閲覧者</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">操作内容</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">対象データ種別</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">日時</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" placeholder="2024/06/01" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">削除済み表示切り替え</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>非表示</option>
+                  <option>表示</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">並び替え項目（日時）</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>日時</option>
+                  <option>ユーザー名</option>
+                  <option>操作内容</option>
+                </select>
+              </div>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="show-loading">検索する</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="show-loading">並び替え</button>
+            </div>
+            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+              <div class="sticky-head grid grid-cols-6 gap-2 px-4 py-3 text-xs font-semibold text-slate-600">
+                <span>ユーザー名</span>
+                <span>ログインID</span>
+                <span>権限</span>
+                <span>操作内容</span>
+                <span>対象データ種別</span>
+                <span>日時</span>
+              </div>
+              <div id="historyRows" class="divide-y divide-slate-100 text-sm"></div>
+            </div>
+            <div class="mt-4 flex flex-wrap justify-between gap-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="go-home">戻る</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="next-page" data-list="history">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="appFooter" class="hidden fixed bottom-0 left-0 right-0 z-30">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="glass mb-4 flex items-center justify-between rounded-2xl border border-slate-200 px-5 py-3 text-xs text-slate-500">
+          <span>セッション維持中</span>
+          <button class="rounded-full border border-slate-200 bg-white px-3 py-1" data-action="open-logout">ログアウト</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="menuOverlay" class="overlay fixed inset-0 z-50 items-center justify-center bg-slate-900/60 p-6">
+    <div class="panel w-full max-w-xl rounded-3xl p-8">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold">メニュー</h3>
+        <button class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm" data-action="close-menu">閉じる</button>
+      </div>
+      <div class="mt-6 grid gap-3 sm:grid-cols-2">
+        <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="go-chart-create">カルテ新規入力</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="go-chart-search">カルテ検索</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="go-patient-search">患者マスタ</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="go-account-create">アカウント作成</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="go-history-search">使用履歴</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="go-password-change">ログイン情報変更</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="go-terms">利用規約</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" data-action="open-logout">ログアウト</button>
+      </div>
+      <div class="mt-4 rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-500">
+        権限制限のため使用できません
+      </div>
+    </div>
+  </div>
+
+  <div id="modalOverlay" class="overlay fixed inset-0 z-50 items-center justify-center bg-slate-900/60 p-6">
+    <div id="modalContent" class="panel w-full max-w-lg rounded-3xl p-8"></div>
+  </div>
+
+  <div id="loadingOverlay" class="overlay fixed inset-0 z-50 items-center justify-center bg-white/70">
+    <div class="panel rounded-3xl p-8 text-center">
+      <div class="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900"></div>
+      <p class="text-sm text-slate-600">処理中...</p>
+    </div>
+  </div>
+
+  <script>
+    const screens = Array.from(document.querySelectorAll('.screen'));
+    const header = document.getElementById('appHeader');
+    const footer = document.getElementById('appFooter');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalContent = document.getElementById('modalContent');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const roleLabel = document.getElementById('roleLabel');
+
+    const state = {
+      screen: 'screen-login',
+      role: '入力者',
+      listPage: {
+        account: 0,
+        chart: 0,
+        insurance: 0,
+        patient: 0,
+        history: 0,
+      }
+    };
+
+    const showScreen = (id) => {
+      state.screen = id;
+      screens.forEach(screen => screen.classList.toggle('active', screen.id === id));
+      const isLoggedIn = id !== 'screen-login' && id !== 'screen-loading';
+      header.classList.toggle('hidden', !isLoggedIn);
+      footer.classList.toggle('hidden', !isLoggedIn);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const openMenu = () => menuOverlay.classList.add('active');
+    const closeMenu = () => menuOverlay.classList.remove('active');
+
+    const openModal = (html) => {
+      modalContent.innerHTML = html;
+      modalOverlay.classList.add('active');
+    };
+
+    const closeModal = () => modalOverlay.classList.remove('active');
+
+    const showLoading = () => {
+      loadingOverlay.classList.add('active');
+      setTimeout(() => loadingOverlay.classList.remove('active'), 900);
+    };
+
+    const goHome = () => showScreen('screen-home');
+
+    const bindActions = () => {
+      document.addEventListener('click', (event) => {
+        const target = event.target.closest('[data-action]');
+        if (!target) return;
+        const action = target.dataset.action;
+        switch (action) {
+          case 'login':
+            showScreen('screen-loading');
+            setTimeout(() => showScreen('screen-home'), 1000);
+            break;
+          case 'toggle-login-error':
+            document.getElementById('loginError').classList.toggle('hidden');
+            break;
+          case 'go-home':
+            goHome();
+            break;
+          case 'open-menu':
+            openMenu();
+            break;
+          case 'close-menu':
+            closeMenu();
+            break;
+          case 'open-logout':
+            openModal(`
+              <h3 class="text-lg font-semibold">ログアウト</h3>
+              <p class="mt-4 text-sm text-slate-600">ログアウトしますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="confirm-logout">ログアウトする</button>
+              </div>
+            `);
+            break;
+          case 'confirm-logout':
+            closeModal();
+            showScreen('screen-loading');
+            setTimeout(() => showScreen('screen-login'), 900);
+            break;
+          case 'go-terms':
+            closeMenu();
+            showScreen('screen-terms');
+            break;
+          case 'go-password-change':
+            closeMenu();
+            showScreen('screen-password-change');
+            break;
+          case 'toggle-password-error':
+            document.getElementById('passwordError').classList.toggle('hidden');
+            break;
+          case 'open-password-confirm':
+            openModal(`
+              <h3 class="text-lg font-semibold">変更確認</h3>
+              <p class="mt-4 text-sm text-slate-600">パスワードを変更しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="password-change-complete">変更する</button>
+              </div>
+            `);
+            break;
+          case 'password-change-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">変更完了</h3>
+              <p class="mt-4 text-sm text-slate-600">パスワードを変更しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-home">OK</button>
+              </div>
+            `);
+            break;
+          case 'go-account-create':
+            closeMenu();
+            showScreen('screen-account-create');
+            break;
+          case 'toggle-account-create-error':
+            document.getElementById('accountCreateError').classList.toggle('hidden');
+            break;
+          case 'open-account-create-confirm':
+            openModal(`
+              <h3 class="text-lg font-semibold">作成確認</h3>
+              <p class="mt-4 text-sm text-slate-600">アカウントを作成しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="account-create-complete">作成する</button>
+              </div>
+            `);
+            break;
+          case 'account-create-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">作成完了</h3>
+              <p class="mt-4 text-sm text-slate-600">アカウントを作成しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-home">OK</button>
+              </div>
+            `);
+            break;
+          case 'go-account-search':
+            showScreen('screen-account-search');
+            break;
+          case 'go-account-detail':
+            showScreen('screen-account-detail');
+            break;
+          case 'go-account-edit':
+            showScreen('screen-account-edit');
+            break;
+          case 'toggle-account-edit-error':
+            document.getElementById('accountEditError').classList.toggle('hidden');
+            break;
+          case 'open-account-update-confirm':
+            openModal(`
+              <h3 class="text-lg font-semibold">更新確認</h3>
+              <p class="mt-4 text-sm text-slate-600">アカウント情報を更新しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="account-update-complete">更新する</button>
+              </div>
+            `);
+            break;
+          case 'account-update-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">更新完了</h3>
+              <p class="mt-4 text-sm text-slate-600">アカウント情報を更新しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-account-detail">OK</button>
+              </div>
+            `);
+            break;
+          case 'open-account-delete':
+            openModal(`
+              <h3 class="text-lg font-semibold">削除確認</h3>
+              <p class="mt-4 text-sm text-slate-600">このアカウントを削除しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="account-delete-complete">削除する</button>
+              </div>
+            `);
+            break;
+          case 'account-delete-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">削除完了</h3>
+              <p class="mt-4 text-sm text-slate-600">アカウントを削除しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-account-search">OK</button>
+              </div>
+            `);
+            break;
+          case 'open-account-restore':
+            openModal(`
+              <h3 class="text-lg font-semibold">復活確認</h3>
+              <p class="mt-4 text-sm text-slate-600">このアカウントを復活しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="account-restore-complete">復活する</button>
+              </div>
+            `);
+            break;
+          case 'account-restore-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">復活完了</h3>
+              <p class="mt-4 text-sm text-slate-600">アカウントを復活しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-account-search">OK</button>
+              </div>
+            `);
+            break;
+          case 'go-chart-create':
+            closeMenu();
+            showScreen('screen-chart-create');
+            break;
+          case 'toggle-chart-create-error':
+            document.getElementById('chartCreateError').classList.toggle('hidden');
+            break;
+          case 'open-chart-create-confirm':
+            openModal(`
+              <h3 class="text-lg font-semibold">登録確認</h3>
+              <p class="mt-4 text-sm text-slate-600">カルテを登録しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="chart-create-complete">登録する</button>
+              </div>
+            `);
+            break;
+          case 'chart-create-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">登録完了</h3>
+              <p class="mt-4 text-sm text-slate-600">カルテを登録しました。</p>
+              <p class="mt-2 text-xs text-slate-500">新しい患者IDが登録されたため患者マスタにも登録されました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-chart-detail">OK</button>
+              </div>
+            `);
+            break;
+          case 'go-chart-search':
+            closeMenu();
+            showScreen('screen-chart-search');
+            break;
+          case 'go-chart-detail':
+            showScreen('screen-chart-detail');
+            break;
+          case 'go-chart-edit':
+            showScreen('screen-chart-edit');
+            break;
+          case 'toggle-chart-edit-error':
+            document.getElementById('chartEditError').classList.toggle('hidden');
+            break;
+          case 'open-chart-update-confirm':
+            openModal(`
+              <h3 class="text-lg font-semibold">更新確認</h3>
+              <p class="mt-4 text-sm text-slate-600">カルテ情報を更新しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="chart-update-complete">更新する</button>
+              </div>
+            `);
+            break;
+          case 'chart-update-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">更新完了</h3>
+              <p class="mt-4 text-sm text-slate-600">カルテ情報を更新しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-chart-detail">OK</button>
+              </div>
+            `);
+            break;
+          case 'open-chart-delete':
+            openModal(`
+              <h3 class="text-lg font-semibold">削除確認</h3>
+              <p class="mt-4 text-sm text-slate-600">このカルテを削除しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="chart-delete-complete">削除する</button>
+              </div>
+            `);
+            break;
+          case 'chart-delete-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">削除完了</h3>
+              <p class="mt-4 text-sm text-slate-600">カルテを削除しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-chart-search">OK</button>
+              </div>
+            `);
+            break;
+          case 'open-chart-restore':
+            openModal(`
+              <h3 class="text-lg font-semibold">復活確認</h3>
+              <p class="mt-4 text-sm text-slate-600">このカルテを復活しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="chart-restore-complete">復活する</button>
+              </div>
+            `);
+            break;
+          case 'chart-restore-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">復活完了</h3>
+              <p class="mt-4 text-sm text-slate-600">カルテを復活しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-chart-search">OK</button>
+              </div>
+            `);
+            break;
+          case 'go-insurance-select':
+            showScreen('screen-insurance-select');
+            break;
+          case 'go-patient-search':
+            closeMenu();
+            showScreen('screen-patient-search');
+            break;
+          case 'go-patient-detail':
+            showScreen('screen-patient-detail');
+            break;
+          case 'go-patient-edit':
+            showScreen('screen-patient-edit');
+            break;
+          case 'toggle-patient-edit-error':
+            document.getElementById('patientEditError').classList.toggle('hidden');
+            break;
+          case 'open-patient-update-confirm':
+            openModal(`
+              <h3 class="text-lg font-semibold">更新確認</h3>
+              <p class="mt-4 text-sm text-slate-600">患者情報を更新しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="patient-update-complete">更新する</button>
+              </div>
+            `);
+            break;
+          case 'patient-update-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">更新完了</h3>
+              <p class="mt-4 text-sm text-slate-600">患者情報を更新しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-patient-detail">OK</button>
+              </div>
+            `);
+            break;
+          case 'open-patient-delete':
+            openModal(`
+              <h3 class="text-lg font-semibold">削除確認</h3>
+              <p class="mt-4 text-sm text-slate-600">この患者情報を削除しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="patient-delete-complete">削除する</button>
+              </div>
+            `);
+            break;
+          case 'patient-delete-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">削除完了</h3>
+              <p class="mt-4 text-sm text-slate-600">患者情報を削除しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-patient-search">OK</button>
+              </div>
+            `);
+            break;
+          case 'open-patient-restore':
+            openModal(`
+              <h3 class="text-lg font-semibold">復活確認</h3>
+              <p class="mt-4 text-sm text-slate-600">この患者情報を復活しますか？</p>
+              <div class="mt-6 flex justify-end gap-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="patient-restore-complete">復活する</button>
+              </div>
+            `);
+            break;
+          case 'patient-restore-complete':
+            openModal(`
+              <h3 class="text-lg font-semibold">復活完了</h3>
+              <p class="mt-4 text-sm text-slate-600">患者情報を復活しました。</p>
+              <div class="mt-6 flex justify-end">
+                <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal-patient-search">OK</button>
+              </div>
+            `);
+            break;
+          case 'go-history-search':
+            closeMenu();
+            showScreen('screen-history-search');
+            break;
+          case 'close-modal':
+            closeModal();
+            break;
+          case 'close-modal-home':
+            closeModal();
+            goHome();
+            break;
+          case 'close-modal-account-detail':
+            closeModal();
+            showScreen('screen-account-detail');
+            break;
+          case 'close-modal-account-search':
+            closeModal();
+            showScreen('screen-account-search');
+            break;
+          case 'close-modal-chart-detail':
+            closeModal();
+            showScreen('screen-chart-detail');
+            break;
+          case 'close-modal-chart-search':
+            closeModal();
+            showScreen('screen-chart-search');
+            break;
+          case 'close-modal-patient-detail':
+            closeModal();
+            showScreen('screen-patient-detail');
+            break;
+          case 'close-modal-patient-search':
+            closeModal();
+            showScreen('screen-patient-search');
+            break;
+          case 'show-loading':
+            showLoading();
+            break;
+          case 'next-page':
+            const listName = target.dataset.list;
+            state.listPage[listName] = Math.min(state.listPage[listName] + 1, 1);
+            renderLists();
+            break;
+          default:
+            break;
+        }
+      });
+    };
+
+    const renderRows = (containerId, rows, columns, offset) => {
+      const container = document.getElementById(containerId);
+      const start = offset * 30;
+      const pageRows = rows.slice(start, start + 30);
+      container.innerHTML = '';
+      pageRows.forEach((row) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = `grid ${columns} gap-2 px-4 py-3`;
+        wrapper.innerHTML = row;
+        container.appendChild(wrapper);
+      });
+    };
+
+    const buildData = () => {
+      const accountRows = Array.from({ length: 50 }).map((_, i) => {
+        const id = `A${String(100 + i).padStart(6, '0')}`;
+        return `
+          <span>${id}</span>
+          <span>スタッフ${i + 1}</span>
+          <span>${i % 3 === 0 ? '管理者' : i % 3 === 1 ? '入力者' : '閲覧者'}</span>
+          <button class="justify-self-end rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs" data-action="go-account-detail">詳細</button>
+        `;
+      });
+
+      const chartRows = Array.from({ length: 50 }).map((_, i) => {
+        const id = `K${String(500 + i).padStart(6, '0')}`;
+        return `
+          <span>${id}</span>
+          <span>P${String(200 + i).padStart(6, '0')}</span>
+          <span>患者${i + 1}</span>
+          <button class="justify-self-end rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs" data-action="go-chart-detail">詳細</button>
+        `;
+      });
+
+      const insuranceRows = Array.from({ length: 50 }).map((_, i) => {
+        return `
+          <span>保険会社${i + 1}</span>
+          <span>様式-${String(i + 1).padStart(2, '0')}</span>
+          <span>項目${i + 1}</span>
+          <button class="justify-self-end rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs" data-action="open-download">この様式でダウンロード</button>
+        `;
+      });
+
+      const patientRows = Array.from({ length: 50 }).map((_, i) => {
+        const id = `P${String(200 + i).padStart(6, '0')}`;
+        return `
+          <span>${id}</span>
+          <span>患者${i + 1}</span>
+          <button class="justify-self-end rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs" data-action="go-patient-detail">詳細</button>
+        `;
+      });
+
+      const historyRows = Array.from({ length: 50 }).map((_, i) => {
+        return `
+          <span>スタッフ${i + 1}</span>
+          <span>A${String(100 + i).padStart(6, '0')}</span>
+          <span>${i % 3 === 0 ? '管理者' : i % 3 === 1 ? '入力者' : '閲覧者'}</span>
+          <span>${i % 2 === 0 ? 'カルテ登録' : '患者更新'}</span>
+          <span>${i % 2 === 0 ? 'カルテ' : '患者マスタ'}</span>
+          <span>2024/06/${String((i % 28) + 1).padStart(2, '0')} 09:${String(i % 60).padStart(2, '0')}</span>
+        `;
+      });
+
+      return { accountRows, chartRows, insuranceRows, patientRows, historyRows };
+    };
+
+    const data = buildData();
+
+    const renderLists = () => {
+      renderRows('accountRows', data.accountRows, 'grid-cols-4', state.listPage.account);
+      renderRows('chartRows', data.chartRows, 'grid-cols-4', state.listPage.chart);
+      renderRows('insuranceRows', data.insuranceRows, 'grid-cols-4', state.listPage.insurance);
+      renderRows('patientRows', data.patientRows, 'grid-cols-3', state.listPage.patient);
+      renderRows('historyRows', data.historyRows, 'grid-cols-6', state.listPage.history);
+    };
+
+    const bindTabs = () => {
+      const tabButtons = document.querySelectorAll('[data-tab]');
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tab = button.dataset.tab;
+          document.querySelectorAll('[data-tab]').forEach(btn => btn.dataset.active = 'false');
+          button.dataset.active = 'true';
+          document.querySelectorAll('.tab-panel').forEach(panel => {
+            panel.classList.toggle('hidden', panel.id !== `tab-${tab}`);
+          });
+        });
+      });
+    };
+
+    const handleDownloadDialog = () => {
+      document.addEventListener('click', (event) => {
+        const target = event.target.closest('[data-action="open-download"]');
+        if (!target) return;
+        openModal(`
+          <h3 class="text-lg font-semibold">ダウンロード確認</h3>
+          <p class="mt-4 text-sm text-slate-600">この様式でダウンロードしますか？</p>
+          <div class="mt-6 flex justify-end gap-3">
+            <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+            <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="open-print">ダウンロードする</button>
+          </div>
+        `);
+      });
+    };
+
+    const handlePrintDialog = () => {
+      document.addEventListener('click', (event) => {
+        const target = event.target.closest('[data-action="open-print"]');
+        if (!target) return;
+        openModal(`
+          <h3 class="text-lg font-semibold">印刷プレビュー</h3>
+          <div class="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+            <div class="h-40 rounded-xl border border-dashed border-slate-300 bg-white"></div>
+            <div class="mt-4 grid gap-3 sm:grid-cols-2">
+              <div>
+                <label class="text-xs font-semibold text-slate-500">部数</label>
+                <input class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2" value="1" />
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-500">用紙サイズ</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2">
+                  <option>A4</option>
+                  <option>B5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end gap-3">
+            <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" data-action="close-modal">キャンセル</button>
+            <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="close-modal">保存</button>
+          </div>
+        `);
+      });
+    };
+
+    const setupBackground = () => {
+      const canvas = document.getElementById('bgCanvas');
+      const ctx = canvas.getContext('2d');
+      const blobs = Array.from({ length: 6 }).map((_, i) => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        radius: 220 + i * 35,
+        vx: (Math.random() - 0.5) * 1.8,
+        vy: (Math.random() - 0.5) * 1.8,
+        hue: 210 + i * 12,
+      }));
+
+      const resize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+
+      const draw = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, 'rgba(148, 163, 184, 0.25)');
+        gradient.addColorStop(1, 'rgba(226, 232, 240, 0.6)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        blobs.forEach((blob) => {
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(37, 99, 235, 0.12)`;
+          ctx.arc(blob.x, blob.y, blob.radius, 0, Math.PI * 2);
+          ctx.fill();
+          blob.x += blob.vx;
+          blob.y += blob.vy;
+          if (blob.x < -blob.radius || blob.x > canvas.width + blob.radius) blob.vx *= -1;
+          if (blob.y < -blob.radius || blob.y > canvas.height + blob.radius) blob.vy *= -1;
+        });
+
+        requestAnimationFrame(draw);
+      };
+
+      resize();
+      window.addEventListener('resize', resize);
+      draw();
+    };
+
+    document.addEventListener('click', (event) => {
+      if (event.target === menuOverlay) closeMenu();
+      if (event.target === modalOverlay) closeModal();
+    });
+
+    bindActions();
+    bindTabs();
+    renderLists();
+    handleDownloadDialog();
+    handlePrintDialog();
+    setupBackground();
+    showScreen('screen-login');
+    roleLabel.textContent = state.role;
+    lucide.createIcons();
+  </script>
+</body>
+</html>
