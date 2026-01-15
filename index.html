@@ -1230,7 +1230,9 @@
     };
 
     setupBackground();
-    lucide.createIcons();
+    if (window.lucide && typeof lucide.createIcons === 'function') {
+      lucide.createIcons();
+    }
 
     setTimeout(() => {
       if (document.getElementById('screen-loading-pre').classList.contains('active')) {
