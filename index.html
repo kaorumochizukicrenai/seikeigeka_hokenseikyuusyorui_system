@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>整形外科 保険請求システム UI モック</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: "Inter", "Noto Sans JP", sans-serif;
+    }
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    .modal {
+      display: none;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .table-sticky th {
+      position: sticky;
+      top: 0;
+      background: rgba(248, 250, 252, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <canvas id="bg-canvas"></canvas>
+
+  <div id="app" class="relative z-10 min-h-screen">
+    <header id="app-header" class="hidden fixed top-0 left-0 right-0 z-30">
+      <div class="glass shadow-sm">
+        <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+          <button class="flex items-center gap-2 font-semibold text-slate-900" data-action="go-home">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-white">整</span>
+            <span>整形外科 保険請求システム</span>
+          </button>
+          <button class="rounded-full border border-slate-200 bg-white/80 p-2 shadow-sm" data-action="open-menu" aria-label="メニュー">
+            <i data-lucide="menu" class="h-5 w-5"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="relative z-10 pt-20">
+      <section id="screen-loading-pre" class="screen active">
+        <div class="mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center gap-6 px-4 text-center">
+          <div class="flex h-16 w-16 items-center justify-center rounded-full border-4 border-slate-200 border-t-slate-900"></div>
+          <p class="text-lg font-medium text-slate-700">ローディング中...</p>
+        </div>
+      </section>
+
+      <section id="screen-login" class="screen">
+        <div class="mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center px-4">
+          <div class="glass w-full rounded-3xl p-8 shadow-lg md:p-12">
+            <h1 class="text-2xl font-semibold">ログイン</h1>
+            <div class="mt-8 grid gap-6">
+              <div>
+                <label class="text-sm font-medium text-slate-700">ログインID</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" placeholder="例: A000123" />
+              </div>
+              <div>
+                <label class="text-sm font-medium text-slate-700">パスワード</label>
+                <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" placeholder="********" />
+              </div>
+              <div id="login-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                ログインIDまたはパスワードの入力エラー
+              </div>
+              <button class="w-full rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white" data-action="login">
+                ログイン
+              </button>
+              <button MA-dev class="text-xs text-slate-400" data-action="toggle-login-error">入力エラー表示切替</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-loading-post" class="screen">
+        <div class="mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center gap-6 px-4 text-center">
+          <div class="flex h-16 w-16 items-center justify-center rounded-full border-4 border-slate-200 border-t-slate-900"></div>
+          <p class="text-lg font-medium text-slate-700">ローディング中...</p>
+        </div>
+      </section>
+
+      <section id="screen-home" class="screen">
+        <div class="mx-auto max-w-5xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">ホーム</h2>
+          <div class="mt-6 grid gap-4 md:grid-cols-2">
+            <button class="glass rounded-2xl px-5 py-4 text-left" data-action="go-kart-new">
+              <p class="text-base font-semibold">カルテ新規入力</p>
+            </button>
+            <button class="glass rounded-2xl px-5 py-4 text-left" data-action="go-kart-search">
+              <p class="text-base font-semibold">カルテ検索</p>
+            </button>
+            <button class="glass rounded-2xl px-5 py-4 text-left" data-action="go-patient-search">
+              <p class="text-base font-semibold">患者マスタ</p>
+            </button>
+            <div class="glass rounded-2xl px-5 py-4 text-left opacity-50">
+              <p class="text-base font-semibold">アカウント作成</p>
+              <p class="mt-2 text-xs text-slate-500">権限制限のため使用できません</p>
+            </div>
+            <button class="glass rounded-2xl px-5 py-4 text-left" data-action="go-history">
+              <p class="text-base font-semibold">使用履歴</p>
+            </button>
+            <button class="glass rounded-2xl px-5 py-4 text-left" data-action="go-login-info">
+              <p class="text-base font-semibold">ログイン情報変更</p>
+            </button>
+            <button class="glass rounded-2xl px-5 py-4 text-left" data-action="go-terms">
+              <p class="text-base font-semibold">利用規約</p>
+            </button>
+            <button class="glass rounded-2xl px-5 py-4 text-left" data-action="logout-confirm">
+              <p class="text-base font-semibold">ログアウト</p>
+            </button>
+          </div>
+          <button MA-dev class="mt-4 text-xs text-slate-400" data-action="go-account-create">開発者確認用: アカウント作成画面へ</button>
+        </div>
+      </section>
+
+      <section id="screen-terms" class="screen">
+        <div class="mx-auto max-w-4xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">利用規約</h2>
+          <div class="mt-6 rounded-2xl border border-slate-200 bg-white/80 p-6 text-sm leading-7 text-slate-700">
+            <p>本システムは保険請求に関するカルテ情報の管理を目的とします。ユーザーは医療機関内の権限に従い、登録情報の適切な管理を行うものとします。</p>
+            <p class="mt-4">本システムはグループ単位でのデータ管理を行い、第三者への情報提供は禁止します。</p>
+          </div>
+          <button class="mt-6 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-home">戻る</button>
+        </div>
+      </section>
+
+      <section id="screen-login-info" class="screen">
+        <div class="mx-auto max-w-4xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">ログイン情報変更</h2>
+          <div class="mt-6 grid gap-5 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div>
+              <label class="text-sm font-medium">現在のパスワード</label>
+              <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">新しいパスワード</label>
+              <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">新しいパスワード（確認）</label>
+              <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div id="login-info-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+              入力エラー
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="login-info-confirm">変更</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-home">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-login-info-error">入力エラー表示切替</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-account-create" class="screen">
+        <div class="mx-auto max-w-4xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">アカウント作成</h2>
+          <div class="mt-6 grid gap-5 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div>
+              <label class="text-sm font-medium">氏名</label>
+              <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">ログインID</label>
+              <input type="text" value="A000567" disabled class="mt-2 w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm text-slate-500" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">パスワード</label>
+              <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">パスワード（確認）</label>
+              <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">権限</label>
+              <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm">
+                <option>管理者</option>
+                <option>入力者</option>
+                <option>閲覧者</option>
+              </select>
+            </div>
+            <div id="account-create-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="account-create-confirm">登録</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="go-account-search">アカウント検索</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-home">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-account-create-error">入力エラー表示切替</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-account-search" class="screen">
+        <div class="mx-auto max-w-6xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">アカウント検索</h2>
+          <div class="mt-6 grid gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="text-sm font-medium">氏名</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">ログインID</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">権限</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>すべて</option>
+                  <option>管理者</option>
+                  <option>入力者</option>
+                  <option>閲覧者</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-sm font-medium">並び替え条件</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>作成日（新しい順）</option>
+                  <option>更新日（新しい順）</option>
+                  <option>氏名</option>
+                </select>
+              </div>
+            </div>
+            <label class="flex items-center gap-2 text-sm">
+              <input type="checkbox" class="rounded border-slate-300" />
+              削除済み含む
+            </label>
+            <div id="account-search-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">検索条件の入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="account-search">検索</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-account-create">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-account-search-error">検索エラー表示切替</button>
+          </div>
+
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white/80">
+            <div class="max-h-[420px] overflow-auto">
+              <table class="min-w-full text-left text-sm table-sticky">
+                <thead>
+                  <tr class="text-slate-500">
+                    <th class="px-4 py-3">ログインID</th>
+                    <th class="px-4 py-3">氏名</th>
+                    <th class="px-4 py-3">権限</th>
+                    <th class="px-4 py-3">状態</th>
+                    <th class="px-4 py-3">作成日</th>
+                    <th class="px-4 py-3">更新日</th>
+                  </tr>
+                </thead>
+                <tbody id="account-table" MA-database class="divide-y divide-slate-200"></tbody>
+              </table>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 px-4 py-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold" data-action="account-next">次の30件を表示</button>
+              <span class="text-xs text-slate-500">全件表示用に50件をモックしています</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-account-detail" class="screen">
+        <div class="mx-auto max-w-4xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">アカウント詳細</h2>
+          <div class="mt-6 grid gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 text-sm">
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <p class="text-slate-500">ログインID</p>
+                <p class="font-semibold">A000345</p>
+              </div>
+              <div>
+                <p class="text-slate-500">氏名</p>
+                <p class="font-semibold">山田 花子</p>
+              </div>
+              <div>
+                <p class="text-slate-500">権限</p>
+                <p class="font-semibold">入力者</p>
+              </div>
+              <div>
+                <p class="text-slate-500">状態</p>
+                <p class="font-semibold">有効</p>
+              </div>
+              <div>
+                <p class="text-slate-500">作成日</p>
+                <p class="font-semibold">2024/04/12</p>
+              </div>
+              <div>
+                <p class="text-slate-500">更新日</p>
+                <p class="font-semibold">2024/07/01</p>
+              </div>
+            </div>
+            <div>
+              <label class="text-sm font-medium">パスワード変更</label>
+              <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="go-account-edit">編集</button>
+              <button class="rounded-xl border border-rose-200 bg-white px-5 py-2 text-sm font-semibold text-rose-600" data-action="account-delete">削除</button>
+              <button class="rounded-xl border border-emerald-200 bg-white px-5 py-2 text-sm font-semibold text-emerald-600" data-action="account-revive">復活</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="back-account-search">戻る</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-account-edit" class="screen">
+        <div class="mx-auto max-w-4xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">アカウント編集</h2>
+          <div class="mt-6 grid gap-5 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div>
+              <label class="text-sm font-medium">氏名</label>
+              <input type="text" value="山田 花子" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">権限</label>
+              <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm">
+                <option>管理者</option>
+                <option selected>入力者</option>
+                <option>閲覧者</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-sm font-medium">パスワード</label>
+              <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">パスワード（確認）</label>
+              <input type="password" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div id="account-edit-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="account-edit-confirm">保存</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-account-detail">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-account-edit-error">入力エラー表示切替</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-kart-new" class="screen">
+        <div class="mx-auto max-w-6xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">カルテ新規入力</h2>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button class="rounded-full px-4 py-2 text-sm font-semibold" data-action="tab-new" id="tab-new-button">新規患者入力</button>
+            <button class="rounded-full px-4 py-2 text-sm font-semibold" data-action="tab-master" id="tab-master-button">患者マスタから選択</button>
+          </div>
+
+          <div class="mt-6 grid gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="text-sm font-medium">カルテID</label>
+                <input type="text" value="K-20240715-001" disabled class="mt-2 w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm text-slate-500" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">患者ID</label>
+                <input type="text" id="kart-patient-id" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">患者名</label>
+                <input type="text" id="kart-patient-name" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+              </div>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">主訴</p>
+                <input type="text" class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">既往歴</p>
+                <textarea class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" rows="3"></textarea>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">保険会社名</p>
+                <select class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+                  <option>富士保険</option>
+                  <option>虹ヶ丘保険</option>
+                  <option>朝日保険</option>
+                </select>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">画像選択</p>
+                <div class="mt-3 grid grid-cols-3 gap-2">
+                  <button class="rounded-lg border border-slate-200 p-2 text-xs">X線</button>
+                  <button class="rounded-lg border border-slate-200 p-2 text-xs">MRI</button>
+                  <button class="rounded-lg border border-slate-200 p-2 text-xs">CT</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="new-patient-upload" class="rounded-2xl border border-dashed border-slate-200 bg-slate-50/70 p-6">
+              <p class="text-sm font-semibold">手書きカルテのPDF/画像アップロード</p>
+              <input type="file" class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+              <div id="kart-upload-error" class="hidden mt-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">アップロードエラー</div>
+              <button class="mt-4 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold" data-action="kart-upload">手書きカルテをアップロード</button>
+            </div>
+
+            <div id="kart-input-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">入力エラー</div>
+
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="kart-register">登録</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-home">戻る</button>
+            </div>
+            <div class="flex flex-wrap gap-4 text-xs text-slate-400">
+              <button MA-dev data-action="toggle-kart-input-error">入力エラー表示切替</button>
+              <button MA-dev data-action="toggle-kart-upload-error">アップロードエラー表示切替</button>
+            </div>
+          </div>
+
+          <div id="kart-master-panel" class="mt-6 hidden rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="text-sm font-medium">患者ID検索</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">患者名検索</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">並び替え条件</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>患者ID</option>
+                  <option>患者名</option>
+                </select>
+              </div>
+            </div>
+            <label class="mt-4 flex items-center gap-2 text-sm">
+              <input type="checkbox" class="rounded border-slate-300" />
+              削除済み含む
+            </label>
+            <div id="kart-master-search-error" class="hidden mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">検索条件の入力エラー</div>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="kart-master-search">検索</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-home">戻る</button>
+            </div>
+            <button MA-dev class="mt-2 text-xs text-slate-400" data-action="toggle-kart-master-search-error">検索エラー表示切替</button>
+
+            <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+              <div class="max-h-[360px] overflow-auto">
+                <table class="min-w-full text-left text-sm table-sticky">
+                  <thead>
+                    <tr class="text-slate-500">
+                      <th class="px-4 py-3">患者ID</th>
+                      <th class="px-4 py-3">患者名</th>
+                      <th class="px-4 py-3">状態</th>
+                    </tr>
+                  </thead>
+                  <tbody id="kart-master-table" MA-database class="divide-y divide-slate-200"></tbody>
+                </table>
+              </div>
+              <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3">
+                <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold" data-action="kart-master-next">次の30件を表示</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-kart-search" class="screen">
+        <div class="mx-auto max-w-6xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">カルテ検索</h2>
+          <div class="mt-6 grid gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-3">
+              <div>
+                <label class="text-sm font-medium">カルテID</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">患者ID</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">患者名</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">保険会社名</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">保険項目</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">作成日</label>
+                <input type="date" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">並び替え条件</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>作成日（新しい順）</option>
+                  <option>更新日（新しい順）</option>
+                </select>
+              </div>
+            </div>
+            <label class="flex items-center gap-2 text-sm">
+              <input type="checkbox" class="rounded border-slate-300" />
+              削除済み含む
+            </label>
+            <div id="kart-search-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">検索条件の入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="kart-search">検索</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-home">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-kart-search-error">検索エラー表示切替</button>
+          </div>
+
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white/80">
+            <div class="max-h-[420px] overflow-auto">
+              <table class="min-w-full text-left text-sm table-sticky">
+                <thead>
+                  <tr class="text-slate-500">
+                    <th class="px-4 py-3">カルテID</th>
+                    <th class="px-4 py-3">患者ID</th>
+                    <th class="px-4 py-3">患者名</th>
+                    <th class="px-4 py-3">保険会社名</th>
+                    <th class="px-4 py-3">保険項目</th>
+                    <th class="px-4 py-3">状態</th>
+                    <th class="px-4 py-3">作成日</th>
+                    <th class="px-4 py-3">更新日</th>
+                  </tr>
+                </thead>
+                <tbody id="kart-table" MA-database class="divide-y divide-slate-200"></tbody>
+              </table>
+            </div>
+            <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold" data-action="kart-next">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-kart-detail" class="screen">
+        <div class="mx-auto max-w-5xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">カルテ詳細</h2>
+          <div class="mt-6 grid gap-6 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-2 text-sm">
+              <div>
+                <p class="text-slate-500">カルテID</p>
+                <p class="font-semibold">K-20240702-002</p>
+              </div>
+              <div>
+                <p class="text-slate-500">患者ID</p>
+                <p class="font-semibold">P-1023</p>
+              </div>
+              <div>
+                <p class="text-slate-500">患者名</p>
+                <p class="font-semibold">青木 次郎</p>
+              </div>
+              <div>
+                <p class="text-slate-500">保険会社名</p>
+                <p class="font-semibold">虹ヶ丘保険</p>
+              </div>
+              <div>
+                <p class="text-slate-500">保険項目</p>
+                <p class="font-semibold">スポーツ外傷</p>
+              </div>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">主訴</p>
+                <p class="mt-3 text-sm text-slate-600">膝の痛みが続いている</p>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">既往歴</p>
+                <p class="mt-3 text-sm text-slate-600">2020年に靭帯損傷あり</p>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">診断メモ</p>
+                <p class="mt-3 text-sm text-slate-600">腫脹があり、MRI確認予定</p>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">処置内容</p>
+                <p class="mt-3 text-sm text-slate-600">固定具装着、安静指示</p>
+              </div>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <p class="text-sm font-semibold">登録された画像のサムネイル</p>
+                <div class="mt-3 grid grid-cols-2 gap-3">
+                  <img src="https://images.unsplash.com/photo-1580281657527-47f249e8f8e4?auto=format&fit=crop&w=300&q=80" alt="サムネイル" class="h-24 w-full rounded-xl object-cover" />
+                  <img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?auto=format&fit=crop&w=300&q=80" alt="サムネイル" class="h-24 w-full rounded-xl object-cover" />
+                </div>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">登録された画像の表示領域</p>
+                <img src="https://images.unsplash.com/photo-1580281658629-2c1ab86d7c0c?auto=format&fit=crop&w=600&q=80" alt="画像表示" class="mt-3 h-40 w-full rounded-2xl object-cover" />
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="go-kart-edit">編集</button>
+              <button class="rounded-xl border border-rose-200 bg-white px-5 py-2 text-sm font-semibold text-rose-600" data-action="kart-delete">削除</button>
+              <button class="rounded-xl border border-emerald-200 bg-white px-5 py-2 text-sm font-semibold text-emerald-600" data-action="kart-revive">復活</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="go-insurance-download">保険請求書類ダウンロード</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="back-kart-search">戻る</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-kart-edit" class="screen">
+        <div class="mx-auto max-w-5xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">カルテ編集</h2>
+          <div class="mt-6 grid gap-5 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div>
+              <label class="text-sm font-medium">患者ID</label>
+              <input type="text" value="P-1023" disabled class="mt-2 w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm text-slate-500" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">患者名</label>
+              <input type="text" value="青木 次郎" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">主訴</p>
+                <input type="text" class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" value="膝の痛み" />
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">既往歴</p>
+                <textarea class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" rows="3">2020年靭帯損傷</textarea>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">保険会社名</p>
+                <select class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+                  <option>富士保険</option>
+                  <option selected>虹ヶ丘保険</option>
+                  <option>朝日保険</option>
+                </select>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">画像選択</p>
+                <div class="mt-3 grid grid-cols-3 gap-2">
+                  <button class="rounded-lg border border-slate-200 p-2 text-xs">X線</button>
+                  <button class="rounded-lg border border-slate-200 p-2 text-xs">MRI</button>
+                  <button class="rounded-lg border border-slate-200 p-2 text-xs">CT</button>
+                </div>
+              </div>
+            </div>
+            <div id="kart-edit-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="kart-edit-confirm">保存</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-kart-detail">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-kart-edit-error">入力エラー表示切替</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-insurance-download" class="screen">
+        <div class="mx-auto max-w-6xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">保険請求書類ダウンロード</h2>
+          <div class="mt-6 grid gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="text-sm font-medium">会社名</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">文書様式</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">保険項目</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">並び替え条件</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>会社名</option>
+                  <option>文書様式</option>
+                </select>
+              </div>
+            </div>
+            <div id="download-search-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">検索条件の入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="download-search">検索</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-kart-detail">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-download-search-error">検索エラー表示切替</button>
+          </div>
+
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white/80">
+            <div class="max-h-[420px] overflow-auto">
+              <table class="min-w-full text-left text-sm table-sticky">
+                <thead>
+                  <tr class="text-slate-500">
+                    <th class="px-4 py-3">会社名</th>
+                    <th class="px-4 py-3">文書様式名</th>
+                    <th class="px-4 py-3">保険項目</th>
+                  </tr>
+                </thead>
+                <tbody id="download-table" MA-database class="divide-y divide-slate-200"></tbody>
+              </table>
+            </div>
+            <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold" data-action="download-next">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-patient-search" class="screen">
+        <div class="mx-auto max-w-6xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">患者マスタ検索</h2>
+          <div class="mt-6 grid gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <label class="text-sm font-medium">患者ID</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">患者名</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">並び替え条件</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>患者ID</option>
+                  <option>患者名</option>
+                </select>
+              </div>
+            </div>
+            <label class="flex items-center gap-2 text-sm">
+              <input type="checkbox" class="rounded border-slate-300" />
+              削除済み含む
+            </label>
+            <div id="patient-search-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">検索条件の入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="patient-search">検索</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-home">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-patient-search-error">検索エラー表示切替</button>
+          </div>
+
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white/80">
+            <div class="max-h-[420px] overflow-auto">
+              <table class="min-w-full text-left text-sm table-sticky">
+                <thead>
+                  <tr class="text-slate-500">
+                    <th class="px-4 py-3">患者ID</th>
+                    <th class="px-4 py-3">患者名</th>
+                    <th class="px-4 py-3">状態</th>
+                    <th class="px-4 py-3">作成日</th>
+                    <th class="px-4 py-3">更新日</th>
+                  </tr>
+                </thead>
+                <tbody id="patient-table" MA-database class="divide-y divide-slate-200"></tbody>
+              </table>
+            </div>
+            <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold" data-action="patient-next">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-patient-detail" class="screen">
+        <div class="mx-auto max-w-5xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">患者マスタ詳細</h2>
+          <div class="mt-6 grid gap-6 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-2 text-sm">
+              <div>
+                <p class="text-slate-500">患者ID</p>
+                <p class="font-semibold">P-1201</p>
+              </div>
+              <div>
+                <p class="text-slate-500">患者名</p>
+                <p class="font-semibold">佐藤 遥</p>
+              </div>
+              <div>
+                <p class="text-slate-500">状態</p>
+                <p class="font-semibold">有効</p>
+              </div>
+              <div>
+                <p class="text-slate-500">作成日</p>
+                <p class="font-semibold">2024/06/11</p>
+              </div>
+              <div>
+                <p class="text-slate-500">更新日</p>
+                <p class="font-semibold">2024/07/05</p>
+              </div>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">住所</p>
+                <p class="mt-3 text-sm text-slate-600">東京都新宿区西新宿</p>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">電話番号</p>
+                <p class="mt-3 text-sm text-slate-600">03-1234-5678</p>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">保険証番号</p>
+                <p class="mt-3 text-sm text-slate-600">H-778892</p>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">連絡先メモ</p>
+                <p class="mt-3 text-sm text-slate-600">日中連絡可</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="go-patient-edit">編集</button>
+              <button class="rounded-xl border border-rose-200 bg-white px-5 py-2 text-sm font-semibold text-rose-600" data-action="patient-delete">削除</button>
+              <button class="rounded-xl border border-emerald-200 bg-white px-5 py-2 text-sm font-semibold text-emerald-600" data-action="patient-revive">復活</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="back-patient-search">戻る</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-patient-edit" class="screen">
+        <div class="mx-auto max-w-5xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">患者マスタ編集</h2>
+          <div class="mt-6 grid gap-5 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div>
+              <label class="text-sm font-medium">患者ID</label>
+              <input type="text" value="P-1201" disabled class="mt-2 w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm text-slate-500" />
+            </div>
+            <div>
+              <label class="text-sm font-medium">患者名</label>
+              <input type="text" value="佐藤 遥" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm" />
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">住所</p>
+                <input type="text" class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" value="東京都新宿区西新宿" />
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">電話番号</p>
+                <input type="text" class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" value="03-1234-5678" />
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">保険証番号</p>
+                <input type="text" class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" value="H-778892" />
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">連絡先メモ</p>
+                <textarea class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" rows="3">日中連絡可</textarea>
+              </div>
+            </div>
+            <div id="patient-edit-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="patient-edit-confirm">保存</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-patient-detail">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-patient-edit-error">入力エラー表示切替</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-history" class="screen">
+        <div class="mx-auto max-w-6xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">使用履歴検索</h2>
+          <div class="mt-6 grid gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div class="grid gap-4 md:grid-cols-3">
+              <div>
+                <label class="text-sm font-medium">アカウント名</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">ログインID</label>
+                <input type="text" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">操作種別</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>すべて</option>
+                  <option>作成</option>
+                  <option>編集</option>
+                  <option>削除</option>
+                  <option>ダウンロード</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-sm font-medium">対象種別</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>すべて</option>
+                  <option>カルテ</option>
+                  <option>患者</option>
+                  <option>アカウント</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-sm font-medium">操作日</label>
+                <input type="date" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+              </div>
+              <div>
+                <label class="text-sm font-medium">並び替え条件</label>
+                <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+                  <option>操作日時（新しい順）</option>
+                  <option>アカウント名</option>
+                </select>
+              </div>
+            </div>
+            <label class="flex items-center gap-2 text-sm">
+              <input type="checkbox" class="rounded border-slate-300" />
+              削除済み含む
+            </label>
+            <div id="history-search-error" class="hidden rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">検索条件の入力エラー</div>
+            <div class="flex flex-wrap gap-3">
+              <button class="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white" data-action="history-search">検索</button>
+              <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-home">戻る</button>
+            </div>
+            <button MA-dev class="text-xs text-slate-400" data-action="toggle-history-search-error">検索エラー表示切替</button>
+          </div>
+
+          <div class="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white/80">
+            <div class="max-h-[420px] overflow-auto">
+              <table class="min-w-full text-left text-sm table-sticky">
+                <thead>
+                  <tr class="text-slate-500">
+                    <th class="px-4 py-3">操作日時</th>
+                    <th class="px-4 py-3">アカウント名</th>
+                    <th class="px-4 py-3">ログインID</th>
+                    <th class="px-4 py-3">操作種別</th>
+                    <th class="px-4 py-3">対象種別</th>
+                    <th class="px-4 py-3">対象ID</th>
+                    <th class="px-4 py-3">概要</th>
+                  </tr>
+                </thead>
+                <tbody id="history-table" MA-database class="divide-y divide-slate-200"></tbody>
+              </table>
+            </div>
+            <div class="flex items-center justify-between border-t border-slate-200 px-4 py-3">
+              <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold" data-action="history-next">次の30件を表示</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-history-detail" class="screen">
+        <div class="mx-auto max-w-4xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">使用履歴詳細</h2>
+          <div class="mt-6 grid gap-4 rounded-2xl border border-slate-200 bg-white/80 p-6 text-sm">
+            <div class="grid gap-4 md:grid-cols-2">
+              <div>
+                <p class="text-slate-500">操作日時</p>
+                <p class="font-semibold">2024/07/15 10:45</p>
+              </div>
+              <div>
+                <p class="text-slate-500">アカウント名</p>
+                <p class="font-semibold">山田 花子</p>
+              </div>
+              <div>
+                <p class="text-slate-500">ログインID</p>
+                <p class="font-semibold">A000345</p>
+              </div>
+              <div>
+                <p class="text-slate-500">操作種別</p>
+                <p class="font-semibold">ダウンロード</p>
+              </div>
+              <div>
+                <p class="text-slate-500">対象種別</p>
+                <p class="font-semibold">カルテ</p>
+              </div>
+              <div>
+                <p class="text-slate-500">対象ID</p>
+                <p class="font-semibold">K-20240702-002</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-slate-500">詳細内容</p>
+              <p class="mt-2 text-sm text-slate-700">保険請求書類「虹ヶ丘保険/外傷用」ダウンロード</p>
+            </div>
+            <button class="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold" data-action="back-history">戻る</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="menu-overlay" class="fixed inset-0 z-40 hidden items-center justify-center bg-slate-900/60">
+    <div class="glass w-[90%] max-w-md rounded-3xl p-6">
+      <div class="flex items-center justify-between">
+        <p class="text-lg font-semibold">メニュー</p>
+        <button class="rounded-full border border-slate-200 bg-white/80 p-2" data-action="close-menu" aria-label="閉じる">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+      <div class="mt-6 grid gap-3 text-sm">
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-kart-new">カルテ新規入力</button>
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-kart-search">カルテ検索</button>
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-patient-search">患者マスタ</button>
+        <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-left opacity-50">
+          アカウント作成
+          <p class="mt-2 text-xs text-slate-400">権限制限のため使用できません</p>
+        </div>
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-history">使用履歴</button>
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-login-info">ログイン情報変更</button>
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-terms">利用規約</button>
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="logout-confirm">ログアウト</button>
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="close-menu">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-logout" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">ログアウトしますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="logout-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="logout-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-logout-loading" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full border-4 border-slate-200 border-t-slate-900"></div>
+      <p class="mt-4 text-sm text-slate-700">ログアウト処理中...</p>
+    </div>
+  </div>
+
+  <div id="modal-login-info-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">変更を確定しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="login-info-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="login-info-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-login-info-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">パスワード変更が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="login-info-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-account-create-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">アカウントを登録しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="account-create-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="account-create-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-account-create-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">登録が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="account-create-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-account-edit-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">保存しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="account-edit-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="account-edit-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-account-edit-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">保存が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="account-edit-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-account-delete-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">削除しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="account-delete-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="account-delete-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-account-delete-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">削除が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="account-delete-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-account-revive-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">復活しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="account-revive-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="account-revive-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-account-revive-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">復活が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="account-revive-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-kart-register-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">カルテを登録しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="kart-register-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="kart-register-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-kart-register-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">登録が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="kart-register-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-kart-edit-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">保存しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="kart-edit-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="kart-edit-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-kart-edit-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">保存が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="kart-edit-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-kart-delete-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">削除しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="kart-delete-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="kart-delete-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-kart-delete-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">削除が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="kart-delete-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-kart-revive-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">復活しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="kart-revive-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="kart-revive-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-kart-revive-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">復活が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="kart-revive-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-print-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">印刷ダイアログを開きますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="print-confirm-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="print-confirm-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-print" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-lg rounded-2xl p-6">
+      <p class="text-lg font-semibold">印刷</p>
+      <p class="mt-2 text-sm text-slate-600">PDFとしてダウンロード可能</p>
+      <div class="mt-4 grid gap-4 md:grid-cols-2 text-sm">
+        <div>
+          <label class="text-sm font-medium">プリンタ選択</label>
+          <select class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm">
+            <option>PDF</option>
+            <option>プリンタA</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-medium">印刷部数</label>
+          <input type="number" value="1" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm" />
+        </div>
+      </div>
+      <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">
+        <p class="font-medium text-slate-700">印刷設定</p>
+        <div class="mt-3 grid gap-2 text-xs text-slate-600">
+          <label class="flex items-center gap-2"><input type="checkbox" checked /> カラー印刷</label>
+          <label class="flex items-center gap-2"><input type="checkbox" /> 両面印刷</label>
+          <label class="flex items-center gap-2"><input type="checkbox" checked /> 余白を最小化</label>
+        </div>
+      </div>
+      <div class="mt-6 flex justify-end gap-3">
+        <button class="rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="print-exec">印刷実行</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-6 py-2 text-sm font-semibold" data-action="print-cancel">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-patient-edit-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">保存しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="patient-edit-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="patient-edit-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-patient-edit-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">保存が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="patient-edit-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-patient-delete-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">削除しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="patient-delete-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="patient-delete-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-patient-delete-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">削除が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="patient-delete-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-patient-revive-confirm" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">復活しますか？</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="patient-revive-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="patient-revive-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-patient-revive-done" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">復活が完了しました</p>
+      <button class="mt-6 rounded-xl bg-slate-900 px-6 py-2 text-sm font-semibold text-white" data-action="patient-revive-ok">OK</button>
+    </div>
+  </div>
+
+  <div id="modal-history-detail" class="modal fixed inset-0 z-50 items-center justify-center bg-slate-900/50">
+    <div class="glass w-[90%] max-w-sm rounded-2xl p-6 text-center">
+      <p class="text-lg font-semibold">詳細画面へ移動します</p>
+      <div class="mt-6 flex justify-center gap-3">
+        <button class="rounded-xl bg-slate-900 px-5 py-2 text-sm font-semibold text-white" data-action="history-detail-yes">はい</button>
+        <button class="rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-semibold" data-action="history-detail-no">いいえ</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const screens = Array.from(document.querySelectorAll('.screen'));
+    const header = document.getElementById('app-header');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const modals = document.querySelectorAll('.modal');
+
+    const showScreen = (id, loggedIn = true) => {
+      screens.forEach(screen => screen.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (target) {
+        target.classList.add('active');
+      }
+      header.classList.toggle('hidden', !loggedIn);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    };
+
+    const closeModals = () => {
+      modals.forEach(modal => modal.classList.remove('active'));
+    };
+
+    const openModal = (id) => {
+      closeModals();
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('active');
+    };
+
+    const toggleElement = (id) => {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    };
+
+    const setTab = (tab) => {
+      const newButton = document.getElementById('tab-new-button');
+      const masterButton = document.getElementById('tab-master-button');
+      const masterPanel = document.getElementById('kart-master-panel');
+      const uploadPanel = document.getElementById('new-patient-upload');
+      if (tab === 'new') {
+        newButton.classList.add('bg-slate-900', 'text-white');
+        masterButton.classList.remove('bg-slate-900', 'text-white');
+        masterPanel.classList.add('hidden');
+        uploadPanel.classList.remove('hidden');
+      } else {
+        masterButton.classList.add('bg-slate-900', 'text-white');
+        newButton.classList.remove('bg-slate-900', 'text-white');
+        masterPanel.classList.remove('hidden');
+        uploadPanel.classList.add('hidden');
+        document.getElementById('kart-patient-id').value = 'P-1201';
+        document.getElementById('kart-patient-name').value = '佐藤 遥';
+        document.getElementById('kart-patient-id').setAttribute('disabled', 'true');
+        document.getElementById('kart-patient-name').setAttribute('disabled', 'true');
+        document.getElementById('kart-patient-id').classList.add('bg-slate-100');
+        document.getElementById('kart-patient-name').classList.add('bg-slate-100');
+      }
+    };
+
+    const setNewPatientEditable = () => {
+      document.getElementById('kart-patient-id').removeAttribute('disabled');
+      document.getElementById('kart-patient-name').removeAttribute('disabled');
+      document.getElementById('kart-patient-id').classList.remove('bg-slate-100');
+      document.getElementById('kart-patient-name').classList.remove('bg-slate-100');
+    };
+
+    document.body.addEventListener('click', (event) => {
+      const action = event.target.closest('[data-action]')?.dataset.action;
+      if (!action) return;
+      switch (action) {
+        case 'login':
+          showScreen('screen-loading-post', true);
+          setTimeout(() => showScreen('screen-home', true), 800);
+          break;
+        case 'toggle-login-error':
+          toggleElement('login-error');
+          break;
+        case 'go-home':
+        case 'back-home':
+          showScreen('screen-home', true);
+          break;
+        case 'open-menu':
+          menuOverlay.classList.remove('hidden');
+          break;
+        case 'close-menu':
+          menuOverlay.classList.add('hidden');
+          break;
+        case 'go-terms':
+          showScreen('screen-terms', true);
+          menuOverlay.classList.add('hidden');
+          break;
+        case 'go-login-info':
+          showScreen('screen-login-info', true);
+          menuOverlay.classList.add('hidden');
+          break;
+        case 'toggle-login-info-error':
+          toggleElement('login-info-error');
+          break;
+        case 'login-info-confirm':
+          openModal('modal-login-info-confirm');
+          break;
+        case 'login-info-yes':
+          openModal('modal-login-info-done');
+          break;
+        case 'login-info-no':
+          closeModals();
+          break;
+        case 'login-info-ok':
+          closeModals();
+          showScreen('screen-home', true);
+          break;
+        case 'logout-confirm':
+          openModal('modal-logout');
+          menuOverlay.classList.add('hidden');
+          break;
+        case 'logout-yes':
+          openModal('modal-logout-loading');
+          setTimeout(() => {
+            closeModals();
+            showScreen('screen-login', false);
+          }, 800);
+          break;
+        case 'logout-no':
+          closeModals();
+          break;
+        case 'go-account-search':
+          showScreen('screen-account-search', true);
+          break;
+        case 'go-account-create':
+          showScreen('screen-account-create', true);
+          break;
+        case 'back-account-create':
+          showScreen('screen-account-create', true);
+          break;
+        case 'back-account-search':
+          showScreen('screen-account-search', true);
+          break;
+        case 'go-account-edit':
+          showScreen('screen-account-edit', true);
+          break;
+        case 'back-account-detail':
+          showScreen('screen-account-detail', true);
+          break;
+        case 'account-create-confirm':
+          openModal('modal-account-create-confirm');
+          break;
+        case 'account-create-yes':
+          openModal('modal-account-create-done');
+          break;
+        case 'account-create-no':
+          closeModals();
+          break;
+        case 'account-create-ok':
+          closeModals();
+          showScreen('screen-account-create', true);
+          break;
+        case 'account-edit-confirm':
+          openModal('modal-account-edit-confirm');
+          break;
+        case 'account-edit-yes':
+          openModal('modal-account-edit-done');
+          break;
+        case 'account-edit-no':
+          closeModals();
+          break;
+        case 'account-edit-ok':
+          closeModals();
+          showScreen('screen-account-detail', true);
+          break;
+        case 'account-delete':
+          openModal('modal-account-delete-confirm');
+          break;
+        case 'account-delete-yes':
+          openModal('modal-account-delete-done');
+          break;
+        case 'account-delete-no':
+          closeModals();
+          break;
+        case 'account-delete-ok':
+          closeModals();
+          showScreen('screen-account-detail', true);
+          break;
+        case 'account-revive':
+          openModal('modal-account-revive-confirm');
+          break;
+        case 'account-revive-yes':
+          openModal('modal-account-revive-done');
+          break;
+        case 'account-revive-no':
+          closeModals();
+          break;
+        case 'account-revive-ok':
+          closeModals();
+          showScreen('screen-account-detail', true);
+          break;
+        case 'toggle-account-create-error':
+          toggleElement('account-create-error');
+          break;
+        case 'toggle-account-search-error':
+          toggleElement('account-search-error');
+          break;
+        case 'toggle-account-edit-error':
+          toggleElement('account-edit-error');
+          break;
+        case 'go-kart-new':
+          showScreen('screen-kart-new', true);
+          menuOverlay.classList.add('hidden');
+          setTab('new');
+          setNewPatientEditable();
+          break;
+        case 'go-kart-search':
+          showScreen('screen-kart-search', true);
+          menuOverlay.classList.add('hidden');
+          break;
+        case 'go-patient-search':
+          showScreen('screen-patient-search', true);
+          menuOverlay.classList.add('hidden');
+          break;
+        case 'go-history':
+          showScreen('screen-history', true);
+          menuOverlay.classList.add('hidden');
+          break;
+        case 'tab-new':
+          setTab('new');
+          setNewPatientEditable();
+          break;
+        case 'tab-master':
+          setTab('master');
+          break;
+        case 'toggle-kart-input-error':
+          toggleElement('kart-input-error');
+          break;
+        case 'toggle-kart-upload-error':
+          toggleElement('kart-upload-error');
+          break;
+        case 'toggle-kart-master-search-error':
+          toggleElement('kart-master-search-error');
+          break;
+        case 'kart-register':
+          openModal('modal-kart-register-confirm');
+          break;
+        case 'kart-register-yes':
+          openModal('modal-kart-register-done');
+          break;
+        case 'kart-register-no':
+          closeModals();
+          break;
+        case 'kart-register-ok':
+          closeModals();
+          showScreen('screen-kart-new', true);
+          break;
+        case 'kart-upload':
+          toggleElement('kart-upload-error');
+          break;
+        case 'kart-search':
+          break;
+        case 'kart-next':
+          break;
+        case 'kart-master-search':
+          break;
+        case 'kart-master-next':
+          break;
+        case 'toggle-kart-search-error':
+          toggleElement('kart-search-error');
+          break;
+        case 'back-kart-search':
+          showScreen('screen-kart-search', true);
+          break;
+        case 'go-kart-edit':
+          showScreen('screen-kart-edit', true);
+          break;
+        case 'back-kart-detail':
+          showScreen('screen-kart-detail', true);
+          break;
+        case 'kart-edit-confirm':
+          openModal('modal-kart-edit-confirm');
+          break;
+        case 'kart-edit-yes':
+          openModal('modal-kart-edit-done');
+          break;
+        case 'kart-edit-no':
+          closeModals();
+          break;
+        case 'kart-edit-ok':
+          closeModals();
+          showScreen('screen-kart-detail', true);
+          break;
+        case 'kart-delete':
+          openModal('modal-kart-delete-confirm');
+          break;
+        case 'kart-delete-yes':
+          openModal('modal-kart-delete-done');
+          break;
+        case 'kart-delete-no':
+          closeModals();
+          break;
+        case 'kart-delete-ok':
+          closeModals();
+          showScreen('screen-kart-detail', true);
+          break;
+        case 'kart-revive':
+          openModal('modal-kart-revive-confirm');
+          break;
+        case 'kart-revive-yes':
+          openModal('modal-kart-revive-done');
+          break;
+        case 'kart-revive-no':
+          closeModals();
+          break;
+        case 'kart-revive-ok':
+          closeModals();
+          showScreen('screen-kart-detail', true);
+          break;
+        case 'go-insurance-download':
+          showScreen('screen-insurance-download', true);
+          break;
+        case 'toggle-download-search-error':
+          toggleElement('download-search-error');
+          break;
+        case 'download-search':
+          break;
+        case 'download-next':
+          break;
+        case 'print-confirm-yes':
+          openModal('modal-print');
+          break;
+        case 'print-confirm-no':
+          closeModals();
+          break;
+        case 'print-exec':
+          closeModals();
+          break;
+        case 'print-cancel':
+          closeModals();
+          break;
+        case 'patient-search':
+          break;
+        case 'patient-next':
+          break;
+        case 'go-patient-edit':
+          showScreen('screen-patient-edit', true);
+          break;
+        case 'back-patient-search':
+          showScreen('screen-patient-search', true);
+          break;
+        case 'back-patient-detail':
+          showScreen('screen-patient-detail', true);
+          break;
+        case 'toggle-patient-search-error':
+          toggleElement('patient-search-error');
+          break;
+        case 'toggle-patient-edit-error':
+          toggleElement('patient-edit-error');
+          break;
+        case 'patient-edit-confirm':
+          openModal('modal-patient-edit-confirm');
+          break;
+        case 'patient-edit-yes':
+          openModal('modal-patient-edit-done');
+          break;
+        case 'patient-edit-no':
+          closeModals();
+          break;
+        case 'patient-edit-ok':
+          closeModals();
+          showScreen('screen-patient-detail', true);
+          break;
+        case 'patient-delete':
+          openModal('modal-patient-delete-confirm');
+          break;
+        case 'patient-delete-yes':
+          openModal('modal-patient-delete-done');
+          break;
+        case 'patient-delete-no':
+          closeModals();
+          break;
+        case 'patient-delete-ok':
+          closeModals();
+          showScreen('screen-patient-detail', true);
+          break;
+        case 'patient-revive':
+          openModal('modal-patient-revive-confirm');
+          break;
+        case 'patient-revive-yes':
+          openModal('modal-patient-revive-done');
+          break;
+        case 'patient-revive-no':
+          closeModals();
+          break;
+        case 'patient-revive-ok':
+          closeModals();
+          showScreen('screen-patient-detail', true);
+          break;
+        case 'toggle-history-search-error':
+          toggleElement('history-search-error');
+          break;
+        case 'history-search':
+          break;
+        case 'history-next':
+          break;
+        case 'history-detail-yes':
+          closeModals();
+          showScreen('screen-history-detail', true);
+          break;
+        case 'history-detail-no':
+          closeModals();
+          break;
+        case 'back-history':
+          showScreen('screen-history', true);
+          break;
+        default:
+          break;
+      }
+    });
+
+    const buildRows = (targetId, rows) => {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      target.innerHTML = rows.join('');
+    };
+
+    const accountRows = Array.from({ length: 50 }).map((_, i) => {
+      const id = `A${String(1000 + i)}`;
+      return `<tr class="hover:bg-slate-50" data-action="open-account-detail">
+        <td class="px-4 py-3">${id}</td>
+        <td class="px-4 py-3">山田 ${i + 1}</td>
+        <td class="px-4 py-3">${i % 3 === 0 ? '管理者' : i % 3 === 1 ? '入力者' : '閲覧者'}</td>
+        <td class="px-4 py-3">${i % 7 === 0 ? '削除済み' : '有効'}</td>
+        <td class="px-4 py-3">2024/05/${String((i % 28) + 1).padStart(2, '0')}</td>
+        <td class="px-4 py-3">2024/07/${String((i % 28) + 1).padStart(2, '0')}</td>
+      </tr>`;
+    });
+    buildRows('account-table', accountRows);
+
+    const kartRows = Array.from({ length: 50 }).map((_, i) => {
+      const id = `K-2024${String((i % 12) + 1).padStart(2, '0')}-${String(i + 1).padStart(3, '0')}`;
+      return `<tr class="hover:bg-slate-50" data-action="open-kart-detail">
+        <td class="px-4 py-3">${id}</td>
+        <td class="px-4 py-3">P-${1000 + i}</td>
+        <td class="px-4 py-3">患者 ${i + 1}</td>
+        <td class="px-4 py-3">${i % 2 === 0 ? '富士保険' : '虹ヶ丘保険'}</td>
+        <td class="px-4 py-3">${i % 3 === 0 ? '外傷' : i % 3 === 1 ? 'リハビリ' : '通院'}</td>
+        <td class="px-4 py-3">${i % 9 === 0 ? '削除済み' : '有効'}</td>
+        <td class="px-4 py-3">2024/06/${String((i % 28) + 1).padStart(2, '0')}</td>
+        <td class="px-4 py-3">2024/07/${String((i % 28) + 1).padStart(2, '0')}</td>
+      </tr>`;
+    });
+    buildRows('kart-table', kartRows);
+
+    const patientRows = Array.from({ length: 50 }).map((_, i) => {
+      return `<tr class="hover:bg-slate-50" data-action="open-patient-detail">
+        <td class="px-4 py-3">P-${1200 + i}</td>
+        <td class="px-4 py-3">患者名 ${i + 1}</td>
+        <td class="px-4 py-3">${i % 10 === 0 ? '削除済み' : '有効'}</td>
+        <td class="px-4 py-3">2024/03/${String((i % 28) + 1).padStart(2, '0')}</td>
+        <td class="px-4 py-3">2024/07/${String((i % 28) + 1).padStart(2, '0')}</td>
+      </tr>`;
+    });
+    buildRows('patient-table', patientRows);
+
+    const masterRows = Array.from({ length: 50 }).map((_, i) => {
+      return `<tr class="hover:bg-slate-50" data-action="select-master">
+        <td class="px-4 py-3">P-${5000 + i}</td>
+        <td class="px-4 py-3">患者 ${i + 1}</td>
+        <td class="px-4 py-3">${i % 6 === 0 ? '削除済み' : '有効'}</td>
+      </tr>`;
+    });
+    buildRows('kart-master-table', masterRows);
+
+    const downloadRows = Array.from({ length: 50 }).map((_, i) => {
+      return `<tr class="hover:bg-slate-50" data-action="open-print-confirm">
+        <td class="px-4 py-3">${i % 2 === 0 ? '富士保険' : '虹ヶ丘保険'}</td>
+        <td class="px-4 py-3">様式 ${i + 1}</td>
+        <td class="px-4 py-3">${i % 3 === 0 ? '外傷' : i % 3 === 1 ? '通院' : '手術'}</td>
+      </tr>`;
+    });
+    buildRows('download-table', downloadRows);
+
+    const historyRows = Array.from({ length: 50 }).map((_, i) => {
+      return `<tr class="hover:bg-slate-50" data-action="open-history-detail">
+        <td class="px-4 py-3">2024/07/${String((i % 28) + 1).padStart(2, '0')} 10:${String(i % 60).padStart(2, '0')}</td>
+        <td class="px-4 py-3">担当者 ${i + 1}</td>
+        <td class="px-4 py-3">A${1000 + i}</td>
+        <td class="px-4 py-3">${i % 4 === 0 ? '作成' : i % 4 === 1 ? '編集' : i % 4 === 2 ? '削除' : 'ダウンロード'}</td>
+        <td class="px-4 py-3">${i % 3 === 0 ? 'カルテ' : i % 3 === 1 ? '患者' : 'アカウント'}</td>
+        <td class="px-4 py-3">ID-${100 + i}</td>
+        <td class="px-4 py-3">操作概要 ${i + 1}</td>
+      </tr>`;
+    });
+    buildRows('history-table', historyRows);
+
+    document.body.addEventListener('click', (event) => {
+      const rowAction = event.target.closest('tr')?.dataset.action;
+      if (!rowAction) return;
+      switch (rowAction) {
+        case 'open-account-detail':
+          showScreen('screen-account-detail', true);
+          break;
+        case 'open-kart-detail':
+          showScreen('screen-kart-detail', true);
+          break;
+        case 'open-patient-detail':
+          showScreen('screen-patient-detail', true);
+          break;
+        case 'open-print-confirm':
+          openModal('modal-print-confirm');
+          break;
+        case 'open-history-detail':
+          openModal('modal-history-detail');
+          break;
+        case 'select-master':
+          document.getElementById('kart-patient-id').value = 'P-1201';
+          document.getElementById('kart-patient-name').value = '佐藤 遥';
+          document.getElementById('kart-patient-id').setAttribute('disabled', 'true');
+          document.getElementById('kart-patient-name').setAttribute('disabled', 'true');
+          document.getElementById('kart-patient-id').classList.add('bg-slate-100');
+          document.getElementById('kart-patient-name').classList.add('bg-slate-100');
+          break;
+        default:
+          break;
+      }
+    });
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const blobs = Array.from({ length: 6 }).map((_, i) => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      radius: 220 + i * 35,
+      dx: (Math.random() - 0.5) * 1.8,
+      dy: (Math.random() - 0.5) * 1.8,
+      color: `rgba(${80 + i * 20}, ${120 + i * 10}, 255, 0.25)`
+    }));
+
+    const resizeCanvas = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', resizeCanvas);
+
+    const animate = () => {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(0, 0, width, height);
+      blobs.forEach(blob => {
+        blob.x += blob.dx;
+        blob.y += blob.dy;
+        if (blob.x < -blob.radius || blob.x > width + blob.radius) blob.dx *= -1;
+        if (blob.y < -blob.radius || blob.y > height + blob.radius) blob.dy *= -1;
+        const gradient = ctx.createRadialGradient(blob.x, blob.y, 0, blob.x, blob.y, blob.radius);
+        gradient.addColorStop(0, blob.color);
+        gradient.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(blob.x, blob.y, blob.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    };
+    animate();
+
+    lucide.createIcons();
+
+    setTimeout(() => {
+      showScreen('screen-login', false);
+    }, 900);
+  </script>
+</body>
+</html>
