@@ -839,7 +839,14 @@
 
     const actions = {
       'finish-preload': () => showScreen('screen-login'),
-      login: () => showScreen('screen-loading-post'),
+      login: () => {
+        showScreen('screen-loading-post');
+        setTimeout(() => {
+          if (document.getElementById('screen-loading-post').classList.contains('active')) {
+            showScreen('screen-home');
+          }
+        }, 1200);
+      },
       'go-home': () => showScreen('screen-home'),
       'go-terms': () => showScreen('screen-terms'),
       'go-login-settings': () => showScreen('screen-login-settings'),
