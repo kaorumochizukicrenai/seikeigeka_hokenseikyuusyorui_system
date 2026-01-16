@@ -389,7 +389,7 @@
                 <div>
                   <label class="text-xs font-semibold text-slate-600">送信プロンプト</label>
                   <textarea id="kart-openai-prompt" rows="4" class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700">手書きカルテ画像/PDFから読み取れる範囲で、入力フォームに必要な情報を抽出してください。日付はYYYY-MM-DD形式、電話番号はハイフンありのままでも構いません。</textarea>
-                  <p class="mt-2 text-[11px] leading-5">対応キー例: patient_id, patient_name, chief_complaint, medical_history, insurance_company, patient_number, copay_rate, public_expense_number, public_expense_beneficiary_number, insurer_number, symbol_number, traffic_accident, valid_until, insured_person, qualification_acquired, furigana, full_name, birth_date, gender, address, phone, occupation, relationship, workplace_address, workplace_phone, workplace_name, insurer_address, insurer_phone, insurer_name, injury_1_name, injury_1_work_type, injury_1_start, injury_1_end, injury_1_outcome ... injury_8_outcome, jiba_statement_year, jiba_statement_month, jiba_treatment_days, jiba_injury_date, jiba_first_visit_date, jiba_treatment_period_from, jiba_treatment_period_to, jiba_outcome, jiba_claim_amount</p>
+                  <p class="mt-2 text-[11px] leading-5">対応キー例: patient_id, patient_name, chief_complaint, medical_history, insurance_company, patient_number, copay_rate, public_expense_number, public_expense_beneficiary_number, insurer_number, symbol_number, traffic_accident, valid_until, insured_person, qualification_acquired, furigana, full_name, birth_date, gender, address, phone, occupation, relationship, workplace_address, workplace_phone, workplace_name, insurer_address, insurer_phone, insurer_name, injury_1_name, injury_1_work_type, injury_1_start, injury_1_end, injury_1_outcome ... injury_8_outcome, jiba_statement_year, jiba_statement_month, jiba_treatment_days, jiba_injury_date, jiba_first_visit_date, jiba_treatment_period_from, jiba_treatment_period_to, jiba_outcome, jiba_claim_amount, jiba_10_total_tech_points ... jiba_90_total_note</p>
                 </div>
               </div>
               <div id="kart-upload-error" class="hidden mt-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">アップロードエラー</div>
@@ -788,75 +788,244 @@
                   <div class="px-3 py-2">摘要</div>
                 </div>
                 <div class="divide-y divide-slate-200 text-sm">
-                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="診察" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_consultation_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_consultation_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_consultation_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_consultation_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">10 診察（小計）</div>
+                    <input type="text" data-kart-field="jiba_10_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_10_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_10_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_10_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="投薬" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_medication_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_medication_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_medication_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_medication_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="11 初診" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_11_initial_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_11_initial_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_11_initial_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_11_initial_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="注射" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_injection_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_injection_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_injection_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_injection_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="12 再診" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_12_followup_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_12_followup_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_12_followup_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_12_followup_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="処置" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_procedure_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_procedure_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_procedure_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_procedure_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="13 医学管理" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_13_management_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_13_management_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_13_management_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_13_management_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="手術" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_surgery_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_surgery_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_surgery_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_surgery_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="14 時間外" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_14_after_hours_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_14_after_hours_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_14_after_hours_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_14_after_hours_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="検査" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_test_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_test_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_test_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_test_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="15 休日" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_15_holiday_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_15_holiday_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_15_holiday_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_15_holiday_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="画像診断" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_imaging_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_imaging_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_imaging_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_imaging_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="16 深夜" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_16_midnight_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_16_midnight_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_16_midnight_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_16_midnight_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="フィルム・薬剤等" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_film_drug_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_film_drug_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_film_drug_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_film_drug_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="救急医療管理加算" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_emergency_management_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_emergency_management_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_emergency_management_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_emergency_management_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">20 投薬（小計）</div>
+                    <input type="text" data-kart-field="jiba_20_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_20_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_20_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_20_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="リハビリテーション" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_rehab_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_rehab_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_rehab_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_rehab_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="21 内服" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_21_oral_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_21_oral_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_21_oral_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_21_oral_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
                   </div>
                   <div class="grid grid-cols-5 gap-2 px-3 py-2">
-                    <input type="text" value="入院" readonly class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_hospitalization_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_hospitalization_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_hospitalization_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <input type="text" data-kart-field="jiba_hospitalization_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" value="22 頓服" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_22_prn_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_22_prn_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_22_prn_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_22_prn_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="23 外用" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_23_topical_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_23_topical_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_23_topical_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_23_topical_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="24 調剤" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_24_dispense_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_24_dispense_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_24_dispense_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_24_dispense_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">30 注射（小計）</div>
+                    <input type="text" data-kart-field="jiba_30_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_30_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_30_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_30_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="31 皮下・筋肉内" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_31_subcutaneous_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_31_subcutaneous_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_31_subcutaneous_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_31_subcutaneous_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="32 静脈内" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_32_intravenous_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_32_intravenous_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_32_intravenous_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_32_intravenous_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="33 その他" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_33_injection_other_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_33_injection_other_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_33_injection_other_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_33_injection_other_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">40 処置（小計）</div>
+                    <input type="text" data-kart-field="jiba_40_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_40_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_40_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_40_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="41 処置1" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_41_procedure_1_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_41_procedure_1_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_41_procedure_1_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_41_procedure_1_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="42 処置2" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_42_procedure_2_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_42_procedure_2_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_42_procedure_2_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_42_procedure_2_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">50 手術（小計）</div>
+                    <input type="text" data-kart-field="jiba_50_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_50_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_50_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_50_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="51 手術1" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_51_surgery_1_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_51_surgery_1_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_51_surgery_1_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_51_surgery_1_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">60 麻酔（小計）</div>
+                    <input type="text" data-kart-field="jiba_60_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_60_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_60_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_60_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="61 麻酔1" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_61_anesthesia_1_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_61_anesthesia_1_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_61_anesthesia_1_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_61_anesthesia_1_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">70 検査（小計）</div>
+                    <input type="text" data-kart-field="jiba_70_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_70_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_70_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_70_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="71 検査1" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_71_test_1_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_71_test_1_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_71_test_1_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_71_test_1_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">80 画像・その他（小計）</div>
+                    <input type="text" data-kart-field="jiba_80_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_80_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_80_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_80_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="81 画像診断" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_81_imaging_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_81_imaging_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_81_imaging_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_81_imaging_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="82 フィルム・薬剤等" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_82_film_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_82_film_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_82_film_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_82_film_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="83 リハビリテーション" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_83_rehab_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_83_rehab_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_83_rehab_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_83_rehab_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+
+                  <div class="grid grid-cols-5 gap-2 bg-slate-50/70 px-3 py-2 font-semibold">
+                    <div class="col-span-1">90 入院（小計）</div>
+                    <input type="text" data-kart-field="jiba_90_total_tech_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_90_total_drug_points" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_90_total_amount" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                    <input type="text" data-kart-field="jiba_90_total_note" class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-normal" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="91 入院基本料" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_91_hospital_basic_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_91_hospital_basic_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_91_hospital_basic_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_91_hospital_basic_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                  </div>
+                  <div class="grid grid-cols-5 gap-2 px-3 py-2">
+                    <input type="text" value="92 入院料加算" readonly class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_92_hospital_addon_tech_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_92_hospital_addon_drug_points" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_92_hospital_addon_amount" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input type="text" data-kart-field="jiba_92_hospital_addon_note" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
                   </div>
                 </div>
               </div>
