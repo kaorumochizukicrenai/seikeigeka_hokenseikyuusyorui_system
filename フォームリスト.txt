@@ -1,0 +1,235 @@
+[基本情報]
+患者ID	patient_id
+患者名	patient_name
+主訴	chief_complaint
+既往歴	medical_history
+保険会社名	insurance_company
+[診療録追加情報]
+患者番号	patient_number
+負担割合	copay_rate
+公費負担番号	public_expense_number
+公費負担医療の受給者番号	public_expense_beneficiary_number
+保険者番号	insurer_number
+記号・番号	symbol_number
+交通事故	traffic_accident
+有効期限	valid_until
+被保険者	insured_person
+資格取得	qualification_acquired
+フリガナ	furigana
+氏名	full_name
+生年月日	birth_date
+性別	gender
+住所	address
+電話	phone
+職業	occupation
+被保険者本人との続柄	relationship
+事業所所在地	workplace_address
+事業所電話番号	workplace_phone
+事業所名称	workplace_name
+保険者所在地	insurer_address
+保険者電話番号	insurer_phone
+保険者名称	insurer_name
+[傷病名]
+傷病名1	injury_1_name
+職務1	injury_1_work_type
+開始1	injury_1_start
+終了1	injury_1_end
+転帰1	injury_1_outcome
+傷病名2	injury_2_name
+職務2	injury_2_work_type
+開始2	injury_2_start
+終了2	injury_2_end
+転帰2	injury_2_outcome
+傷病名3	injury_3_name
+職務3	injury_3_work_type
+開始3	injury_3_start
+終了3	injury_3_end
+転帰3	injury_3_outcome
+傷病名4	injury_4_name
+職務4	injury_4_work_type
+開始4	injury_4_start
+終了4	injury_4_end
+転帰4	injury_4_outcome
+傷病名5	injury_5_name
+職務5	injury_5_work_type
+開始5	injury_5_start
+終了5	injury_5_end
+転帰5	injury_5_outcome
+傷病名6	injury_6_name
+職務6	injury_6_work_type
+開始6	injury_6_start
+終了6	injury_6_end
+転帰6	injury_6_outcome
+傷病名7	injury_7_name
+職務7	injury_7_work_type
+開始7	injury_7_start
+終了7	injury_7_end
+転帰7	injury_7_outcome
+傷病名8	injury_8_name
+職務8	injury_8_work_type
+開始8	injury_8_start
+終了8	injury_8_end
+転帰8	injury_8_outcome
+[自賠責診療報酬明細書（入院）基本]
+年	jiba_statement_year
+月	jiba_statement_month
+診療実日数	jiba_treatment_days
+受傷日	jiba_injury_date
+初診日	jiba_first_visit_date
+診療開始日	jiba_treatment_start_date
+診療期間（自）	jiba_treatment_period_from
+診療期間（至）	jiba_treatment_period_to
+転帰	jiba_outcome
+年齢	jiba_age
+[自賠責 診療内容（親カテゴリ小計）]
+10 診察（小計） 技術点数	jiba_10_total_tech_points
+10 診察（小計） 薬剤・器材点数	jiba_10_total_drug_points
+10 診察（小計） 金額	jiba_10_total_amount
+10 診察（小計） 摘要	jiba_10_total_note
+20 投薬（小計） 技術点数	jiba_20_total_tech_points
+20 投薬（小計） 薬剤・器材点数	jiba_20_total_drug_points
+20 投薬（小計） 金額	jiba_20_total_amount
+20 投薬（小計） 摘要	jiba_20_total_note
+30 注射（小計） 技術点数	jiba_30_total_tech_points
+30 注射（小計） 薬剤・器材点数	jiba_30_total_drug_points
+30 注射（小計） 金額	jiba_30_total_amount
+30 注射（小計） 摘要	jiba_30_total_note
+40 処置（小計） 技術点数	jiba_40_total_tech_points
+40 処置（小計） 薬剤・器材点数	jiba_40_total_drug_points
+40 処置（小計） 金額	jiba_40_total_amount
+40 処置（小計） 摘要	jiba_40_total_note
+50 手術（小計） 技術点数	jiba_50_total_tech_points
+50 手術（小計） 薬剤・器材点数	jiba_50_total_drug_points
+50 手術（小計） 金額	jiba_50_total_amount
+50 手術（小計） 摘要	jiba_50_total_note
+60 麻酔（小計） 技術点数	jiba_60_total_tech_points
+60 麻酔（小計） 薬剤・器材点数	jiba_60_total_drug_points
+60 麻酔（小計） 金額	jiba_60_total_amount
+60 麻酔（小計） 摘要	jiba_60_total_note
+70 検査（小計） 技術点数	jiba_70_total_tech_points
+70 検査（小計） 薬剤・器材点数	jiba_70_total_drug_points
+70 検査（小計） 金額	jiba_70_total_amount
+70 検査（小計） 摘要	jiba_70_total_note
+80 画像・その他（小計） 技術点数	jiba_80_total_tech_points
+80 画像・その他（小計） 薬剤・器材点数	jiba_80_total_drug_points
+80 画像・その他（小計） 金額	jiba_80_total_amount
+80 画像・その他（小計） 摘要	jiba_80_total_note
+90 入院（小計） 技術点数	jiba_90_total_tech_points
+90 入院（小計） 薬剤・器材点数	jiba_90_total_drug_points
+90 入院（小計） 金額	jiba_90_total_amount
+90 入院（小計） 摘要	jiba_90_total_note
+[自賠責 診療内容（子カテゴリ）]
+11 初診 技術点数	jiba_11_initial_tech_points
+11 初診 薬剤・器材点数	jiba_11_initial_drug_points
+11 初診 金額	jiba_11_initial_amount
+11 初診 摘要	jiba_11_initial_note
+12 再診 技術点数	jiba_12_followup_tech_points
+12 再診 薬剤・器材点数	jiba_12_followup_drug_points
+12 再診 金額	jiba_12_followup_amount
+12 再診 摘要	jiba_12_followup_note
+13 医学管理 技術点数	jiba_13_management_tech_points
+13 医学管理 薬剤・器材点数	jiba_13_management_drug_points
+13 医学管理 金額	jiba_13_management_amount
+13 医学管理 摘要	jiba_13_management_note
+14 時間外 技術点数	jiba_14_after_hours_tech_points
+14 時間外 薬剤・器材点数	jiba_14_after_hours_drug_points
+14 時間外 金額	jiba_14_after_hours_amount
+14 時間外 摘要	jiba_14_after_hours_note
+15 休日 技術点数	jiba_15_holiday_tech_points
+15 休日 薬剤・器材点数	jiba_15_holiday_drug_points
+15 休日 金額	jiba_15_holiday_amount
+15 休日 摘要	jiba_15_holiday_note
+16 深夜 技術点数	jiba_16_midnight_tech_points
+16 深夜 薬剤・器材点数	jiba_16_midnight_drug_points
+16 深夜 金額	jiba_16_midnight_amount
+16 深夜 摘要	jiba_16_midnight_note
+救急医療管理加算 技術点数	jiba_emergency_management_tech_points
+救急医療管理加算 薬剤・器材点数	jiba_emergency_management_drug_points
+救急医療管理加算 金額	jiba_emergency_management_amount
+救急医療管理加算 摘要	jiba_emergency_management_note
+21 内服 技術点数	jiba_21_oral_tech_points
+21 内服 薬剤・器材点数	jiba_21_oral_drug_points
+21 内服 金額	jiba_21_oral_amount
+21 内服 摘要	jiba_21_oral_note
+22 頓服 技術点数	jiba_22_prn_tech_points
+22 頓服 薬剤・器材点数	jiba_22_prn_drug_points
+22 頓服 金額	jiba_22_prn_amount
+22 頓服 摘要	jiba_22_prn_note
+23 外用 技術点数	jiba_23_topical_tech_points
+23 外用 薬剤・器材点数	jiba_23_topical_drug_points
+23 外用 金額	jiba_23_topical_amount
+23 外用 摘要	jiba_23_topical_note
+24 調剤 技術点数	jiba_24_dispense_tech_points
+24 調剤 薬剤・器材点数	jiba_24_dispense_drug_points
+24 調剤 金額	jiba_24_dispense_amount
+24 調剤 摘要	jiba_24_dispense_note
+31 皮下・筋肉内 技術点数	jiba_31_subcutaneous_tech_points
+31 皮下・筋肉内 薬剤・器材点数	jiba_31_subcutaneous_drug_points
+31 皮下・筋肉内 金額	jiba_31_subcutaneous_amount
+31 皮下・筋肉内 摘要	jiba_31_subcutaneous_note
+32 静脈内 技術点数	jiba_32_intravenous_tech_points
+32 静脈内 薬剤・器材点数	jiba_32_intravenous_drug_points
+32 静脈内 金額	jiba_32_intravenous_amount
+32 静脈内 摘要	jiba_32_intravenous_note
+33 その他 技術点数	jiba_33_injection_other_tech_points
+33 その他 薬剤・器材点数	jiba_33_injection_other_drug_points
+33 その他 金額	jiba_33_injection_other_amount
+33 その他 摘要	jiba_33_injection_other_note
+41 処置1 技術点数	jiba_41_procedure_1_tech_points
+41 処置1 薬剤・器材点数	jiba_41_procedure_1_drug_points
+41 処置1 金額	jiba_41_procedure_1_amount
+41 処置1 摘要	jiba_41_procedure_1_note
+42 処置2 技術点数	jiba_42_procedure_2_tech_points
+42 処置2 薬剤・器材点数	jiba_42_procedure_2_drug_points
+42 処置2 金額	jiba_42_procedure_2_amount
+42 処置2 摘要	jiba_42_procedure_2_note
+51 手術1 技術点数	jiba_51_surgery_1_tech_points
+51 手術1 薬剤・器材点数	jiba_51_surgery_1_drug_points
+51 手術1 金額	jiba_51_surgery_1_amount
+51 手術1 摘要	jiba_51_surgery_1_note
+61 麻酔1 技術点数	jiba_61_anesthesia_1_tech_points
+61 麻酔1 薬剤・器材点数	jiba_61_anesthesia_1_drug_points
+61 麻酔1 金額	jiba_61_anesthesia_1_amount
+61 麻酔1 摘要	jiba_61_anesthesia_1_note
+71 検査1 技術点数	jiba_71_test_1_tech_points
+71 検査1 薬剤・器材点数	jiba_71_test_1_drug_points
+71 検査1 金額	jiba_71_test_1_amount
+71 検査1 摘要	jiba_71_test_1_note
+81 画像診断 技術点数	jiba_81_imaging_tech_points
+81 画像診断 薬剤・器材点数	jiba_81_imaging_drug_points
+81 画像診断 金額	jiba_81_imaging_amount
+81 画像診断 摘要	jiba_81_imaging_note
+82 フィルム・薬剤等 技術点数	jiba_82_film_tech_points
+82 フィルム・薬剤等 薬剤・器材点数	jiba_82_film_drug_points
+82 フィルム・薬剤等 金額	jiba_82_film_amount
+82 フィルム・薬剤等 摘要	jiba_82_film_note
+83 リハビリテーション 技術点数	jiba_83_rehab_tech_points
+83 リハビリテーション 薬剤・器材点数	jiba_83_rehab_drug_points
+83 リハビリテーション 金額	jiba_83_rehab_amount
+83 リハビリテーション 摘要	jiba_83_rehab_note
+91 入院基本料 技術点数	jiba_91_hospital_basic_tech_points
+91 入院基本料 薬剤・器材点数	jiba_91_hospital_basic_drug_points
+91 入院基本料 金額	jiba_91_hospital_basic_amount
+91 入院基本料 摘要	jiba_91_hospital_basic_note
+92 入院料加算 技術点数	jiba_92_hospital_addon_tech_points
+92 入院料加算 薬剤・器材点数	jiba_92_hospital_addon_drug_points
+92 入院料加算 金額	jiba_92_hospital_addon_amount
+92 入院料加算 摘要	jiba_92_hospital_addon_note
+[自賠責 集計/請求]
+10〜90点数計	jiba_points_total_10_90
+請求額（合計）	jiba_claim_amount
+請求額の計算 A	jiba_claim_calc_a
+請求額の計算 B	jiba_claim_calc_b
+請求額の計算 C	jiba_claim_calc_c
+請求額の計算 D	jiba_claim_calc_d
+請求額の計算 合計	jiba_claim_calc_total
+病歴・経過（初診からすべてを文章で）	jiba_history_course
+[自賠責 医療機関/請求日]
+請求日（年）	jiba_claim_year
+請求日（月）	jiba_claim_month
+請求日（日）	jiba_claim_day
+所在地	jiba_institution_address
+名称	jiba_institution_name
+医師名	jiba_doctor_name
+電話	jiba_institution_phone
+病床数	jiba_bed_count
