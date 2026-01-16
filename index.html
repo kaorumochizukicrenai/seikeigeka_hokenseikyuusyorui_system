@@ -2236,6 +2236,10 @@
 
     const collectKartFormData = () => {
       const payload = {};
+      const kartIdInput = document.querySelector('#screen-kart-new input[value^="K-"]');
+      if (kartIdInput?.value) {
+        payload.kart_id = kartIdInput.value;
+      }
       Object.entries(kartAutofillFields).forEach(([key, element]) => {
         if (element.type === 'checkbox') {
           payload[key] = element.checked;
@@ -2248,19 +2252,22 @@
 
     const handleJibaPrintTest = async () => {
       const url = 'https://denshikarute.monleno.biz/testprintkarute.php';
+      const payload = collectKartFormData();
+      const kartId = payload.kart_id || '';
+      const targetUrl = kartId ? `${url}?MA_id=${encodeURIComponent(kartId)}` : url;
       try {
         setKartUploadStatus('自賠責フォーマット送信中...', false);
         const response = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: collectKartFormData() })
+          body: JSON.stringify({ status: payload })
         });
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(`送信エラー: ${response.status} ${errorText}`);
         }
         setKartUploadStatus('送信が完了しました。別タブで開きます。', false);
-        window.open(url, '_blank', 'noopener');
+        window.open(targetUrl, '_blank', 'noopener');
       } catch (error) {
         setKartUploadStatus(`送信エラー: ${error.message}`, true);
       }
