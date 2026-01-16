@@ -2267,7 +2267,7 @@
           const errorText = await response.text();
           throw new Error(`送信エラー: ${response.status} ${errorText}`);
         }else{
-          console.log(response.text());
+          console.log(await response.text());
         }
         setKartUploadStatus('送信が完了しました。別タブで開きます。', false);
         window.open(targetUrl, '_blank', 'noopener');
