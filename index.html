@@ -2255,6 +2255,14 @@
       const payload = collectKartFormData();
       const kartId = payload.kart_id || '';
       const targetUrl = kartId ? `${url}?MA_id=${encodeURIComponent(kartId)}` : url;
+      const formdata = new FormData();
+      const targetformdom = document.querySelectorAll('#screen-kart-new *[data-kart-field]');
+      for(let i = 0; i < targetformdom.length; i++){
+        let key = targetformdom[i].getAttribute('data-kart-field');
+        let value = targetformdom[i].value;
+        formdata.append(key, value);
+      }
+      formdata.append('kart_id', kartId);
       try {
         setKartUploadStatus('自賠責フォーマット送信中...', false);
         const response = await fetch(url, {
@@ -2262,7 +2270,7 @@
           headers: { 'Content-Type': 'application/json' },
           //body: JSON.stringify({ status: payload })
           //body: JSON.stringifypayload)
-          body: payload
+          body: formdata
         });
         if (!response.ok) {
           const errorText = await response.text();
