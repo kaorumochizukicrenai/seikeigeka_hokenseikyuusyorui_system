@@ -388,17 +388,8 @@
                 </div>
                 <div>
                   <label class="text-xs font-semibold text-slate-600">送信プロンプト</label>
-                  <textarea id="kart-openai-prompt" rows="4" class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700">手書きカルテ画像/PDFから読み取れる範囲で、入力フォームに必要な情報を抽出してください。読み取れた文章や単語には医療用の専門用語や略称もあるため、省略せずに一度該当する入力欄などに転記いただき、そのあとに補足などを記述願います。日付はYYYY-MM-DD形式、電話番号はハイフンありのままでも構いません。アップロードした画像/pdfに「病歴　経過」などのカラムをもったリストのページがある場合は、そこに、「11 初診」といった「診療内容」「技術点数」などの入力欄の内訳が、手書きやスタンプなどで記載されています。読み取った内容からの推測を重要度強めに実行し、「診療内容」「技術点数」といった入力欄に反映してほしいです。推測や、分析が難しければ摘要に文章を記載でも構わないので、重要度高めで記載願いたいです。病歴・経過（初診からすべてを文章で）のテキストエリアでは、見やすさの観点で日付ごとに改行を二つ挟んでください。また、「技術点数」「薬剤・器材点数」「金額」は、この病院の参照データが無いため、ネット上で一般的なものを参照して記載願います。また、テスト用なので嘘があってもいいので、埋まっていない項目を極力たくさん埋められるように、提案してほしいです。</textarea>
+                  <textarea id="kart-openai-prompt" rows="4" class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700">手書きカルテ画像/PDFから読み取れる範囲で、入力フォームに必要な情報を抽出してください。読み取れた文章や単語には医療用の専門用語や略称もあるため、省略せずに一度該当する入力欄などに転記いただき、そのあとに補足などを記述願います。日付はYYYY-MM-DD形式、電話番号はハイフンありのままでも構いません。アップロードした画像/pdfに「病歴　経過」などのカラムをもったリストのページがある場合は、そこに、「11 初診」といった「診療内容」「技術点数」などの入力欄の内訳が、手書きやスタンプなどで記載されています。読み取った内容からの推測を重要度強めに実行し、「診療内容」「技術点数」といった入力欄に反映してほしいです。スタンプに対して〇がつけられている様子や、イラスト・スタンプに線を引いて説明をしていることもあるので、それも含めて記述願います。推測や分析が難しければ、摘要に文章を記載でも構わないので、重要度高めで記載願いたいです。病歴・経過（初診からすべてを文章で）のテキストエリアでは、見やすさの観点で日付ごとに改行を二つ挟んでください。また、すべての日付を省略せずに記述してください。手書きで2重線が引かれることがありますが、書き間違えなどの取り消しの意味だと捉えてください。また、「技術点数」「薬剤・器材点数」「金額」は、この病院の参照データが無いため、ネット上で一般的なものを参照して記載願います。また、テスト用なので嘘があってもいいので、埋まっていない項目を極力たくさん埋められるように、提案してほしいです。医師名は「大谷勝典」（読み：おおや かつのり）です。「判読困難」などのあなたのコメントは不要とします。</textarea>
                   <p class="mt-2 text-[11px] leading-5">対応キー例: patient_id, patient_name, chief_complaint, medical_history, insurance_company, patient_number, copay_rate, public_expense_number, public_expense_beneficiary_number, insurer_number, symbol_number, traffic_accident, valid_until, insured_person, qualification_acquired, furigana, full_name, birth_date, gender, address, phone, occupation, relationship, workplace_address, workplace_phone, workplace_name, insurer_address, insurer_phone, insurer_name, injury_1_name, injury_1_work_type, injury_1_start, injury_1_end, injury_1_outcome ... injury_8_outcome, jiba_statement_year, jiba_statement_month, jiba_treatment_days, jiba_injury_date, jiba_first_visit_date, jiba_treatment_period_from, jiba_treatment_period_to, jiba_outcome, jiba_claim_amount, jiba_10_total_tech_points ... jiba_90_total_note</p>
-                </div>
-                <div>
-                  <label class="text-xs font-semibold text-slate-600">Evaluation Dataset ID（任意）</label>
-                  <input type="text" id="kart-openai-eval-dataset" placeholder="ds_..." class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700" />
-                  <p class="mt-2 text-[11px] leading-5">入力時は OpenAI の Evaluation Dataset から 1 件を取得し、GPT API テストの追加入力として利用します。</p>
-                </div>
-                <div>
-                  <label class="text-xs font-semibold text-slate-600">Evaluation Dataset Item ID（任意）</label>
-                  <input type="text" id="kart-openai-eval-item" placeholder="dsi_..." class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700" />
                 </div>
               </div>
               <div id="kart-upload-error" class="hidden mt-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">アップロードエラー</div>
@@ -2020,8 +2011,6 @@
     const kartApiKeyInput = document.getElementById('kart-openai-key');
     const kartModelInput = document.getElementById('kart-openai-model');
     const kartPromptInput = document.getElementById('kart-openai-prompt');
-    const kartEvalDatasetInput = document.getElementById('kart-openai-eval-dataset');
-    const kartEvalItemInput = document.getElementById('kart-openai-eval-item');
     const kartOpenAiSettings = document.getElementById('kart-openai-settings');
     const kartOpenAiToggle = document.querySelector('[data-action="toggle-kart-openai-settings"]');
     const kartOpenAiToggleText = kartOpenAiToggle?.querySelector('span');
@@ -2032,9 +2021,7 @@
     const kartOpenAiDefaults = {
       model: kartModelInput?.value ?? '',
       key: kartApiKeyInput?.value ?? '',
-      prompt: kartPromptInput?.value ?? '',
-      evalDataset: kartEvalDatasetInput?.value ?? '',
-      evalItem: kartEvalItemInput?.value ?? ''
+      prompt: kartPromptInput?.value ?? ''
     };
 
     if (window.pdfjsLib) {
@@ -2083,31 +2070,18 @@
       }
       return images;
     };
-
-    const loadEvaluationDatasetContext = async ({ apiKey, datasetId, itemId }) => {
-      if (!datasetId) return '';
-
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`
-      };
-      const endpoint = itemId
-        ? `https://api.openai.com/v1/datasets/${encodeURIComponent(datasetId)}/items/${encodeURIComponent(itemId)}`
-        : `https://api.openai.com/v1/datasets/${encodeURIComponent(datasetId)}/items?limit=1`;
-      const response = await fetch(endpoint, { headers });
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Evaluation Dataset取得エラー: ${response.status} ${errorText}`);
-      }
-      const body = await response.json();
-      const item = itemId ? body : (Array.isArray(body?.data) ? body.data[0] : null);
-      if (!item) {
-        throw new Error('Evaluation Datasetに対象データがありません。');
-      }
-
-      const source = item?.data ?? item;
-      const input = source?.input ?? source?.inputs ?? source?.prompt ?? source;
-      return `\n\n[Evaluation Dataset補助情報]\ndataset_id: ${datasetId}\nitem_id: ${item.id || itemId || '(auto)'}\n${JSON.stringify(input, null, 2)}`;
+    const detectReferenceImageHints = (files) => {
+      const joinedNames = files.map((file) => (file?.name || '').toLowerCase()).join(' ');
+      const imageKeywordMappings = [
+        { label: '手', keywords: ['手', 'hand', 'palm', 'finger'] },
+        { label: '足（甲）', keywords: ['足', 'foot', 'toe', 'dorsum'] },
+        { label: '足（裏）', keywords: ['足裏', 'sole', 'plantar'] },
+        { label: '全身', keywords: ['全身', 'body', 'human', 'front', 'back'] }
+      ];
+      const detected = imageKeywordMappings
+        .filter(({ keywords }) => keywords.some((keyword) => joinedNames.includes(keyword)))
+        .map(({ label }) => `${label}の画像あり`);
+      return [...new Set(detected)];
     };
 
     const extractJson = (text) => {
@@ -2200,12 +2174,6 @@
       }
       if (kartPromptInput) {
         kartPromptInput.value = kartOpenAiDefaults.prompt;
-      }
-      if (kartEvalDatasetInput) {
-        kartEvalDatasetInput.value = kartOpenAiDefaults.evalDataset;
-      }
-      if (kartEvalItemInput) {
-        kartEvalItemInput.value = kartOpenAiDefaults.evalItem;
       }
       setKartUploadStatus('');
       setKartOpenAiVisibility(false);
@@ -2355,8 +2323,6 @@
       }
       const model = kartModelInput?.value?.trim() || 'gpt-5.2';
       const prompt = kartPromptInput?.value?.trim() || '';
-      const evalDatasetId = kartEvalDatasetInput?.value?.trim() || '';
-      const evalItemId = kartEvalItemInput?.value?.trim() || '';
       try {
         if (kartUploadButton) {
           kartUploadButton.disabled = true;
@@ -2364,12 +2330,11 @@
         }
         setKartUploadStatus('解析中...', false);
         const fileNames = files.map((file) => file.name).join(', ');
-        const evalDatasetContext = await loadEvaluationDatasetContext({
-          apiKey,
-          datasetId: evalDatasetId,
-          itemId: evalItemId
-        });
-        const basePrompt = `${prompt}${evalDatasetContext}\n\n必ずJSONオブジェクトのみで返してください。値が無い項目はキーを省略してください。キー一覧: ${kartAutofillKeys.join(', ')}`;
+        const detectedImageHints = detectReferenceImageHints(files);
+        const imageHintText = detectedImageHints.length
+          ? `\n\n[テスト画面でファイル名から検出した参考情報]\n${detectedImageHints.join('、')}`
+          : '';
+        const basePrompt = `${prompt}${imageHintText}\n\n必ずJSONオブジェクトのみで返してください。値が無い項目はキーを省略してください。キー一覧: ${kartAutofillKeys.join(', ')}`;
         const content = [{ type: 'text', text: `${basePrompt}\n\n[アップロードファイル: ${fileNames}]` }];
         const imageDataUrls = pdfFiles.length
           ? await readPdfAsImages(pdfFiles[0])
