@@ -388,7 +388,7 @@
                 </div>
                 <div>
                   <label class="text-xs font-semibold text-slate-600">送信プロンプト</label>
-                  <textarea id="kart-openai-prompt" rows="4" class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700">手書きカルテ画像/PDFから読み取れる範囲で、入力フォームに必要な情報を抽出してください。読み取れた文章や単語には医療用の専門用語や略称もあるため、省略せずに一度該当する入力欄などに転記いただき、そのあとに補足などを記述願います。日付はYYYY-MM-DD形式、電話番号はハイフンありのままでも構いません。アップロードした画像/pdfに「病歴　経過」などのカラムをもったリストのページがある場合は、そこに、「11 初診」といった「診療内容」「技術点数」などの入力欄の内訳が、手書きやスタンプなどで記載されています。読み取った内容からの推測を重要度強めに実行し、「診療内容」「技術点数」といった入力欄に反映してほしいです。「足の甲」「足の裏」「手のひら」「手の甲」「全身の前面」「全身の背面」や、それ以外のイラストを認識した場合は「〇〇のイラストあり」と記述してください。「物療（エコー...」の選択欄に〇印があるなど、イラストやスタンプに対して〇がつけられている様子や、イラスト・スタンプに線を引いて説明をしていることもあるので、「〇〇のイラストに〇〇の記述あり」「〇〇の文字に丸記号あり」と記述願います。推測や分析が難しければ、摘要に文章を記載でも構わないので、重要度高めで記載願いたいです。病歴・経過（初診からすべてを文章で）のテキストエリアでは、見やすさの観点で日付ごとに改行を二つ挟んでください。また、すべての日付を省略せずに記述してください。手書きで文字の上に直接2重線が引かれることがありますが、書き間違えなどの取り消しの意味だと捉えて、「〇〇と記載あったが取り消し。」と出力してください。また、「技術点数」「薬剤・器材点数」「金額」は、この病院の参照データが無いため、ネット上で一般的なものを参照して記載願います。また、テスト用なので嘘があってもいいので、埋まっていない項目を極力たくさん埋められるように、提案してほしいです。医師名は「大谷勝典」（読み：おおや かつのり）です。「判読困難」などのあなたのコメントは不要とします。</textarea>
+                  <textarea id="kart-openai-prompt" rows="4" class="mt-2 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700">手書きカルテ画像/PDFから読み取れる範囲で、入力フォームに必要な情報を抽出してください。読み取れた文章や単語には医療用の専門用語や略称もあるため、省略せずに一度該当する入力欄などに転記いただき、そのあとに補足などを記述願います。日付はYYYY-MM-DD形式、電話番号はハイフンありのままでも構いません。アップロードした画像/pdfに「病歴　経過」などのカラムをもったリストのページがある場合は、そこに、「11 初診」といった「診療内容」「技術点数」などの入力欄の内訳が、手書きやスタンプなどで記載されています。読み取った内容からの推測を重要度強めに実行し、「診療内容」「技術点数」といった入力欄に反映してほしいです。「足の甲」「足の裏」「手のひら」「手の甲」「全身の前面」「全身の背面」や、それ以外のイラストを認識した場合は「〇〇のイラストあり」と記述してください。「物療（エコー...」の選択欄に〇印があるなど、イラストやスタンプに対して〇がつけられている様子や、イラスト・スタンプに線を引いて説明をしていることもあるので、「〇〇のイラストに〇〇の記述あり」「〇〇の文字に丸記号あり」と記述願います。推測や分析が難しければ、摘要に文章を記載でも構わないので、重要度高めで記載願いたいです。病歴・経過（初診からすべてを文章で）のテキストエリアでは、見やすさの観点で日付ごとに改行を二つ挟んでください。また、すべての日付を省略せずに記述してください。手書きで文字の上に直接2重線が引かれることがありますが、書き間違えなどの取り消しの意味だと捉えて、「〇〇と記載あったが取り消し。」と出力してください。また、「技術点数」「薬剤・器材点数」「金額」は、この病院の参照データが無いため、ネット上で一般的なものを参照して記載願います。また、テスト用なので嘘があってもいいので、埋まっていない項目を極力たくさん埋められるように、提案してほしいです。医師名は「大谷勝典」（読み：おおや かつのり）です。「判読困難」などのあなたのコメントは不要とします。参考情報として、手書き傷病名リストに「左第２,4中足骨痛労骨折」「左〃３〃」「右変形性膝関節症」「右足部捻挫」「右足部捻挫」「左変形性膝関節症」が含まれる場合は、2段目の「〃」を前項参照として解釈し、「左〃３〃」は「左第3中足骨痛労骨折」として読み取って反映してください。</textarea>
                   <p class="mt-2 text-[11px] leading-5">対応キー例: patient_id, patient_name, chief_complaint, medical_history, insurance_company, patient_number, copay_rate, public_expense_number, public_expense_beneficiary_number, insurer_number, symbol_number, traffic_accident, valid_until, insured_person, qualification_acquired, furigana, full_name, birth_date, gender, address, phone, occupation, relationship, workplace_address, workplace_phone, workplace_name, insurer_address, insurer_phone, insurer_name, injury_1_name, injury_1_work_type, injury_1_start, injury_1_end, injury_1_outcome ... injury_8_outcome, jiba_statement_year, jiba_statement_month, jiba_treatment_days, jiba_injury_date, jiba_first_visit_date, jiba_treatment_period_from, jiba_treatment_period_to, jiba_outcome, jiba_claim_amount, jiba_10_total_tech_points ... jiba_90_total_note</p>
                 </div>
               </div>
@@ -2078,6 +2078,8 @@
       }
       return images;
     };
+    const handwrittenReferenceText = '参考情報: 手書き傷病名リストに「左第２,4中足骨痛労骨折」「左〃３〃」「右変形性膝関節症」「右足部捻挫」「右足部捻挫」「左変形性膝関節症」がある場合、2段目の「〃」は前項参照として「左第3中足骨痛労骨折」と解釈する。';
+
     const detectReferenceImageHints = (files) => {
       const joinedNames = files.map((file) => (file?.name || '').toLowerCase()).join(' ');
       const imageKeywordMappings = [
@@ -2342,7 +2344,7 @@
         const imageHintText = detectedImageHints.length
           ? `\n\n[テスト画面でファイル名から検出した参考情報]\n${detectedImageHints.join('、')}`
           : '';
-        const basePrompt = `${prompt}${imageHintText}\n\n必ずJSONオブジェクトのみで返してください。値が無い項目はキーを省略してください。キー一覧: ${kartAutofillKeys.join(', ')}`;
+        const basePrompt = `${prompt}\n\n[追加の文字読み取り参考情報]\n${handwrittenReferenceText}${imageHintText}\n\n必ずJSONオブジェクトのみで返してください。値が無い項目はキーを省略してください。キー一覧: ${kartAutofillKeys.join(', ')}`;
         const content = [{ type: 'text', text: `${basePrompt}\n\n[アップロードファイル: ${fileNames}]` }];
         const imageDataUrls = pdfFiles.length
           ? await readPdfAsImages(pdfFiles[0])
