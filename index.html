@@ -93,7 +93,7 @@
               <button MA-dev class="text-xs text-slate-400" data-action="toggle-login-error">入力エラー表示切替</button>
             </div>
           </div>
-          <p class="absolute bottom-4 right-4 text-xs text-slate-400">更新日時: 2026-02-21 09:00</p>
+          <p class="absolute bottom-4 right-4 text-xs text-slate-400">更新日時: 2026-03-02 09:00</p>
         </div>
       </section>
 
@@ -2259,9 +2259,10 @@
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       const { data, width, height } = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const visited = new Uint8Array(width * height);
-      const isDark = (idx) => data[idx] < 150 && data[idx + 1] < 150 && data[idx + 2] < 150;
+      const isDark = (idx) => data[idx] < 145 && data[idx + 1] < 145 && data[idx + 2] < 145;
       const boxes = [];
-      const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
+      const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      const imageArea = width * height;
       for (let y = 0; y < height; y += 1) {
         for (let x = 0; x < width; x += 1) {
           const key = y * width + x;
@@ -2275,8 +2276,10 @@
           while (head < q.length) {
             const [cx, cy] = q[head++];
             count += 1;
-            minX = Math.min(minX, cx); maxX = Math.max(maxX, cx);
-            minY = Math.min(minY, cy); maxY = Math.max(maxY, cy);
+            minX = Math.min(minX, cx);
+            maxX = Math.max(maxX, cx);
+            minY = Math.min(minY, cy);
+            maxY = Math.max(maxY, cy);
             dirs.forEach(([dx, dy]) => {
               const nx = cx + dx; const ny = cy + dy;
               if (nx < 0 || ny < 0 || nx >= width || ny >= height) return;
@@ -2288,7 +2291,13 @@
           }
           const bw = maxX - minX + 1;
           const bh = maxY - minY + 1;
-          if (count > 900 && bw > 30 && bh > 30) {
+          const area = bw * bh;
+          const density = count / area;
+          const aspect = bw / bh;
+          const touchesEdge = minX <= 2 || minY <= 2 || maxX >= width - 3 || maxY >= height - 3;
+          const tooLarge = area > imageArea * 0.35 || bw > width * 0.75 || bh > height * 0.75;
+          const likelyTextOnly = bh < 40 || density < 0.02 || density > 0.5 || aspect > 3.2 || aspect < 0.3;
+          if (count > 1100 && bw > 45 && bh > 45 && !touchesEdge && !tooLarge && !likelyTextOnly) {
             boxes.push({ minX, minY, bw, bh, count });
           }
         }
@@ -2694,35 +2703,72 @@
 
     const renderReservationCalendar = () => {
       if (!reservationCalendar) return;
-      ['day','week','month'].forEach((v) => document.getElementById(`reservation-view-${v}`)?.classList.toggle('bg-slate-900', reservationState.view === v));
-      ['day','week','month'].forEach((v) => document.getElementById(`reservation-view-${v}`)?.classList.toggle('text-white', reservationState.view === v));
+      ['day', 'week', 'month'].forEach((v) => document.getElementById(`reservation-view-${v}`)?.classList.toggle('bg-slate-900', reservationState.view === v));
+      ['day', 'week', 'month'].forEach((v) => document.getElementById(`reservation-view-${v}`)?.classList.toggle('text-white', reservationState.view === v));
       const base = new Date(reservationBaseDateInput?.value || reservationState.baseDate);
+      const weekday = ['日', '月', '火', '水', '木', '金', '土'];
+      const fmtDate = (d) => formatDateInput(d);
+      const findReservation = (unitId, prefix) => reservationState.reservations.find((r) => r.unitId === unitId && r.start?.startsWith(prefix));
+
       if (reservationState.view === 'month') {
-        const start = new Date(base.getFullYear(), base.getMonth(), 1);
-        const days = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
-        const cells = Array.from({ length: days }).map((_, i) => {
-          const d = new Date(base.getFullYear(), base.getMonth(), i + 1);
-          const key = formatDateInput(d);
+        const first = new Date(base.getFullYear(), base.getMonth(), 1);
+        const monthStartW = first.getDay();
+        const daysInMonth = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
+        const totalCells = 42;
+        const ths = weekday.map((w) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2 text-center text-xs">${w}</th>`).join('');
+        const cellArr = Array.from({ length: totalCells }).map((_, idx) => {
+          const dayNum = idx - monthStartW + 1;
+          if (dayNum < 1 || dayNum > daysInMonth) {
+            return '<td class="border border-slate-200 bg-slate-50/50 px-2 py-3"></td>';
+          }
+          const d = new Date(base.getFullYear(), base.getMonth(), dayNum);
+          const key = fmtDate(d);
           const count = reservationState.reservations.filter((r) => r.start?.startsWith(key)).length;
-          return `<button class="rounded-lg border border-slate-200 bg-white p-2 text-left text-xs" data-action="reservation-open-slot" data-date="${key}"><div class="font-semibold">${i + 1}日</div><div class="mt-1 text-slate-500">予約 ${count}件</div></button>`;
-        }).join('');
-        reservationCalendar.innerHTML = `<div class="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-7">${cells}</div>`;
+          return `<td class="border border-slate-200 align-top"><button class="h-full w-full p-2 text-left text-xs" data-action="reservation-open-slot" data-date="${key}"><div class="font-semibold">${dayNum}日（${weekday[d.getDay()]}）</div><div class="mt-1 text-slate-500">予約 ${count}件</div></button></td>`;
+        });
+        const tbody = Array.from({ length: 6 }).map((_, i) => `<tr>${cellArr.slice(i * 7, i * 7 + 7).join('')}</tr>`).join('');
+        reservationCalendar.innerHTML = `<div class="overflow-x-auto"><table class="w-full min-w-[980px] table-fixed border-collapse text-xs"><thead><tr>${ths}</tr></thead><tbody>${tbody}</tbody></table></div>`;
         return;
       }
-      const step = reservationState.view === 'day' ? 30 : 60;
-      const rows = reservationState.units.map((u) => {
-        const slots = [];
+
+      if (reservationState.view === 'day') {
+        const dayKey = fmtDate(base);
+        const timeSlots = [];
         for (let h = 9; h <= 18; h += 1) {
-          for (let m = 0; m < 60; m += step) {
-            const time = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-            const key = `${formatDateInput(base)}T${time}`;
-            const found = reservationState.reservations.find((r) => r.unitId === u.id && r.start?.startsWith(key.slice(0, 13)));
-            slots.push(`<button class="min-w-[90px] rounded border px-2 py-1 text-[11px] ${found ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${found ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${found?.id || ''}" data-date="${key}">${found ? found.patientLabel : time}</button>`);
+          for (let m = 0; m < 60; m += 30) {
+            timeSlots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
           }
         }
-        return `<div class="mb-2 rounded-xl border border-slate-200 bg-white p-2"><div class="mb-2 text-xs font-semibold"><span class="inline-block h-2 w-2 rounded-full" style="background:${u.color}"></span> ${u.name}</div><div class="flex flex-wrap gap-1">${slots.join('')}</div></div>`;
+        const thead = `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-2 py-2">ユニット / ${dayKey}（${weekday[base.getDay()]}）</th>${timeSlots.map((t) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2">${t}</th>`).join('')}</tr>`;
+        const tbody = reservationState.units.map((u) => {
+          const cells = timeSlots.map((t) => {
+            const prefix = `${dayKey}T${t.slice(0, 2)}`;
+            const found = findReservation(u.id, prefix);
+            return `<td class="border border-slate-200 px-1 py-1"><button class="w-[95px] rounded border px-1 py-1 text-[11px] ${found ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${found ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${found?.id || ''}" data-date="${dayKey}T${t}">${found ? found.patientLabel : '空き'}</button></td>`;
+          }).join('');
+          return `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-white px-2 py-2 text-left"><span class="inline-block h-2 w-2 rounded-full" style="background:${u.color}"></span> ${u.name}</th>${cells}</tr>`;
+        }).join('');
+        reservationCalendar.innerHTML = `<div class="overflow-x-auto"><table class="min-w-max border-collapse whitespace-nowrap text-xs"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
+        return;
+      }
+
+      const coarseTimes = ['09:00', '11:00', '13:00', '15:00', '17:00'];
+      const weekDays = Array.from({ length: 7 }).map((_, i) => {
+        const d = new Date(base);
+        d.setDate(base.getDate() - base.getDay() + i);
+        return d;
+      });
+      const headCols = weekDays.flatMap((d) => coarseTimes.map((t) => ({ day: d, time: t })));
+      const thead = `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-2 py-2">ユニット</th>${headCols.map((c) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2">${c.day.getMonth() + 1}/${c.day.getDate()}（${weekday[c.day.getDay()]}）<br>${c.time}</th>`).join('')}</tr>`;
+      const tbody = reservationState.units.map((u) => {
+        const cells = headCols.map((c) => {
+          const key = `${fmtDate(c.day)}T${c.time.slice(0, 2)}`;
+          const found = findReservation(u.id, key);
+          return `<td class="border border-slate-200 px-1 py-1"><button class="w-[110px] rounded border px-1 py-1 text-[11px] ${found ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${found ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${found?.id || ''}" data-date="${fmtDate(c.day)}T${c.time}">${found ? found.patientLabel : '空き'}</button></td>`;
+        }).join('');
+        return `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-white px-2 py-2 text-left"><span class="inline-block h-2 w-2 rounded-full" style="background:${u.color}"></span> ${u.name}</th>${cells}</tr>`;
       }).join('');
-      reservationCalendar.innerHTML = rows;
+      reservationCalendar.innerHTML = `<div class="overflow-x-auto"><table class="min-w-max border-collapse whitespace-nowrap text-xs"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
     };
 
     document.body.addEventListener('click', (event) => {
