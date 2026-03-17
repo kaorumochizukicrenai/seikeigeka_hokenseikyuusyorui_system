@@ -120,6 +120,9 @@
             <button class="glass rounded-2xl px-5 py-4 text-left" data-action="go-reservation">
               <p class="text-base font-semibold">予約管理</p>
             </button>
+            <button class="glass rounded-2xl px-5 py-4 text-left" data-action="go-staff-settings">
+              <p class="text-base font-semibold">担当者設定</p>
+            </button>
             <div class="glass rounded-2xl px-5 py-4 text-left opacity-50">
               <p class="text-base font-semibold">アカウント作成</p>
               <p class="mt-2 text-xs text-slate-500">権限制限のため使用できません</p>
@@ -162,92 +165,114 @@
                 <button id="reservation-view-day" class="rounded-md px-3 py-1" data-action="reservation-view-day">1日</button>
                 <button id="reservation-view-week" class="rounded-md px-3 py-1" data-action="reservation-view-week">週</button>
                 <button id="reservation-view-month" class="rounded-md px-3 py-1" data-action="reservation-view-month">月</button>
+                <button id="reservation-view-staff" class="rounded-md px-3 py-1" data-action="reservation-view-staff">担当別</button>
+                <button id="reservation-view-patient" class="rounded-md px-3 py-1" data-action="reservation-view-patient">患者別</button>
               </div>
+            </div>
+            <div class="mt-3 flex flex-wrap items-center gap-3 text-xs" id="reservation-filter-row">
+              <label class="hidden" id="reservation-filter-staff-wrap">担当者
+                <select id="reservation-filter-staff" class="ml-2 rounded border border-slate-200 px-2 py-1"></select>
+              </label>
+              <label class="hidden" id="reservation-filter-month-wrap">表示月
+                <input type="month" id="reservation-filter-month" class="ml-2 rounded border border-slate-200 px-2 py-1" />
+              </label>
             </div>
             <div id="reservation-calendar" class="mt-4 overflow-auto"></div>
           </div>
 
-          <div id="reservation-settings-panel" class="mt-4 hidden rounded-2xl border border-slate-200 bg-white/80 p-6">
-            <div class="flex items-center justify-between">
-              <h3 class="text-lg font-semibold">予約設定</h3>
-              <button class="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs" data-action="reservation-close-settings">閉じる</button>
-            </div>
-            <div class="mt-4 grid gap-4 lg:grid-cols-3">
-              <div class="rounded-xl border border-slate-200 p-4">
-                <p class="text-sm font-semibold">ユニット設定</p>
-                <div id="reservation-unit-list" class="mt-3 grid gap-2"></div>
-                <div class="mt-3 grid gap-2">
-                  <input id="reservation-unit-name" type="text" placeholder="ユニット名" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                  <input id="reservation-unit-color" type="color" value="#2563eb" class="h-10 w-full rounded-lg border border-slate-200 px-2" />
-                  <button class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white" data-action="reservation-add-unit">ユニット追加</button>
-                </div>
+          <div id="reservation-settings-panel" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4">
+            <div class="glass w-full max-w-3xl rounded-2xl p-6">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold">予約設定</h3>
+                <button class="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs" data-action="reservation-close-settings">閉じる</button>
               </div>
-              <div class="rounded-xl border border-slate-200 p-4">
-                <p class="text-sm font-semibold">休診日・診療時間</p>
-                <div class="mt-3 grid gap-2 text-sm">
-                  <label>開始 <input id="reservation-open-time" type="time" value="09:00" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" /></label>
-                  <label>終了 <input id="reservation-close-time" type="time" value="18:00" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" /></label>
-                  <button class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold" data-action="reservation-apply-hours">診療時間を反映</button>
-                </div>
-                <div class="mt-4">
-                  <div class="flex gap-2">
-                    <input id="reservation-holiday" type="date" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                    <button class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold" data-action="reservation-add-holiday">追加</button>
+              <div class="mt-4 grid gap-4 md:grid-cols-2">
+                <div class="rounded-xl border border-slate-200 p-4">
+                  <p class="text-sm font-semibold">ユニット設定</p>
+                  <div id="reservation-unit-list" class="mt-3 grid gap-2"></div>
+                  <div class="mt-3 grid gap-2">
+                    <input id="reservation-unit-name" type="text" placeholder="ユニット名" class="rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                    <input id="reservation-unit-color" type="color" value="#2563eb" class="h-10 w-full rounded-lg border border-slate-200 px-2" />
+                    <button class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white" data-action="reservation-add-unit">ユニット追加</button>
                   </div>
-                  <div id="reservation-holiday-list" class="mt-2 grid gap-1 text-xs"></div>
                 </div>
-              </div>
-              <div class="rounded-xl border border-slate-200 p-4">
-                <p class="text-sm font-semibold">診察担当者</p>
-                <div id="reservation-staff-list" class="mt-3 grid gap-2"></div>
-                <div class="mt-3 flex gap-2">
-                  <input id="reservation-staff-name" type="text" placeholder="担当者名" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-                  <button class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-semibold text-white" data-action="reservation-add-staff">追加</button>
+                <div class="rounded-xl border border-slate-200 p-4">
+                  <p class="text-sm font-semibold">休診日・診療時間・コマ設定</p>
+                  <div class="mt-3 grid gap-2 text-sm">
+                    <label>開始 <input id="reservation-open-time" type="time" value="09:00" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" /></label>
+                    <label>終了 <input id="reservation-close-time" type="time" value="18:00" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" /></label>
+                    <label>1コマ（分） <input id="reservation-slot-minutes" type="number" value="30" min="5" step="5" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" /></label>
+                    <label>予約デフォルトコマ数 <input id="reservation-default-slots" type="number" value="2" min="1" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" /></label>
+                    <button class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold" data-action="reservation-apply-hours">設定を反映</button>
+                  </div>
+                  <div class="mt-4">
+                    <div class="flex gap-2">
+                      <input id="reservation-holiday" type="date" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                      <button class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold" data-action="reservation-add-holiday">追加</button>
+                    </div>
+                    <div id="reservation-holiday-list" class="mt-2 grid gap-1 text-xs"></div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div id="reservation-form-panel" class="mt-4 hidden rounded-2xl border border-slate-200 bg-white/80 p-6">
-            <div class="flex items-center justify-between">
-              <h3 id="reservation-form-title" class="text-lg font-semibold">予約登録</h3>
-              <button class="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs" data-action="reservation-form-cancel">閉じる</button>
+          <div id="reservation-form-panel" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 p-4">
+            <div class="glass w-full max-w-3xl rounded-2xl p-6">
+              <div class="flex items-center justify-between">
+                <h3 id="reservation-form-title" class="text-lg font-semibold">予約登録</h3>
+                <button class="rounded-lg border border-slate-200 bg-white px-3 py-1 text-xs" data-action="reservation-form-cancel">閉じる</button>
+              </div>
+              <input type="hidden" id="reservation-edit-id" />
+              <div class="mt-4 grid gap-3 md:grid-cols-2">
+                <label class="text-sm">患者選択モード
+                  <select id="reservation-patient-mode" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">
+                    <option value="master">患者マスタから選択</option>
+                    <option value="new">新規患者を作成</option>
+                  </select>
+                </label>
+                <label id="reservation-patient-master-wrap" class="text-sm">患者マスタ
+                  <select id="reservation-patient-master" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></select>
+                </label>
+                <label id="reservation-patient-new-wrap" class="hidden text-sm md:col-span-2">新規患者名
+                  <input id="reservation-patient-new" type="text" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                </label>
+                <label class="text-sm">ユニット
+                  <select id="reservation-form-unit" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></select>
+                </label>
+                <label class="text-sm">担当者
+                  <select id="reservation-form-staff" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></select>
+                </label>
+                <label class="text-sm">開始日時
+                  <input id="reservation-form-start" type="datetime-local" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                </label>
+                <label class="text-sm">終了日時
+                  <input id="reservation-form-end" type="datetime-local" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+                </label>
+                <label class="text-sm md:col-span-2">備考
+                  <textarea id="reservation-form-note" rows="2" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></textarea>
+                </label>
+              </div>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <button class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="reservation-form-save">保存</button>
+                <button class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700" data-action="reservation-form-delete">削除</button>
+                <button class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold" data-action="reservation-form-cancel">キャンセル</button>
+              </div>
             </div>
-            <input type="hidden" id="reservation-edit-id" />
-            <div class="mt-4 grid gap-3 md:grid-cols-2">
-              <label class="text-sm">患者選択モード
-                <select id="reservation-patient-mode" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">
-                  <option value="master">患者マスタから選択</option>
-                  <option value="new">新規患者を作成</option>
-                </select>
-              </label>
-              <label id="reservation-patient-master-wrap" class="text-sm">患者マスタ
-                <select id="reservation-patient-master" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></select>
-              </label>
-              <label id="reservation-patient-new-wrap" class="hidden text-sm md:col-span-2">新規患者名
-                <input id="reservation-patient-new" type="text" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-              </label>
-              <label class="text-sm">ユニット
-                <select id="reservation-form-unit" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></select>
-              </label>
-              <label class="text-sm">担当者
-                <select id="reservation-form-staff" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></select>
-              </label>
-              <label class="text-sm">開始日時
-                <input id="reservation-form-start" type="datetime-local" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-              </label>
-              <label class="text-sm">終了日時
-                <input id="reservation-form-end" type="datetime-local" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
-              </label>
-              <label class="text-sm md:col-span-2">備考
-                <textarea id="reservation-form-note" rows="2" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"></textarea>
-              </label>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-staff-settings" class="screen">
+        <div class="mx-auto max-w-4xl px-4 pb-16 md:px-6">
+          <h2 class="text-2xl font-semibold">担当者設定</h2>
+          <div class="mt-6 rounded-2xl border border-slate-200 bg-white/80 p-6">
+            <div id="staff-settings-list" class="grid gap-2"></div>
+            <div class="mt-4 flex gap-2">
+              <input id="staff-settings-name" type="text" placeholder="担当者名" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm" />
+              <button class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="staff-settings-add">追加</button>
             </div>
-            <div class="mt-4 flex flex-wrap gap-2">
-              <button class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white" data-action="reservation-form-save">保存</button>
-              <button class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700" data-action="reservation-form-delete">削除</button>
-              <button class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold" data-action="reservation-form-cancel">キャンセル</button>
-            </div>
+            <button class="mt-4 rounded-xl border border-slate-200 bg-white px-6 py-2 text-sm font-semibold" data-action="back-home">戻る</button>
           </div>
         </div>
       </section>
@@ -1541,6 +1566,7 @@
                   <tr class="text-slate-500">
                     <th class="px-4 py-3">患者ID</th>
                     <th class="px-4 py-3">患者名</th>
+                    <th class="px-4 py-3">担当者</th>
                     <th class="px-4 py-3">状態</th>
                     <th class="px-4 py-3">作成日</th>
                     <th class="px-4 py-3">更新日</th>
@@ -1581,6 +1607,10 @@
                 <p class="text-slate-500">更新日</p>
                 <p class="font-semibold">2024/07/05</p>
               </div>
+              <div>
+                <p class="text-slate-500">担当者</p>
+                <p class="font-semibold">大谷勝典</p>
+              </div>
             </div>
             <div class="grid gap-4 md:grid-cols-2">
               <div class="rounded-xl border border-slate-200 bg-white p-4">
@@ -1590,6 +1620,10 @@
               <div class="rounded-xl border border-slate-200 bg-white p-4">
                 <p class="text-sm font-semibold">電話番号</p>
                 <p class="mt-3 text-sm text-slate-600">03-1234-5678</p>
+              </div>
+              <div class="rounded-xl border border-slate-200 bg-white p-4">
+                <p class="text-sm font-semibold">担当者</p>
+                <input type="text" class="mt-3 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm" value="大谷勝典" />
               </div>
               <div class="rounded-xl border border-slate-200 bg-white p-4">
                 <p class="text-sm font-semibold">保険証番号</p>
@@ -1784,6 +1818,7 @@
         <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-kart-search">カルテ検索</button>
         <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-patient-search">患者マスタ</button>
         <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-reservation">予約管理</button>
+        <button class="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-left" data-action="go-staff-settings">担当者設定</button>
         <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 text-left opacity-50">
           アカウント作成
           <p class="mt-2 text-xs text-slate-400">権限制限のため使用できません</p>
@@ -2634,12 +2669,15 @@
       baseDate: new Date(),
       units: [
         { id: 'u1', name: 'ユニットA', color: '#2563eb' },
-        { id: 'u2', name: 'ユニットB', color: '#16a34a' }
+        { id: 'u2', name: 'ユニットB', color: '#16a34a' },
+        { id: 'u3', name: 'ユニットC', color: '#d97706' }
       ],
-      staffs: ['大谷勝典', '田中医師'],
+      staffs: ['大谷勝典', '田中医師', '佐藤医師'],
       holidays: [],
       openTime: '09:00',
       closeTime: '18:00',
+      slotMinutes: 30,
+      defaultSlots: 2,
       reservations: []
     };
 
@@ -2649,44 +2687,82 @@
     const reservationFormPanel = document.getElementById('reservation-form-panel');
     const reservationPatientMaster = document.getElementById('reservation-patient-master');
     const reservationPatientMode = document.getElementById('reservation-patient-mode');
+    const reservationFilterStaff = document.getElementById('reservation-filter-staff');
+    const reservationFilterStaffWrap = document.getElementById('reservation-filter-staff-wrap');
+    const reservationFilterMonth = document.getElementById('reservation-filter-month');
+    const reservationFilterMonthWrap = document.getElementById('reservation-filter-month-wrap');
+    const staffSettingsList = document.getElementById('staff-settings-list');
 
     const formatDateInput = (date) => new Date(date).toISOString().slice(0, 10);
-    const reservationPatients = Array.from({ length: 10 }).map((_, i) => ({ id: `P-${1200 + i}`, name: `患者名 ${i + 1}` }));
+    const reservationPatients = Array.from({ length: 18 }).map((_, i) => ({ id: `P-${1200 + i}`, name: `患者名 ${i + 1}` }));
+
+    const parseDateTime = (v) => v ? new Date(v) : null;
+    const addMinutes = (date, minutes) => new Date(date.getTime() + minutes * 60 * 1000);
+    const pad2 = (v) => String(v).padStart(2, '0');
+
+    const seedDummyReservations = () => {
+      if (reservationState.reservations.length) return;
+      const base = new Date();
+      for (let d = -10; d <= 25; d += 1) {
+        reservationState.units.forEach((u, ui) => {
+          for (let k = 0; k < 3; k += 1) {
+            const start = new Date(base.getFullYear(), base.getMonth(), base.getDate() + d, 9 + ((k + ui) % 8), (k % 2) * 30);
+            const patient = reservationPatients[(d + ui + k + 40) % reservationPatients.length];
+            const staff = reservationState.staffs[(ui + k + d + 30) % reservationState.staffs.length];
+            const end = addMinutes(start, reservationState.slotMinutes * (1 + ((ui + k) % 2)));
+            reservationState.reservations.push({
+              id: `seed-${d}-${u.id}-${k}`,
+              patientMode: 'master',
+              patientId: patient.id,
+              patientName: patient.name,
+              patientLabel: `${patient.id} ${patient.name}`,
+              unitId: u.id,
+              staff,
+              start: `${formatDateInput(start)}T${pad2(start.getHours())}:${pad2(start.getMinutes())}`,
+              end: `${formatDateInput(end)}T${pad2(end.getHours())}:${pad2(end.getMinutes())}`,
+              note: 'ダミー予約'
+            });
+          }
+        });
+      }
+    };
+
+    const renderStaffSettings = () => {
+      if (!staffSettingsList) return;
+      staffSettingsList.innerHTML = reservationState.staffs.map((name, idx) => `<div class="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm"><span>${name}</span><button data-action="staff-settings-remove" data-staff-index="${idx}" class="text-rose-600">削除</button></div>`).join('');
+      if (reservationFilterStaff) {
+        reservationFilterStaff.innerHTML = reservationState.staffs.map((name) => `<option value="${name}">${name}</option>`).join('');
+      }
+    };
 
     const renderReservationSelects = () => {
       const unitSelect = document.getElementById('reservation-form-unit');
       const staffSelect = document.getElementById('reservation-form-staff');
-      if (unitSelect) {
-        unitSelect.innerHTML = reservationState.units.map((u) => `<option value="${u.id}">${u.name}</option>`).join('');
-      }
-      if (staffSelect) {
-        staffSelect.innerHTML = reservationState.staffs.map((s) => `<option value="${s}">${s}</option>`).join('');
-      }
-      if (reservationPatientMaster) {
-        reservationPatientMaster.innerHTML = reservationPatients.map((p) => `<option value="${p.id}">${p.id} ${p.name}</option>`).join('');
-      }
+      if (unitSelect) unitSelect.innerHTML = reservationState.units.map((u) => `<option value="${u.id}">${u.name}</option>`).join('');
+      if (staffSelect) staffSelect.innerHTML = reservationState.staffs.map((s) => `<option value="${s}">${s}</option>`).join('');
+      if (reservationPatientMaster) reservationPatientMaster.innerHTML = reservationPatients.map((p) => `<option value="${p.id}">${p.id} ${p.name}</option>`).join('');
+      renderStaffSettings();
     };
 
     const renderReservationSettings = () => {
       const unitList = document.getElementById('reservation-unit-list');
       const holidayList = document.getElementById('reservation-holiday-list');
-      const staffList = document.getElementById('reservation-staff-list');
       document.getElementById('reservation-open-time').value = reservationState.openTime;
       document.getElementById('reservation-close-time').value = reservationState.closeTime;
+      document.getElementById('reservation-slot-minutes').value = reservationState.slotMinutes;
+      document.getElementById('reservation-default-slots').value = reservationState.defaultSlots;
       if (unitList) {
         unitList.innerHTML = reservationState.units.map((u) => `<div class="flex items-center justify-between rounded-lg border border-slate-200 px-2 py-1 text-xs"><span><span class="inline-block h-2 w-2 rounded-full" style="background:${u.color}"></span> ${u.name}</span><button data-action="reservation-remove-unit" data-unit-id="${u.id}" class="text-rose-600">削除</button></div>`).join('');
       }
       if (holidayList) {
         holidayList.innerHTML = reservationState.holidays.map((d) => `<div class="flex items-center justify-between rounded border border-slate-200 px-2 py-1"><span>${d}</span><button data-action="reservation-remove-holiday" data-holiday="${d}" class="text-rose-600">削除</button></div>`).join('');
       }
-      if (staffList) {
-        staffList.innerHTML = reservationState.staffs.map((name, idx) => `<div class="flex items-center justify-between rounded-lg border border-slate-200 px-2 py-1 text-xs"><span>${name}</span><button data-action="reservation-remove-staff" data-staff-index="${idx}" class="text-rose-600">削除</button></div>`).join('');
-      }
       renderReservationSelects();
     };
 
     const openReservationForm = (reservation = null, startAt = '') => {
       reservationFormPanel?.classList.remove('hidden');
+      reservationFormPanel?.classList.add('flex');
       document.getElementById('reservation-edit-id').value = reservation?.id || '';
       document.getElementById('reservation-form-title').textContent = reservation ? '予約詳細・編集' : '新規予約';
       document.getElementById('reservation-form-unit').value = reservation?.unitId || reservationState.units[0]?.id || '';
@@ -2701,14 +2777,72 @@
       document.getElementById('reservation-patient-new-wrap').classList.toggle('hidden', reservationPatientMode.value !== 'new');
     };
 
+    const closeReservationForm = () => {
+      reservationFormPanel?.classList.add('hidden');
+      reservationFormPanel?.classList.remove('flex');
+    };
+
+    const closeReservationSettings = () => {
+      reservationSettingsPanel?.classList.add('hidden');
+      reservationSettingsPanel?.classList.remove('flex');
+    };
+
     const renderReservationCalendar = () => {
       if (!reservationCalendar) return;
-      ['day', 'week', 'month'].forEach((v) => document.getElementById(`reservation-view-${v}`)?.classList.toggle('bg-slate-900', reservationState.view === v));
-      ['day', 'week', 'month'].forEach((v) => document.getElementById(`reservation-view-${v}`)?.classList.toggle('text-white', reservationState.view === v));
+      ['day', 'week', 'month', 'staff', 'patient'].forEach((v) => document.getElementById(`reservation-view-${v}`)?.classList.toggle('bg-slate-900', reservationState.view === v));
+      ['day', 'week', 'month', 'staff', 'patient'].forEach((v) => document.getElementById(`reservation-view-${v}`)?.classList.toggle('text-white', reservationState.view === v));
       const base = new Date(reservationBaseDateInput?.value || reservationState.baseDate);
       const weekday = ['日', '月', '火', '水', '木', '金', '土'];
       const fmtDate = (d) => formatDateInput(d);
-      const findReservation = (unitId, prefix) => reservationState.reservations.find((r) => r.unitId === unitId && r.start?.startsWith(prefix));
+      const openHour = Number((reservationState.openTime || '09:00').split(':')[0]);
+      const closeHour = Number((reservationState.closeTime || '18:00').split(':')[0]);
+      const slot = reservationState.slotMinutes;
+      const slotTimes = [];
+      for (let h = openHour; h <= closeHour; h += 1) {
+        for (let m = 0; m < 60; m += slot) slotTimes.push(`${pad2(h)}:${pad2(m)}`);
+      }
+      const listByPrefix = (prefix, unitId = null, staff = null) => reservationState.reservations.filter((r) => {
+        if (unitId && r.unitId !== unitId) return false;
+        if (staff && r.staff !== staff) return false;
+        return r.start?.startsWith(prefix);
+      });
+
+      reservationFilterStaffWrap?.classList.toggle('hidden', !(reservationState.view === 'staff' || reservationState.view === 'patient'));
+      reservationFilterMonthWrap?.classList.toggle('hidden', reservationState.view !== 'patient');
+      if (!reservationFilterMonth?.value) reservationFilterMonth.value = `${base.getFullYear()}-${pad2(base.getMonth() + 1)}`;
+
+      if (reservationState.view === 'day') {
+        const dayKey = fmtDate(base);
+        const thead = `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-2 py-2">時間（${dayKey} ${weekday[base.getDay()]})</th>${reservationState.units.map((u) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2"><span class="inline-block h-2 w-2 rounded-full" style="background:${u.color}"></span> ${u.name}</th>`).join('')}</tr>`;
+        const tbody = slotTimes.map((t) => {
+          const rowCells = reservationState.units.map((u) => {
+            const rs = listByPrefix(`${dayKey}T${t.slice(0,2)}`, u.id)[0];
+            return `<td class="border border-slate-200 px-1 py-1"><button class="w-[120px] rounded border px-1 py-1 text-[11px] ${rs ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${rs ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${rs?.id || ''}" data-date="${dayKey}T${t}">${rs ? rs.patientLabel : '空き'}</button></td>`;
+          }).join('');
+          return `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-white px-2 py-1 text-left">${t}</th>${rowCells}</tr>`;
+        }).join('');
+        reservationCalendar.innerHTML = `<div class="overflow-x-auto"><table class="min-w-max border-collapse whitespace-nowrap text-xs"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
+        return;
+      }
+
+      if (reservationState.view === 'week') {
+        const weekDays = Array.from({ length: 7 }).map((_, i) => {
+          const d = new Date(base);
+          d.setDate(base.getDate() - base.getDay() + i);
+          return d;
+        });
+        const thead = `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-2 py-2">1コマ</th>${weekDays.map((d) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2">${d.getMonth() + 1}/${d.getDate()}（${weekday[d.getDay()]}）</th>`).join('')}</tr>`;
+        const tbody = slotTimes.map((t) => {
+          const cells = weekDays.map((d) => {
+            const key = `${fmtDate(d)}T${t.slice(0,2)}`;
+            const rs = listByPrefix(key)[0];
+            return `<td class="border border-slate-200 px-1 py-1"><button class="w-[130px] rounded border px-1 py-1 text-[11px] ${rs ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${rs ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${rs?.id || ''}" data-date="${fmtDate(d)}T${t}">${rs ? `${rs.patientName} / ${rs.unitId}` : '空き'}</button></td>`;
+          }).join('');
+          return `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-white px-2 py-1 text-left">${t}</th>${cells}</tr>`;
+        }).join('');
+        reservationCalendar.innerHTML = `<div class="overflow-x-auto"><table class="min-w-max border-collapse whitespace-nowrap text-xs"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
+        return;
+      }
 
       if (reservationState.view === 'month') {
         const first = new Date(base.getFullYear(), base.getMonth(), 1);
@@ -2718,12 +2852,10 @@
         const ths = weekday.map((w) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2 text-center text-xs">${w}</th>`).join('');
         const cellArr = Array.from({ length: totalCells }).map((_, idx) => {
           const dayNum = idx - monthStartW + 1;
-          if (dayNum < 1 || dayNum > daysInMonth) {
-            return '<td class="border border-slate-200 bg-slate-50/50 px-2 py-3"></td>';
-          }
+          if (dayNum < 1 || dayNum > daysInMonth) return '<td class="border border-slate-200 bg-slate-50/50 px-2 py-3"></td>';
           const d = new Date(base.getFullYear(), base.getMonth(), dayNum);
           const key = fmtDate(d);
-          const count = reservationState.reservations.filter((r) => r.start?.startsWith(key)).length;
+          const count = listByPrefix(key).length;
           return `<td class="border border-slate-200 align-top"><button class="h-full w-full p-2 text-left text-xs" data-action="reservation-open-slot" data-date="${key}"><div class="font-semibold">${dayNum}日（${weekday[d.getDay()]}）</div><div class="mt-1 text-slate-500">予約 ${count}件</div></button></td>`;
         });
         const tbody = Array.from({ length: 6 }).map((_, i) => `<tr>${cellArr.slice(i * 7, i * 7 + 7).join('')}</tr>`).join('');
@@ -2731,42 +2863,42 @@
         return;
       }
 
-      if (reservationState.view === 'day') {
+      if (reservationState.view === 'staff') {
         const dayKey = fmtDate(base);
-        const timeSlots = [];
-        for (let h = 9; h <= 18; h += 1) {
-          for (let m = 0; m < 60; m += 30) {
-            timeSlots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
-          }
-        }
-        const thead = `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-2 py-2">ユニット / ${dayKey}（${weekday[base.getDay()]}）</th>${timeSlots.map((t) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2">${t}</th>`).join('')}</tr>`;
-        const tbody = reservationState.units.map((u) => {
-          const cells = timeSlots.map((t) => {
-            const prefix = `${dayKey}T${t.slice(0, 2)}`;
-            const found = findReservation(u.id, prefix);
-            return `<td class="border border-slate-200 px-1 py-1"><button class="w-[95px] rounded border px-1 py-1 text-[11px] ${found ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${found ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${found?.id || ''}" data-date="${dayKey}T${t}">${found ? found.patientLabel : '空き'}</button></td>`;
+        const selectedStaff = reservationFilterStaff?.value || reservationState.staffs[0];
+        const thead = `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-2 py-2">1コマ / ${dayKey}（${weekday[base.getDay()]}）</th>${reservationState.staffs.map((s) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2">${s}</th>`).join('')}</tr>`;
+        if (reservationFilterStaff && !reservationFilterStaff.value) reservationFilterStaff.value = selectedStaff;
+        const tbody = slotTimes.map((t) => {
+          const cells = reservationState.staffs.map((st) => {
+            const rs = listByPrefix(`${dayKey}T${t.slice(0,2)}`, null, st)[0];
+            return `<td class="border border-slate-200 px-1 py-1"><button class="w-[120px] rounded border px-1 py-1 text-[11px] ${rs ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${rs ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${rs?.id || ''}" data-date="${dayKey}T${t}">${rs ? rs.patientLabel : '空き'}</button></td>`;
           }).join('');
-          return `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-white px-2 py-2 text-left"><span class="inline-block h-2 w-2 rounded-full" style="background:${u.color}"></span> ${u.name}</th>${cells}</tr>`;
+          return `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-white px-2 py-1 text-left">${t}</th>${cells}</tr>`;
         }).join('');
         reservationCalendar.innerHTML = `<div class="overflow-x-auto"><table class="min-w-max border-collapse whitespace-nowrap text-xs"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
         return;
       }
 
-      const coarseTimes = ['09:00', '11:00', '13:00', '15:00', '17:00'];
-      const weekDays = Array.from({ length: 7 }).map((_, i) => {
-        const d = new Date(base);
-        d.setDate(base.getDate() - base.getDay() + i);
-        return d;
+      const month = reservationFilterMonth?.value || `${base.getFullYear()}-${pad2(base.getMonth() + 1)}`;
+      const [yy, mm] = month.split('-').map(Number);
+      const days = new Date(yy, mm, 0).getDate();
+      const targetStaff = reservationFilterStaff?.value || reservationState.staffs[0];
+      const patientMap = new Map();
+      reservationState.reservations.filter((r) => r.staff === targetStaff && r.start?.startsWith(`${yy}-${pad2(mm)}`)).forEach((r) => {
+        if (!patientMap.has(r.patientLabel)) patientMap.set(r.patientLabel, {});
+        const day = Number(r.start.slice(8, 10));
+        patientMap.get(r.patientLabel)[day] = r;
       });
-      const headCols = weekDays.flatMap((d) => coarseTimes.map((t) => ({ day: d, time: t })));
-      const thead = `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-2 py-2">ユニット</th>${headCols.map((c) => `<th class="border border-slate-200 bg-slate-50 px-2 py-2">${c.day.getMonth() + 1}/${c.day.getDate()}（${weekday[c.day.getDay()]}）<br>${c.time}</th>`).join('')}</tr>`;
-      const tbody = reservationState.units.map((u) => {
-        const cells = headCols.map((c) => {
-          const key = `${fmtDate(c.day)}T${c.time.slice(0, 2)}`;
-          const found = findReservation(u.id, key);
-          return `<td class="border border-slate-200 px-1 py-1"><button class="w-[110px] rounded border px-1 py-1 text-[11px] ${found ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${found ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${found?.id || ''}" data-date="${fmtDate(c.day)}T${c.time}">${found ? found.patientLabel : '空き'}</button></td>`;
+      const patients = [...patientMap.keys()];
+      const thead = `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-slate-50 px-2 py-2">患者名 / ${yy}-${pad2(mm)}（${targetStaff}）</th>${Array.from({ length: days }).map((_,i)=>`<th class="border border-slate-200 bg-slate-50 px-2 py-2">${i+1}日</th>`).join('')}</tr>`;
+      const tbody = (patients.length ? patients : ['(予約なし)']).map((pname) => {
+        const cells = Array.from({ length: days }).map((_,i) => {
+          const day = i + 1;
+          const r = patientMap.get(pname)?.[day];
+          const date = `${yy}-${pad2(mm)}-${pad2(day)}`;
+          return `<td class="border border-slate-200 px-1 py-1"><button class="w-[100px] rounded border px-1 py-1 text-[11px] ${r ? 'border-slate-400 bg-slate-100' : 'border-slate-200 bg-white'}" data-action="${r ? 'reservation-open-existing' : 'reservation-open-slot'}" data-reservation-id="${r?.id || ''}" data-date="${date}T09:00">${r ? '予約あり' : '-'}</button></td>`;
         }).join('');
-        return `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-white px-2 py-2 text-left"><span class="inline-block h-2 w-2 rounded-full" style="background:${u.color}"></span> ${u.name}</th>${cells}</tr>`;
+        return `<tr><th class="sticky left-0 z-10 border border-slate-200 bg-white px-2 py-1 text-left">${pname}</th>${cells}</tr>`;
       }).join('');
       reservationCalendar.innerHTML = `<div class="overflow-x-auto"><table class="min-w-max border-collapse whitespace-nowrap text-xs"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
     };
@@ -2933,6 +3065,11 @@
           renderReservationSettings();
           renderReservationCalendar();
           break;
+        case 'go-staff-settings':
+          showScreen('screen-staff-settings', true);
+          menuOverlay.classList.add('hidden');
+          renderStaffSettings();
+          break;
 
         case 'tab-new':
           setTab('new');
@@ -2980,27 +3117,30 @@
           break;
         case 'reservation-open-settings':
           reservationSettingsPanel?.classList.remove('hidden');
+          reservationSettingsPanel?.classList.add('flex');
           renderReservationSettings();
           break;
         case 'reservation-close-settings':
-          reservationSettingsPanel?.classList.add('hidden');
+          closeReservationSettings();
           break;
         case 'reservation-view-day':
         case 'reservation-view-week':
         case 'reservation-view-month':
+        case 'reservation-view-staff':
+        case 'reservation-view-patient':
           reservationState.view = action.replace('reservation-view-', '');
           renderReservationCalendar();
           break;
         case 'reservation-prev': {
           const d = new Date(reservationBaseDateInput?.value || reservationState.baseDate);
-          d.setDate(d.getDate() - (reservationState.view === 'month' ? 30 : reservationState.view === 'week' ? 7 : 1));
+          d.setDate(d.getDate() - (reservationState.view === 'month' || reservationState.view === 'patient' ? 30 : reservationState.view === 'week' ? 7 : 1));
           reservationBaseDateInput.value = formatDateInput(d);
           renderReservationCalendar();
           break;
         }
         case 'reservation-next': {
           const d = new Date(reservationBaseDateInput?.value || reservationState.baseDate);
-          d.setDate(d.getDate() + (reservationState.view === 'month' ? 30 : reservationState.view === 'week' ? 7 : 1));
+          d.setDate(d.getDate() + (reservationState.view === 'month' || reservationState.view === 'patient' ? 30 : reservationState.view === 'week' ? 7 : 1));
           reservationBaseDateInput.value = formatDateInput(d);
           renderReservationCalendar();
           break;
@@ -3023,20 +3163,6 @@
           renderReservationCalendar();
           break;
         }
-        case 'reservation-add-staff': {
-          const name = document.getElementById('reservation-staff-name').value.trim();
-          if (!name) break;
-          reservationState.staffs.push(name);
-          document.getElementById('reservation-staff-name').value = '';
-          renderReservationSettings();
-          break;
-        }
-        case 'reservation-remove-staff': {
-          const idx = Number(event.target.dataset.staffIndex);
-          reservationState.staffs.splice(idx, 1);
-          renderReservationSettings();
-          break;
-        }
         case 'reservation-add-holiday': {
           const d = document.getElementById('reservation-holiday').value;
           if (d && !reservationState.holidays.includes(d)) reservationState.holidays.push(d);
@@ -3050,11 +3176,21 @@
         case 'reservation-apply-hours':
           reservationState.openTime = document.getElementById('reservation-open-time').value;
           reservationState.closeTime = document.getElementById('reservation-close-time').value;
+          reservationState.slotMinutes = Math.max(5, Number(document.getElementById('reservation-slot-minutes').value) || 30);
+          reservationState.defaultSlots = Math.max(1, Number(document.getElementById('reservation-default-slots').value) || 1);
           renderReservationCalendar();
           break;
-        case 'reservation-open-slot':
-          openReservationForm(null, `${event.target.dataset.date || formatDateInput(new Date())}T09:00`);
+        case 'reservation-open-slot': {
+          const slotCount = reservationState.defaultSlots || 1;
+          const startVal = `${event.target.dataset.date || formatDateInput(new Date())}`;
+          const startDate = new Date(startVal);
+          const endDate = addMinutes(startDate, reservationState.slotMinutes * slotCount);
+          const fmt = (d) => `${formatDateInput(d)}T${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+          openReservationForm(null, fmt(startDate));
+          const endInput = document.getElementById('reservation-form-end');
+          if (endInput) endInput.value = fmt(endDate);
           break;
+        }
         case 'reservation-open-existing': {
           const reservation = reservationState.reservations.find((r) => r.id === event.target.dataset.reservationId);
           if (reservation) openReservationForm(reservation);
@@ -3064,7 +3200,7 @@
           openReservationForm();
           break;
         case 'reservation-form-cancel':
-          reservationFormPanel?.classList.add('hidden');
+          closeReservationForm();
           break;
         case 'reservation-form-save': {
           const editId = document.getElementById('reservation-edit-id').value;
@@ -3095,7 +3231,7 @@
           } else {
             reservationState.reservations.push(data);
           }
-          reservationFormPanel?.classList.add('hidden');
+          closeReservationForm();
           renderReservationSelects();
           renderReservationCalendar();
           break;
@@ -3103,10 +3239,28 @@
         case 'reservation-form-delete': {
           const editId = document.getElementById('reservation-edit-id').value;
           reservationState.reservations = reservationState.reservations.filter((r) => r.id !== editId);
-          reservationFormPanel?.classList.add('hidden');
+          closeReservationForm();
           renderReservationCalendar();
           break;
         }
+        case 'staff-settings-add': {
+          const name = document.getElementById('staff-settings-name').value.trim();
+          if (!name) break;
+          reservationState.staffs.push(name);
+          document.getElementById('staff-settings-name').value = '';
+          renderStaffSettings();
+          renderReservationSelects();
+          break;
+        }
+        case 'staff-settings-remove': {
+          const idx = Number(event.target.dataset.staffIndex);
+          reservationState.staffs.splice(idx, 1);
+          renderStaffSettings();
+          renderReservationSelects();
+          renderReservationCalendar();
+          break;
+        }
+
 
         case 'jiba-print-test':
           handleJibaPrintTest();
@@ -3296,6 +3450,9 @@
         document.getElementById('reservation-patient-master-wrap').classList.toggle('hidden', event.target.value === 'new');
         document.getElementById('reservation-patient-new-wrap').classList.toggle('hidden', event.target.value !== 'new');
       }
+      if (event.target.id === 'reservation-filter-staff' || event.target.id === 'reservation-filter-month') {
+        renderReservationCalendar();
+      }
     });
 
     const buildRows = (targetId, rows) => {
@@ -3336,6 +3493,7 @@
       return `<tr class="hover:bg-slate-50" data-action="open-patient-detail">
         <td class="px-4 py-3">P-${1200 + i}</td>
         <td class="px-4 py-3">患者名 ${i + 1}</td>
+        <td class="px-4 py-3">${['大谷勝典','田中医師','佐藤医師'][i % 3]}</td>
         <td class="px-4 py-3">${i % 10 === 0 ? '削除済み' : '有効'}</td>
         <td class="px-4 py-3">2024/03/${String((i % 28) + 1).padStart(2, '0')}</td>
         <td class="px-4 py-3">2024/07/${String((i % 28) + 1).padStart(2, '0')}</td>
@@ -3351,6 +3509,13 @@
       </tr>`;
     });
     buildRows('kart-master-table', masterRows);
+
+    seedDummyReservations();
+    reservationBaseDateInput && (reservationBaseDateInput.value = formatDateInput(new Date()));
+    reservationFilterMonth && (reservationFilterMonth.value = `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`);
+    renderReservationSettings();
+    renderStaffSettings();
+    renderReservationCalendar();
 
     const downloadRows = Array.from({ length: 50 }).map((_, i) => {
       return `<tr class="hover:bg-slate-50" data-action="open-print-confirm">
